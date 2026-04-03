@@ -3,7 +3,11 @@ import { getBooks } from '../../modules/book/usecase/get-books'
 import { createRoute } from '@hono/zod-openapi'
 import { getBooksSchema } from './schema'
 
-const app = new OpenAPIHono()
+type Bindings = {
+  DB: D1Database
+}
+
+const app = new OpenAPIHono<{ Bindings: Bindings }>()
 
  const getBooksRoute = createRoute({
   method: 'get',
@@ -21,7 +25,7 @@ const app = new OpenAPIHono()
 });
 
 app.openapi(getBooksRoute, async (c) => {
-  const result = await getBooks();
+  const result = await getBooks(c.env.DB);
   return c.json(result, 200)
 });
 
