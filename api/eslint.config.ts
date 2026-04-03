@@ -21,4 +21,7 @@ export default defineConfig([
       '@typescript-eslint/no-explicit-any': 'error',
     },
   },
+  {
+    ignores: ['worker-configuration.d.ts'],
+  },
 ])
