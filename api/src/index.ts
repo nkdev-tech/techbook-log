@@ -1,5 +1,6 @@
 import { OpenAPIHono } from '@hono/zod-openapi'
 import { swaggerUI } from '@hono/swagger-ui'
+import books from './routes/books';
 
 const app = new OpenAPIHono()
 
@@ -16,5 +17,7 @@ app.doc('/doc', {
 })
 
 app.get('/ui', swaggerUI({ url: '/doc' }))
+
+app.route('/api/books', books);
 
 export default app
