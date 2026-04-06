@@ -7,8 +7,6 @@ type Bindings = {
   DB: D1Database
 }
 
-const app = new OpenAPIHono<{ Bindings: Bindings }>()
-
 const getBooksRoute = createRoute({
   method: 'get',
   path: '/',
@@ -24,9 +22,12 @@ const getBooksRoute = createRoute({
   },
 })
 
-app.openapi(getBooksRoute, async (c) => {
-  const result = await getBooks(c.env.DB)
-  return c.json(result, 200)
-})
+const app = new OpenAPIHono<{ Bindings: Bindings }>().openapi(
+  getBooksRoute,
+  async (c) => {
+    const result = await getBooks(c.env.DB)
+    return c.json(result, 200)
+  },
+)
 
 export default app

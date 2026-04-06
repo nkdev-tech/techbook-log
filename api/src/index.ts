@@ -22,6 +22,8 @@ app.doc('/doc', {
 
 app.get('/ui', swaggerUI({ url: '/doc' }))
 
-app.route('/api/books', books)
+const _route = app.route('/api/books', books)
+
+export type AppType = typeof _route
 
 export default app
