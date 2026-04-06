@@ -22,11 +22,3 @@
 | `npm run format` | フォーマット |
 | `npm test` | テスト実行 |
 | `npm run generate` | orvalでAPIクライアント生成 |
-
-### Supabase
-
-| コマンド | 説明 |
-|---|---|
-| `npx supabase start` | ローカルSupabase起動 |
-| `npx supabase stop` | ローカルSupabase停止 |
-| `npx supabase status` | 接続情報確認 |
