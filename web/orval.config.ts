@@ -7,6 +7,7 @@ export default defineConfig({
       mode: "single",
       target: "./src/external/api.ts",
       client: "react-query",
+      baseUrl: process.env.API_URL,
     },
     input: {
       target: `${process.env.API_URL}/doc`,

@@ -4,3 +4,145 @@
  * Techbook Log API
  * OpenAPI spec version: 1.0.0
  */
+import {
+  useQuery
+} from '@tanstack/react-query';
+import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
+  QueryClient,
+  QueryFunction,
+  QueryKey,
+  UndefinedInitialDataOptions,
+  UseQueryOptions,
+  UseQueryResult
+} from '@tanstack/react-query';
+
+export type GetApiBooks200Item = {
+  /**
+     * @minimum -9007199254740991
+     * @maximum 9007199254740991
+     */
+  id: number;
+  title: string;
+  author: string;
+  status: string;
+  /**
+     * @minimum -9007199254740991
+     * @maximum 9007199254740991
+     * @nullable
+     */
+  rating: number | null;
+  /** @nullable */
+  finishedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type getApiBooksResponse200 = {
+  data: GetApiBooks200Item[]
+  status: 200
+}
+
+export type getApiBooksResponseSuccess = (getApiBooksResponse200) & {
+  headers: Headers;
+};
+;
+
+export type getApiBooksResponse = (getApiBooksResponseSuccess)
+
+export const getGetApiBooksUrl = () => {
+
+
+
+
+  return `http://localhost:8787/api/books`
+}
+
+export const getApiBooks = async ( options?: RequestInit): Promise<getApiBooksResponse> => {
+
+  const res = await fetch(getGetApiBooksUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+)
+
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+
+  const data: getApiBooksResponse['data'] = body ? JSON.parse(body) : {}
+  return { data, status: res.status, headers: res.headers } as getApiBooksResponse
+}
+
+
+
+
+
+export const getGetApiBooksQueryKey = () => {
+    return [
+    `http://localhost:8787/api/books`
+    ] as const;
+    }
+
+
+export const getGetApiBooksQueryOptions = <TData = Awaited<ReturnType<typeof getApiBooks>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBooks>>, TError, TData>>, fetch?: RequestInit}
+) => {
+
+const {query: queryOptions, fetch: fetchOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiBooksQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiBooks>>> = ({ signal }) => getApiBooks({ signal, ...fetchOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiBooks>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetApiBooksQueryResult = NonNullable<Awaited<ReturnType<typeof getApiBooks>>>
+export type GetApiBooksQueryError = unknown
+
+
+export function useGetApiBooks<TData = Awaited<ReturnType<typeof getApiBooks>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBooks>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiBooks>>,
+          TError,
+          Awaited<ReturnType<typeof getApiBooks>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiBooks<TData = Awaited<ReturnType<typeof getApiBooks>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBooks>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiBooks>>,
+          TError,
+          Awaited<ReturnType<typeof getApiBooks>>
+        > , 'initialData'
+      >, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiBooks<TData = Awaited<ReturnType<typeof getApiBooks>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBooks>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetApiBooks<TData = Awaited<ReturnType<typeof getApiBooks>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBooks>>, TError, TData>>, fetch?: RequestInit}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetApiBooksQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
