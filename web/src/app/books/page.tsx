@@ -42,7 +42,7 @@ export default function BooksPage() {
               </CardHeader>
               <CardContent className="space-y-1">
                 <div>
-                  {STATUS_LABEL[book.status as keyof typeof STATUS_LABEL]}
+                  {STATUS_LABEL[book.status as keyof typeof STATUS_LABEL] ?? book.status}
                 </div>
                 <StarLabel rating={book.rating} />
               </CardContent>
