@@ -17,7 +17,7 @@ const getBooksRoute = createRoute({
           schema: getBooksSchema,
         },
       },
-      description: 'Retrieve the user',
+      description: 'Retrieve books',
     },
   },
 })
