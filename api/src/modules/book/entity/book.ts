@@ -1,3 +1,4 @@
 import { bookTable } from '../../../db/schema'
 
-export type Book = typeof bookTable.$inferSelect
+export type SelectBook = typeof bookTable.$inferSelect
+export type InsertBook = typeof bookTable.$inferInsert

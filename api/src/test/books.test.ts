@@ -16,4 +16,27 @@ describe('books', () => {
     const res = await client.api.books.$get()
     expect(res.status).toBe(200)
   })
+
+  it('can create book', async () => {
+    vi.mocked(BookRepository.create).mockResolvedValue({
+      id: 1,
+      title: 'タイトル',
+      author: '著者',
+      status: 'unread',
+      rating: null,
+      finishedAt: null,
+      createdAt: '2026-01-01T00:00:00.000Z',
+      updatedAt: '2026-01-01T00:00:00.000Z',
+    })
+    const res = await client.api.books.$post({
+      json: {
+        title: 'タイトル',
+        author: '著者',
+        status: 'unread',
+        rating: null,
+        finishedAt: null,
+      },
+    })
+    expect(res.status).toBe(201)
+  })
 })

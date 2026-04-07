@@ -1,6 +1,6 @@
 import { BookRepository } from '../repository/book-repository'
-import { type Book } from '../entity/book'
+import { type SelectBook } from '../entity/book'
 
-export const getBooks = async (d1: D1Database): Promise<Book[]> => {
+export const getBooks = async (d1: D1Database): Promise<SelectBook[]> => {
   return await BookRepository.findAll(d1)
 }

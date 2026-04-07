@@ -2,9 +2,11 @@ import { createSchemaFactory } from 'drizzle-zod'
 import { z } from '@hono/zod-openapi'
 import { bookTable } from '../../db/schema'
 
-const { createSelectSchema } = createSchemaFactory({ zodInstance: z })
+const { createInsertSchema, createSelectSchema } = createSchemaFactory({
+  zodInstance: z,
+})
 
-export const getBooksSchema = createSelectSchema(bookTable, {
+export const booksSchema = createSelectSchema(bookTable, {
   id: (schema) => schema.openapi({ example: 1 }),
   title: (schema) => schema.openapi({ example: 'タイトル' }),
   author: (schema) => schema.openapi({ example: '著者' }),
@@ -15,4 +17,20 @@ export const getBooksSchema = createSelectSchema(bookTable, {
     schema.openapi({ example: '2026-01-01T00:00:00.000Z' }),
   updatedAt: (schema) =>
     schema.openapi({ example: '2026-01-01T00:00:00.000Z' }),
-}).array()
+})
+
+export const getBooksSchema = booksSchema.array()
+
+export const createBooksReqSchema = createInsertSchema(bookTable, {
+  title: (schema) => schema.openapi({ example: 'タイトル' }),
+  author: (schema) => schema.openapi({ example: '著者' }),
+  status: (schema) => schema.openapi({ example: 'unread' }),
+  rating: (schema) => schema.openapi({ example: 3 }),
+  finishedAt: (schema) => schema.openapi({ example: '2026-01-01' }),
+}).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+})
+
+export const createBooksResSchema = booksSchema
