@@ -1,7 +1,15 @@
 import { OpenAPIHono } from '@hono/zod-openapi'
 import { swaggerUI } from '@hono/swagger-ui'
+import books from './routes/books'
+import { cors } from 'hono/cors'
 
-const app = new OpenAPIHono()
+type Bindings = {
+  DB: D1Database
+}
+
+const app = new OpenAPIHono<{ Bindings: Bindings }>()
+
+app.use('/*', cors())
 
 app.get('/', (c) => {
   return c.text('Hello Hono!')
@@ -16,5 +24,9 @@ app.doc('/doc', {
 })
 
 app.get('/ui', swaggerUI({ url: '/doc' }))
+
+const _route = app.route('/api/books', books)
+
+export type AppType = typeof _route
 
 export default app

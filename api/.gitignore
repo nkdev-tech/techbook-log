@@ -31,7 +31,3 @@ lerna-debug.log*
 
 # misc
 .DS_Store
-
-# supabase
-supabase/.branches
-supabase/.temp
