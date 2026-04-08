@@ -23,6 +23,7 @@ import type {
   UseQueryResult
 } from '@tanstack/react-query';
 
+import { customFetch } from './custom-fetch';
 export type GetApiBooks200ItemStatus = typeof GetApiBooks200ItemStatus[keyof typeof GetApiBooks200ItemStatus];
 
 
@@ -121,15 +122,9 @@ export type PostApiBooks400 = {
   error: PostApiBooks400Error;
 };
 
-export type PostApiBooks409Error = {
-  name: string;
-  message: string;
-};
+type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
-export type PostApiBooks409 = {
-  success: boolean;
-  error: PostApiBooks409Error;
-};
+
 
 export type getApiBooksResponse200 = {
   data: GetApiBooks200Item[]
@@ -153,20 +148,14 @@ export const getGetApiBooksUrl = () => {
 
 export const getApiBooks = async ( options?: RequestInit): Promise<getApiBooksResponse> => {
 
-  const res = await fetch(getGetApiBooksUrl(),
+  return customFetch<getApiBooksResponse>(getGetApiBooksUrl(),
   {
     ...options,
     method: 'GET'
 
 
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-
-  const data: getApiBooksResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as getApiBooksResponse
-}
+);}
 
 
 
@@ -179,16 +168,16 @@ export const getGetApiBooksQueryKey = () => {
     }
 
 
-export const getGetApiBooksQueryOptions = <TData = Awaited<ReturnType<typeof getApiBooks>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBooks>>, TError, TData>>, fetch?: RequestInit}
+export const getGetApiBooksQueryOptions = <TData = Awaited<ReturnType<typeof getApiBooks>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBooks>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
 ) => {
 
-const {query: queryOptions, fetch: fetchOptions} = options ?? {};
+const {query: queryOptions, request: requestOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetApiBooksQueryKey();
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiBooks>>> = ({ signal }) => getApiBooks({ signal, ...fetchOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiBooks>>> = ({ signal }) => getApiBooks({ signal, ...requestOptions });
 
 
 
@@ -208,7 +197,7 @@ export function useGetApiBooks<TData = Awaited<ReturnType<typeof getApiBooks>>, 
           TError,
           Awaited<ReturnType<typeof getApiBooks>>
         > , 'initialData'
-      >, fetch?: RequestInit}
+      >, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetApiBooks<TData = Awaited<ReturnType<typeof getApiBooks>>, TError = unknown>(
@@ -218,16 +207,16 @@ export function useGetApiBooks<TData = Awaited<ReturnType<typeof getApiBooks>>, 
           TError,
           Awaited<ReturnType<typeof getApiBooks>>
         > , 'initialData'
-      >, fetch?: RequestInit}
+      >, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetApiBooks<TData = Awaited<ReturnType<typeof getApiBooks>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBooks>>, TError, TData>>, fetch?: RequestInit}
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBooks>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetApiBooks<TData = Awaited<ReturnType<typeof getApiBooks>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBooks>>, TError, TData>>, fetch?: RequestInit}
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBooks>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -252,15 +241,10 @@ export type postApiBooksResponse400 = {
   status: 400
 }
 
-export type postApiBooksResponse409 = {
-  data: PostApiBooks409
-  status: 409
-}
-
 export type postApiBooksResponseSuccess = (postApiBooksResponse201) & {
   headers: Headers;
 };
-export type postApiBooksResponseError = (postApiBooksResponse400 | postApiBooksResponse409) & {
+export type postApiBooksResponseError = (postApiBooksResponse400) & {
   headers: Headers;
 };
 
@@ -276,7 +260,7 @@ export const getPostApiBooksUrl = () => {
 
 export const postApiBooks = async (postApiBooksBody: PostApiBooksBody, options?: RequestInit): Promise<postApiBooksResponse> => {
 
-  const res = await fetch(getPostApiBooksUrl(),
+  return customFetch<postApiBooksResponse>(getPostApiBooksUrl(),
   {
     ...options,
     method: 'POST',
@@ -284,27 +268,21 @@ export const postApiBooks = async (postApiBooksBody: PostApiBooksBody, options?:
     body: JSON.stringify(
       postApiBooksBody,)
   }
-)
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-
-  const data: postApiBooksResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as postApiBooksResponse
-}
+);}
 
 
 
 
-export const getPostApiBooksMutationOptions = <TError = PostApiBooks400 | PostApiBooks409,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiBooks>>, TError,{data: PostApiBooksBody}, TContext>, fetch?: RequestInit}
+export const getPostApiBooksMutationOptions = <TError = PostApiBooks400,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiBooks>>, TError,{data: PostApiBooksBody}, TContext>, request?: SecondParameter<typeof customFetch>}
 ): UseMutationOptions<Awaited<ReturnType<typeof postApiBooks>>, TError,{data: PostApiBooksBody}, TContext> => {
 
 const mutationKey = ['postApiBooks'];
-const {mutation: mutationOptions, fetch: fetchOptions} = options ?
+const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, fetch: undefined};
+      : {mutation: { mutationKey, }, request: undefined};
 
 
 
@@ -312,7 +290,7 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiBooks>>, {data: PostApiBooksBody}> = (props) => {
           const {data} = props ?? {};
 
-          return  postApiBooks(data,fetchOptions)
+          return  postApiBooks(data,requestOptions)
         }
 
 
@@ -324,10 +302,10 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
 
     export type PostApiBooksMutationResult = NonNullable<Awaited<ReturnType<typeof postApiBooks>>>
     export type PostApiBooksMutationBody = PostApiBooksBody
-    export type PostApiBooksMutationError = PostApiBooks400 | PostApiBooks409
+    export type PostApiBooksMutationError = PostApiBooks400
 
-    export const usePostApiBooks = <TError = PostApiBooks400 | PostApiBooks409,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiBooks>>, TError,{data: PostApiBooksBody}, TContext>, fetch?: RequestInit}
+    export const usePostApiBooks = <TError = PostApiBooks400,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiBooks>>, TError,{data: PostApiBooksBody}, TContext>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiBooks>>,
         TError,

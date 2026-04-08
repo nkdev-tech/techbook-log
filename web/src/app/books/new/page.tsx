@@ -76,16 +76,11 @@ export default function BookNewPage() {
         },
         {
           onSuccess(data) {
-            if (data.status !== 201) {
-              const errorData = data.data as { error: { message: string } };
-              const errors = JSON.parse(errorData.error.message);
-              setError(errors[0].message);
-              return;
-            }
             router.replace("/books");
           },
           onError(error) {
-            throw error;
+            setError(error.error.message);
+            return;
           },
         }
       );
