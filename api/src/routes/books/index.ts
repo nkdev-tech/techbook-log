@@ -3,8 +3,8 @@ import { getBooks } from '../../modules/book/usecase/get-books'
 import { createBook } from '../../modules/book/usecase/create-book'
 import { createRoute } from '@hono/zod-openapi'
 import {
-  createBooksReqSchema,
-  createBooksResSchema,
+  createBookReqSchema,
+  createBookResSchema,
   errorResBodySchema,
   getBooksSchema,
 } from './schema'
@@ -28,14 +28,14 @@ const getBooksRoute = createRoute({
   },
 })
 
-const createBooksRoute = createRoute({
+const createBookRoute = createRoute({
   method: 'post',
   path: '/',
   request: {
     body: {
       content: {
         'application/json': {
-          schema: createBooksReqSchema,
+          schema: createBookReqSchema,
         },
       },
     },
@@ -44,7 +44,7 @@ const createBooksRoute = createRoute({
     201: {
       content: {
         'application/json': {
-          schema: createBooksResSchema,
+          schema: createBookResSchema,
         },
       },
       description: 'Create a book',
@@ -73,7 +73,7 @@ const app = new OpenAPIHono<{ Bindings: Bindings }>()
     const result = await getBooks(c.env.DB)
     return c.json(result, 200)
   })
-  .openapi(createBooksRoute, async (c) => {
+  .openapi(createBookRoute, async (c) => {
     const data = c.req.valid('json')
     const result = await createBook(data, c.env.DB)
     return c.json(result, 201)

@@ -21,7 +21,7 @@ export const booksSchema = createSelectSchema(bookTable, {
 
 export const getBooksSchema = booksSchema.array()
 
-export const createBooksReqSchema = createInsertSchema(bookTable, {
+export const createBookReqSchema = createInsertSchema(bookTable, {
   title: (schema) =>
     schema
       .min(1, 'タイトルを入力してください')
@@ -40,7 +40,7 @@ export const createBooksReqSchema = createInsertSchema(bookTable, {
   updatedAt: true,
 })
 
-export const createBooksResSchema = booksSchema
+export const createBookResSchema = booksSchema
 
 export const errorResBodySchema = z.object({
   success: z.boolean(),
