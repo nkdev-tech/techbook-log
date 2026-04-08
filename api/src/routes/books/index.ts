@@ -5,6 +5,7 @@ import { createRoute } from '@hono/zod-openapi'
 import {
   createBooksReqSchema,
   createBooksResSchema,
+  errorResBodySchema,
   getBooksSchema,
 } from './schema'
 
@@ -47,6 +48,22 @@ const createBooksRoute = createRoute({
         },
       },
       description: 'Create a book',
+    },
+    400: {
+      content: {
+        'application/json': {
+          schema: errorResBodySchema,
+        },
+      },
+      description: 'Bad Request',
+    },
+    409: {
+      content: {
+        'application/json': {
+          schema: errorResBodySchema,
+        },
+      },
+      description: 'Conflict',
     },
   },
 })

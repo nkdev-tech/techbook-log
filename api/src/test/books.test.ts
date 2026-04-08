@@ -21,7 +21,7 @@ describe('books', () => {
     vi.mocked(BookRepository.create).mockResolvedValue({
       id: 1,
       title: 'タイトル',
-      author: '著者',
+      author: '著者名',
       status: 'unread',
       rating: null,
       finishedAt: null,
@@ -31,7 +31,7 @@ describe('books', () => {
     const res = await client.api.books.$post({
       json: {
         title: 'タイトル',
-        author: '著者',
+        author: '著者名',
         status: 'unread',
         rating: null,
         finishedAt: null,

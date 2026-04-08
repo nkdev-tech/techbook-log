@@ -4,7 +4,9 @@ export const bookTable = sqliteTable('books', {
   id: integer('id').primaryKey(),
   title: text('title').notNull(),
   author: text('author').notNull(),
-  status: text('status').notNull().default('unread'),
+  status: text('status', { enum: ['unread', 'reading', 'done'] })
+    .notNull()
+    .default('unread'),
   rating: integer('rating'),
   finishedAt: text('finished_at'),
   createdAt: text('created_at')

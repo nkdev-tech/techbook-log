@@ -23,6 +23,15 @@ import type {
   UseQueryResult
 } from '@tanstack/react-query';
 
+export type GetApiBooks200ItemStatus = typeof GetApiBooks200ItemStatus[keyof typeof GetApiBooks200ItemStatus];
+
+
+export const GetApiBooks200ItemStatus = {
+  unread: 'unread',
+  reading: 'reading',
+  done: 'done',
+} as const;
+
 export type GetApiBooks200Item = {
   /**
      * @minimum -9007199254740991
@@ -31,7 +40,7 @@ export type GetApiBooks200Item = {
   id: number;
   title: string;
   author: string;
-  status: string;
+  status: GetApiBooks200ItemStatus;
   /**
      * @minimum -9007199254740991
      * @maximum 9007199254740991
@@ -44,19 +53,42 @@ export type GetApiBooks200Item = {
   updatedAt: string;
 };
 
+export type PostApiBooksBodyStatus = typeof PostApiBooksBodyStatus[keyof typeof PostApiBooksBodyStatus];
+
+
+export const PostApiBooksBodyStatus = {
+  unread: 'unread',
+  reading: 'reading',
+  done: 'done',
+} as const;
+
 export type PostApiBooksBody = {
-  title: string;
-  author: string;
-  status?: string;
   /**
-     * @minimum -9007199254740991
-     * @maximum 9007199254740991
+     * @minLength 1
+     * @maxLength 100
+     */
+  title: string;
+  /** @maxLength 100 */
+  author: string;
+  status?: PostApiBooksBodyStatus;
+  /**
+     * @minimum 1
+     * @maximum 5
      * @nullable
      */
   rating?: number | null;
   /** @nullable */
   finishedAt?: string | null;
 };
+
+export type PostApiBooks201Status = typeof PostApiBooks201Status[keyof typeof PostApiBooks201Status];
+
+
+export const PostApiBooks201Status = {
+  unread: 'unread',
+  reading: 'reading',
+  done: 'done',
+} as const;
 
 export type PostApiBooks201 = {
   /**
@@ -66,7 +98,7 @@ export type PostApiBooks201 = {
   id: number;
   title: string;
   author: string;
-  status: string;
+  status: PostApiBooks201Status;
   /**
      * @minimum -9007199254740991
      * @maximum 9007199254740991
@@ -77,6 +109,26 @@ export type PostApiBooks201 = {
   finishedAt: string | null;
   createdAt: string;
   updatedAt: string;
+};
+
+export type PostApiBooks400Error = {
+  name: string;
+  message: string;
+};
+
+export type PostApiBooks400 = {
+  success: boolean;
+  error: PostApiBooks400Error;
+};
+
+export type PostApiBooks409Error = {
+  name: string;
+  message: string;
+};
+
+export type PostApiBooks409 = {
+  success: boolean;
+  error: PostApiBooks409Error;
 };
 
 export type getApiBooksResponse200 = {
@@ -195,12 +247,24 @@ export type postApiBooksResponse201 = {
   status: 201
 }
 
+export type postApiBooksResponse400 = {
+  data: PostApiBooks400
+  status: 400
+}
+
+export type postApiBooksResponse409 = {
+  data: PostApiBooks409
+  status: 409
+}
+
 export type postApiBooksResponseSuccess = (postApiBooksResponse201) & {
   headers: Headers;
 };
-;
+export type postApiBooksResponseError = (postApiBooksResponse400 | postApiBooksResponse409) & {
+  headers: Headers;
+};
 
-export type postApiBooksResponse = (postApiBooksResponseSuccess)
+export type postApiBooksResponse = (postApiBooksResponseSuccess | postApiBooksResponseError)
 
 export const getPostApiBooksUrl = () => {
 
@@ -231,7 +295,7 @@ export const postApiBooks = async (postApiBooksBody: PostApiBooksBody, options?:
 
 
 
-export const getPostApiBooksMutationOptions = <TError = unknown,
+export const getPostApiBooksMutationOptions = <TError = PostApiBooks400 | PostApiBooks409,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiBooks>>, TError,{data: PostApiBooksBody}, TContext>, fetch?: RequestInit}
 ): UseMutationOptions<Awaited<ReturnType<typeof postApiBooks>>, TError,{data: PostApiBooksBody}, TContext> => {
 
@@ -260,9 +324,9 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
 
     export type PostApiBooksMutationResult = NonNullable<Awaited<ReturnType<typeof postApiBooks>>>
     export type PostApiBooksMutationBody = PostApiBooksBody
-    export type PostApiBooksMutationError = unknown
+    export type PostApiBooksMutationError = PostApiBooks400 | PostApiBooks409
 
-    export const usePostApiBooks = <TError = unknown,
+    export const usePostApiBooks = <TError = PostApiBooks400 | PostApiBooks409,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiBooks>>, TError,{data: PostApiBooksBody}, TContext>, fetch?: RequestInit}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiBooks>>,
