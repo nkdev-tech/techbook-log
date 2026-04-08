@@ -14,7 +14,6 @@ export function StarRating({
   disabled = false,
   onChange,
 }: Props) {
-  const [point, setPoint] = useState(rating);
   return (
     <div className="flex">
       {Array.from({ length: 5 }, (_, i) => (
@@ -22,10 +21,9 @@ export function StarRating({
           key={i}
           size={size}
           color="gray"
-          fill={i < (point ?? 0) ? "gray" : "none"}
+          fill={i < (rating ?? 0) ? "gray" : "none"}
           onClick={() => {
             if (disabled) return;
-            setPoint(i + 1);
             onChange?.(i + 1);
           }}
           style={{ cursor: disabled ? "default" : "pointer" }}
