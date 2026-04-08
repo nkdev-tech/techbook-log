@@ -5,21 +5,60 @@
  * OpenAPI spec version: 1.0.0
  */
 import {
+  useMutation,
   useQuery
 } from '@tanstack/react-query';
 import type {
   DataTag,
   DefinedInitialDataOptions,
   DefinedUseQueryResult,
+  MutationFunction,
   QueryClient,
   QueryFunction,
   QueryKey,
   UndefinedInitialDataOptions,
+  UseMutationOptions,
+  UseMutationResult,
   UseQueryOptions,
   UseQueryResult
 } from '@tanstack/react-query';
 
 export type GetApiBooks200Item = {
+  /**
+     * @minimum -9007199254740991
+     * @maximum 9007199254740991
+     */
+  id: number;
+  title: string;
+  author: string;
+  status: string;
+  /**
+     * @minimum -9007199254740991
+     * @maximum 9007199254740991
+     * @nullable
+     */
+  rating: number | null;
+  /** @nullable */
+  finishedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type PostApiBooksBody = {
+  title: string;
+  author: string;
+  status?: string;
+  /**
+     * @minimum -9007199254740991
+     * @maximum 9007199254740991
+     * @nullable
+     */
+  rating?: number | null;
+  /** @nullable */
+  finishedAt?: string | null;
+};
+
+export type PostApiBooks201 = {
   /**
      * @minimum -9007199254740991
      * @maximum 9007199254740991
@@ -146,3 +185,90 @@ export function useGetApiBooks<TData = Awaited<ReturnType<typeof getApiBooks>>, 
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
+
+
+
+
+
+export type postApiBooksResponse201 = {
+  data: PostApiBooks201
+  status: 201
+}
+
+export type postApiBooksResponseSuccess = (postApiBooksResponse201) & {
+  headers: Headers;
+};
+;
+
+export type postApiBooksResponse = (postApiBooksResponseSuccess)
+
+export const getPostApiBooksUrl = () => {
+
+
+
+
+  return `http://localhost:8787/api/books`
+}
+
+export const postApiBooks = async (postApiBooksBody: PostApiBooksBody, options?: RequestInit): Promise<postApiBooksResponse> => {
+
+  const res = await fetch(getPostApiBooksUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      postApiBooksBody,)
+  }
+)
+
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+
+  const data: postApiBooksResponse['data'] = body ? JSON.parse(body) : {}
+  return { data, status: res.status, headers: res.headers } as postApiBooksResponse
+}
+
+
+
+
+export const getPostApiBooksMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiBooks>>, TError,{data: PostApiBooksBody}, TContext>, fetch?: RequestInit}
+): UseMutationOptions<Awaited<ReturnType<typeof postApiBooks>>, TError,{data: PostApiBooksBody}, TContext> => {
+
+const mutationKey = ['postApiBooks'];
+const {mutation: mutationOptions, fetch: fetchOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, fetch: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiBooks>>, {data: PostApiBooksBody}> = (props) => {
+          const {data} = props ?? {};
+
+          return  postApiBooks(data,fetchOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiBooksMutationResult = NonNullable<Awaited<ReturnType<typeof postApiBooks>>>
+    export type PostApiBooksMutationBody = PostApiBooksBody
+    export type PostApiBooksMutationError = unknown
+
+    export const usePostApiBooks = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiBooks>>, TError,{data: PostApiBooksBody}, TContext>, fetch?: RequestInit}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof postApiBooks>>,
+        TError,
+        {data: PostApiBooksBody},
+        TContext
+      > => {
+      return useMutation(getPostApiBooksMutationOptions(options), queryClient);
+    }

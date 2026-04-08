@@ -9,9 +9,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { STATUS_LABEL } from "@/shared/utils/book";
-import { StarLabel } from "@/components/books/StarLabel";
+import { StarRating } from "@/components/books/StarRating";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 export default function BooksPage() {
+  const router = useRouter();
   const { data, isLoading, error } = useGetApiBooks();
 
   if (isLoading) {
@@ -28,7 +31,12 @@ export default function BooksPage() {
 
   return (
     <div className="container mx-auto px-5 py-10">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="flex justify-end my-3">
+        <Button type="button" onClick={() => router.push("/books/new")}>
+          新規登録
+        </Button>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {data?.data.map((book) => {
           return (
             <Card key={book.id}>
@@ -42,9 +50,10 @@ export default function BooksPage() {
               </CardHeader>
               <CardContent className="space-y-1">
                 <div>
-                  {STATUS_LABEL[book.status as keyof typeof STATUS_LABEL] ?? book.status}
+                  {STATUS_LABEL[book.status as keyof typeof STATUS_LABEL] ??
+                    book.status}
                 </div>
-                <StarLabel rating={book.rating} />
+                <StarRating rating={book.rating} size={16} disabled={true} />
               </CardContent>
             </Card>
           );
