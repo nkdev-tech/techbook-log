@@ -90,7 +90,7 @@ export default function BookNewPage() {
   return (
     <div className="mx-auto px-5 py-10">
       <div className="m-2 text-2xl font-bold">新規登録</div>
-      <Card className="w-full">
+      <Card className="w-full gap-0">
         <CardContent className="space-y-1">
           <form
             id="form-create"
@@ -219,7 +219,7 @@ export default function BookNewPage() {
             </FieldGroup>
           </form>
         </CardContent>
-        <CardFooter>
+        <CardFooter className="bg-card border-none">
           <Field orientation="horizontal" className="justify-end">
             <Button
               type="button"

@@ -1,5 +1,4 @@
 import { Star } from "lucide-react";
-import { useState } from "react";
 
 type Props = {
   rating: number | null;
@@ -20,8 +19,8 @@ export function StarRating({
         <Star
           key={i}
           size={size}
-          color="gray"
-          fill={i < (rating ?? 0) ? "gray" : "none"}
+          color="#b0d7d5"
+          fill={i < (rating ?? 0) ? "#b0d7d5" : "none"}
           onClick={() => {
             if (disabled) return;
             onChange?.(i + 1);
