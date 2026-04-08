@@ -57,14 +57,6 @@ const createBookRoute = createRoute({
       },
       description: 'Bad Request',
     },
-    409: {
-      content: {
-        'application/json': {
-          schema: errorResBodySchema,
-        },
-      },
-      description: 'Conflict',
-    },
   },
 })
 

@@ -22,7 +22,7 @@ describe('books', () => {
       id: 1,
       title: 'タイトル',
       author: '著者名',
-      status: 'unread',
+      status: 'unread' as const,
       rating: null,
       finishedAt: null,
       createdAt: '2026-01-01T00:00:00.000Z',
@@ -32,11 +32,38 @@ describe('books', () => {
       json: {
         title: 'タイトル',
         author: '著者名',
-        status: 'unread',
+        status: 'unread' as const,
         rating: null,
         finishedAt: null,
       },
     })
     expect(res.status).toBe(201)
+  })
+
+  it('cannot create book with invalid value', async () => {
+    const res = await client.api.books.$post({
+      json: {
+        title: '',
+        author: '著者名',
+        status: 'unread' as const,
+        rating: null,
+        finishedAt: null,
+      },
+    })
+    expect(res.status).toBe(400)
+  })
+
+  it('cannot create book with DB error', async () => {
+    vi.mocked(BookRepository.create).mockRejectedValue(new Error('DB error'))
+    const res = await client.api.books.$post({
+      json: {
+        title: 'タイトル',
+        author: '著者名',
+        status: 'unread' as const,
+        rating: null,
+        finishedAt: null,
+      },
+    })
+    expect(res.status).toBe(500)
   })
 })

@@ -9,8 +9,8 @@ describe('createBook', () => {
     const data = {
       title: 'タイトル1',
       author: '著者1',
-      status: 'unread' as const,
-      rating: 3,
+      status: 'done' as const,
+      rating: 5,
       finishedAt: '2026-01-01',
     }
 
@@ -18,8 +18,8 @@ describe('createBook', () => {
       id: 1,
       title: 'タイトル1',
       author: '著者1',
-      status: 'unread' as const,
-      rating: 3,
+      status: 'done' as const,
+      rating: 5,
       finishedAt: '2026-01-01',
       createdAt: '2026-01-01T00:00:00.000Z',
       updatedAt: '2026-01-01T00:00:00.000Z',
@@ -31,6 +31,55 @@ describe('createBook', () => {
     const result = await createBook(data, mockD1)
 
     expect(result).toEqual(mockBook)
+    expect(BookRepository.create).toHaveBeenCalledWith(
+      expect.objectContaining({ finishedAt: '2026-01-01' }),
+      mockD1,
+    )
+  })
+
+  it('finishedAt is null when status is not done', async () => {
+    const data = {
+      title: 'タイトル1',
+      author: '著者1',
+      status: 'unread' as const,
+      rating: 3,
+      finishedAt: '2026-01-01',
+    }
+
+    const mockBook = {
+      id: 1,
+      title: 'タイトル1',
+      author: '著者1',
+      status: 'unread' as const,
+      rating: 3,
+      finishedAt: null,
+      createdAt: '2026-01-01T00:00:00.000Z',
+      updatedAt: '2026-01-01T00:00:00.000Z',
+    }
+
+    vi.mocked(BookRepository.create).mockResolvedValue(mockBook)
+
+    const mockD1 = {} as D1Database
+    await createBook(data, mockD1)
+
+    expect(BookRepository.create).toHaveBeenCalledWith(
+      expect.objectContaining({ finishedAt: null }),
+      mockD1,
+    )
+  })
+
+  it('cannot create book with DB error', async () => {
+    const data = {
+      title: 'タイトル1',
+      author: '著者1',
+      status: 'unread' as const,
+      rating: 3,
+      finishedAt: '2026-01-01',
+    }
+    const mockD1 = {} as D1Database
+    vi.mocked(BookRepository.create).mockRejectedValue(new Error('DB error'))
+
+    await expect(createBook(data, mockD1)).rejects.toThrow('DB error')
     expect(BookRepository.create).toHaveBeenCalledTimes(1)
   })
 })

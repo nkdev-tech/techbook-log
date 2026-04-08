@@ -5,5 +5,9 @@ export const createBook = async (
   data: InsertBook,
   d1: D1Database,
 ): Promise<SelectBook> => {
-  return await BookRepository.create(data, d1)
+  const book: InsertBook = {
+    ...data,
+    finishedAt: data.status === 'done' ? data.finishedAt : null,
+  }
+  return await BookRepository.create(book, d1)
 }
