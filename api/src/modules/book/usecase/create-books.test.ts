@@ -1,10 +1,11 @@
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createBook } from './create-book'
 import { BookRepository } from '../repository/book-repository'
 
 vi.mock('../repository/book-repository')
 
 describe('createBook', () => {
+  beforeEach(() => vi.clearAllMocks())
   it('can create book', async () => {
     const data = {
       title: 'タイトル1',

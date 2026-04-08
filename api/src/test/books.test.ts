@@ -1,5 +1,5 @@
 import { testClient } from 'hono/testing'
-import { describe, it, expect, vi } from 'vitest'
+import { beforeEach, describe, it, expect, vi } from 'vitest'
 import app from '../../src'
 import type { AppType } from '../../src'
 import { BookRepository } from '../../src/modules/book/repository/book-repository'
@@ -7,6 +7,8 @@ import { BookRepository } from '../../src/modules/book/repository/book-repositor
 vi.mock('../../src/modules/book/repository/book-repository')
 
 describe('books', () => {
+  beforeEach(() => vi.clearAllMocks())
+
   const client = testClient<AppType>(app, {
     DB: {} as D1Database,
   })
