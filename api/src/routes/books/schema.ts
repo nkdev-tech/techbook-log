@@ -2,12 +2,14 @@ import { createSchemaFactory } from 'drizzle-zod'
 import { z } from '@hono/zod-openapi'
 import { bookTable } from '../../db/schema'
 
-const { createSelectSchema } = createSchemaFactory({ zodInstance: z })
+const { createInsertSchema, createSelectSchema } = createSchemaFactory({
+  zodInstance: z,
+})
 
-export const getBooksSchema = createSelectSchema(bookTable, {
+export const booksSchema = createSelectSchema(bookTable, {
   id: (schema) => schema.openapi({ example: 1 }),
   title: (schema) => schema.openapi({ example: 'タイトル' }),
-  author: (schema) => schema.openapi({ example: '著者' }),
+  author: (schema) => schema.openapi({ example: '著者名' }),
   status: (schema) => schema.openapi({ example: 'unread' }),
   rating: (schema) => schema.openapi({ example: 3 }),
   finishedAt: (schema) => schema.openapi({ example: '2026-01-01' }),
@@ -15,4 +17,35 @@ export const getBooksSchema = createSelectSchema(bookTable, {
     schema.openapi({ example: '2026-01-01T00:00:00.000Z' }),
   updatedAt: (schema) =>
     schema.openapi({ example: '2026-01-01T00:00:00.000Z' }),
-}).array()
+})
+
+export const getBooksSchema = booksSchema.array()
+
+export const createBookReqSchema = createInsertSchema(bookTable, {
+  title: (schema) =>
+    schema
+      .min(1, 'タイトルを入力してください')
+      .max(100, 'タイトルは100文字以内で入力してください')
+      .openapi({ example: 'タイトル' }),
+  author: (schema) =>
+    schema
+      .max(100, '著者名は100文字以内で入力してください')
+      .openapi({ example: '著者名' }),
+  status: (schema) => schema.openapi({ example: 'unread' }),
+  rating: (schema) => schema.min(1).max(5).openapi({ example: 3 }),
+  finishedAt: (schema) => schema.openapi({ example: '2026-01-01' }),
+}).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+})
+
+export const createBookResSchema = booksSchema
+
+export const errorResBodySchema = z.object({
+  success: z.boolean(),
+  error: z.object({
+    name: z.string(),
+    message: z.string().openapi({ example: 'Bad Request' }),
+  }),
+})
