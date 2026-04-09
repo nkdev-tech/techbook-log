@@ -88,8 +88,7 @@ export default function BookNewPage() {
   });
 
   return (
-    <div className="mx-auto px-5 py-10">
-      <div className="m-2 text-2xl font-bold">新規登録</div>
+    <div className="container mx-auto px-5 py-10">
       <Card className="w-full">
         <CardContent className="space-y-1">
           <form

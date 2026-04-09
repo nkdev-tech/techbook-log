@@ -50,13 +50,13 @@ export default function BookDetailPage() {
           <CardDescription className="">{book.author}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-2 text-base">
-          <div className="flex gap-2">
+          <div className="flex gap-1">
             <span>{STATUS_LABEL[book.status] ?? book.status}</span>
             {book.finishedAt && (
-              <span>{`(${format(new Date(book.finishedAt), "yyyy/MM/dd")})`}</span>
+              <span className="text-xs self-end pb-1 text-muted-foreground">{`(${format(new Date(book.finishedAt), "yyyy/MM/dd")})`}</span>
             )}
           </div>
-          <StarRating rating={book.rating} size={18} disabled={true} />
+          <StarRating rating={book.rating} disabled={true} />
         </CardContent>
         <CardFooter>
           <div className="flex">
