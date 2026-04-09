@@ -39,7 +39,10 @@ export default function BooksPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {data?.data.map((book) => {
           return (
-            <Card key={book.id}>
+            <Card
+              key={book.id}
+              onClick={() => router.push(`/books/${book.id}`)}
+            >
               <CardHeader>
                 <CardTitle className="text-lg font-bold">
                   {book.title}
@@ -49,10 +52,7 @@ export default function BooksPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-1">
-                <div>
-                  {STATUS_LABEL[book.status as keyof typeof STATUS_LABEL] ??
-                    book.status}
-                </div>
+                <div>{STATUS_LABEL[book.status] ?? book.status}</div>
                 <StarRating rating={book.rating} size={16} disabled={true} />
               </CardContent>
             </Card>

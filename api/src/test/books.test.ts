@@ -68,4 +68,25 @@ describe('books', () => {
     })
     expect(res.status).toBe(500)
   })
+
+  it('can get book', async () => {
+    vi.mocked(BookRepository.findById).mockResolvedValue({
+      id: 1,
+      title: 'タイトル',
+      author: '著者名',
+      status: 'unread' as const,
+      rating: null,
+      finishedAt: null,
+      createdAt: '2026-01-01T00:00:00.000Z',
+      updatedAt: '2026-01-01T00:00:00.000Z',
+    })
+    const res = await client.api.books[':id'].$get({ param: { id: '1' } })
+    expect(res.status).toBe(200)
+  })
+
+  it('cannot get book that does not exist', async () => {
+    vi.mocked(BookRepository.findById).mockResolvedValue(null)
+    const res = await client.api.books[':id'].$get({ param: { id: '1' } })
+    expect(res.status).toBe(404)
+  })
 })

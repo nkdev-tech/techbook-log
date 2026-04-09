@@ -42,6 +42,21 @@ export const createBookReqSchema = createInsertSchema(bookTable, {
 
 export const createBookResSchema = booksSchema
 
+export const getBookSchema = booksSchema
+
+export const ParamsSchema = z.object({
+  id: z
+    .string()
+    .min(1)
+    .openapi({
+      param: {
+        name: 'id',
+        in: 'path',
+      },
+      example: '1',
+    }),
+})
+
 export const errorResBodySchema = z.object({
   success: z.boolean(),
   error: z.object({
