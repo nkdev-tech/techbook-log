@@ -1,7 +1,7 @@
 "use client";
 
-import { useParams, useRouter } from "next/navigation";
-import { GetApiBooksId200, useGetApiBooksId } from "@/external/api";
+import { useParams, useRouter, notFound } from "next/navigation";
+import { useGetApiBooksId } from "@/external/api";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -30,10 +30,17 @@ export default function BookDetailPage() {
   }
 
   if (error) {
+    if ((error as unknown as { status?: number }).status === 404) {
+      notFound();
+    }
     throw error;
   }
 
-  const book = data?.data as GetApiBooksId200;
+  if (!data || data.status !== 200) {
+    notFound();
+  }
+
+  const book = data.data;
 
   return (
     <div className="container mx-auto px-5 py-10">
