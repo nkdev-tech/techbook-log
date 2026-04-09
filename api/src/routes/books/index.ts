@@ -1,4 +1,5 @@
 import { OpenAPIHono } from '@hono/zod-openapi'
+import { getBook } from '../../modules/book/usecase/get-book'
 import { getBooks } from '../../modules/book/usecase/get-books'
 import { createBook } from '../../modules/book/usecase/create-book'
 import { createRoute } from '@hono/zod-openapi'
@@ -6,7 +7,9 @@ import {
   createBookReqSchema,
   createBookResSchema,
   errorResBodySchema,
+  getBookSchema,
   getBooksSchema,
+  ParamsSchema,
 } from './schema'
 
 type Bindings = {
@@ -60,6 +63,32 @@ const createBookRoute = createRoute({
   },
 })
 
+const getBookRoute = createRoute({
+  method: 'get',
+  path: '/{id}',
+  request: {
+    params: ParamsSchema,
+  },
+  responses: {
+    200: {
+      content: {
+        'application/json': {
+          schema: getBookSchema,
+        },
+      },
+      description: 'Retrieve the book',
+    },
+    404: {
+      content: {
+        'application/json': {
+          schema: errorResBodySchema,
+        },
+      },
+      description: 'Not Found',
+    },
+  },
+})
+
 const app = new OpenAPIHono<{ Bindings: Bindings }>()
   .openapi(getBooksRoute, async (c) => {
     const result = await getBooks(c.env.DB)
@@ -69,6 +98,17 @@ const app = new OpenAPIHono<{ Bindings: Bindings }>()
     const data = c.req.valid('json')
     const result = await createBook(data, c.env.DB)
     return c.json(result, 201)
+  })
+  .openapi(getBookRoute, async (c) => {
+    const { id } = c.req.valid('param')
+    const result = await getBook(Number(id), c.env.DB)
+    if (result === null) {
+      return c.json(
+        { success: false, error: { name: 'NotFound', message: 'Not Found' } },
+        404,
+      )
+    }
+    return c.json(result, 200)
   })
 
 export default app
