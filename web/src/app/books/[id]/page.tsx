@@ -44,10 +44,7 @@ export default function BookDetailPage() {
         </CardHeader>
         <CardContent className="space-y-2 text-base">
           <div className="flex gap-2">
-            <span>
-              {STATUS_LABEL[book.status as keyof typeof STATUS_LABEL] ??
-                book.status}
-            </span>
+            <span>{STATUS_LABEL[book.status] ?? book.status}</span>
             {book.finishedAt && (
               <span>{`(${format(new Date(book.finishedAt), "yyyy/MM/dd")})`}</span>
             )}

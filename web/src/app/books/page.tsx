@@ -52,10 +52,7 @@ export default function BooksPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-1">
-                <div>
-                  {STATUS_LABEL[book.status as keyof typeof STATUS_LABEL] ??
-                    book.status}
-                </div>
+                <div>{STATUS_LABEL[book.status] ?? book.status}</div>
                 <StarRating rating={book.rating} size={16} disabled={true} />
               </CardContent>
             </Card>
