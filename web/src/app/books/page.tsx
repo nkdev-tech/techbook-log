@@ -39,7 +39,10 @@ export default function BooksPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {data?.data.map((book) => {
           return (
-            <Card key={book.id}>
+            <Card
+              key={book.id}
+              onClick={() => router.push(`/books/${book.id}`)}
+            >
               <CardHeader>
                 <CardTitle className="text-lg font-bold">
                   {book.title}

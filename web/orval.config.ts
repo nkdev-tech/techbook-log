@@ -10,8 +10,8 @@ export default defineConfig({
       baseUrl: process.env.NEXT_PUBLIC_API_URL,
       override: {
         mutator: {
-          path: './src/external/custom-fetch.ts',
-          name: 'customFetch',
+          path: "./src/external/custom-fetch.ts",
+          name: "customFetch",
         },
       },
     },

@@ -75,7 +75,7 @@ export default function BookNewPage() {
           },
         },
         {
-          onSuccess(data) {
+          onSuccess() {
             router.replace("/books");
           },
           onError(error) {
@@ -90,7 +90,7 @@ export default function BookNewPage() {
   return (
     <div className="mx-auto px-5 py-10">
       <div className="m-2 text-2xl font-bold">新規登録</div>
-      <Card className="w-full gap-0">
+      <Card className="w-full">
         <CardContent className="space-y-1">
           <form
             id="form-create"
@@ -188,7 +188,10 @@ export default function BookNewPage() {
                                 <ChevronDownIcon />
                               </Button>
                             </PopoverTrigger>
-                            <PopoverContent className="w-auto p-0" align="start">
+                            <PopoverContent
+                              className="w-auto p-0"
+                              align="start"
+                            >
                               <Calendar
                                 mode="single"
                                 selected={field.state.value ?? undefined}
@@ -219,7 +222,7 @@ export default function BookNewPage() {
             </FieldGroup>
           </form>
         </CardContent>
-        <CardFooter className="bg-card border-none">
+        <CardFooter className="">
           <Field orientation="horizontal" className="justify-end">
             <Button
               type="button"

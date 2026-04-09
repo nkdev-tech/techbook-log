@@ -28,7 +28,7 @@ export const customFetch = async <T>(
   const data = await getBody<T>(response);
 
   if (!response.ok) {
-    throw data;
+    throw new Error(data as unknown as string);
   }
 
   return { status: response.status, data } as T;

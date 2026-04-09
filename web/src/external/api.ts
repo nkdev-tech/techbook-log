@@ -122,6 +122,46 @@ export type PostApiBooks400 = {
   error: PostApiBooks400Error;
 };
 
+export type GetApiBooksId200Status = typeof GetApiBooksId200Status[keyof typeof GetApiBooksId200Status];
+
+
+export const GetApiBooksId200Status = {
+  unread: 'unread',
+  reading: 'reading',
+  done: 'done',
+} as const;
+
+export type GetApiBooksId200 = {
+  /**
+     * @minimum -9007199254740991
+     * @maximum 9007199254740991
+     */
+  id: number;
+  title: string;
+  author: string;
+  status: GetApiBooksId200Status;
+  /**
+     * @minimum -9007199254740991
+     * @maximum 9007199254740991
+     * @nullable
+     */
+  rating: number | null;
+  /** @nullable */
+  finishedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type GetApiBooksId404Error = {
+  name: string;
+  message: string;
+};
+
+export type GetApiBooksId404 = {
+  success: boolean;
+  error: GetApiBooksId404Error;
+};
+
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 
@@ -314,3 +354,111 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       > => {
       return useMutation(getPostApiBooksMutationOptions(options), queryClient);
     }
+
+export type getApiBooksIdResponse200 = {
+  data: GetApiBooksId200
+  status: 200
+}
+
+export type getApiBooksIdResponse404 = {
+  data: GetApiBooksId404
+  status: 404
+}
+
+export type getApiBooksIdResponseSuccess = (getApiBooksIdResponse200) & {
+  headers: Headers;
+};
+export type getApiBooksIdResponseError = (getApiBooksIdResponse404) & {
+  headers: Headers;
+};
+
+export type getApiBooksIdResponse = (getApiBooksIdResponseSuccess | getApiBooksIdResponseError)
+
+export const getGetApiBooksIdUrl = (id: string,) => {
+
+
+
+
+  return `http://localhost:8787/api/books/${id}`
+}
+
+export const getApiBooksId = async (id: string, options?: RequestInit): Promise<getApiBooksIdResponse> => {
+
+  return customFetch<getApiBooksIdResponse>(getGetApiBooksIdUrl(id),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiBooksIdQueryKey = (id: string,) => {
+    return [
+    `http://localhost:8787/api/books/${id}`
+    ] as const;
+    }
+
+
+export const getGetApiBooksIdQueryOptions = <TData = Awaited<ReturnType<typeof getApiBooksId>>, TError = GetApiBooksId404>(id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBooksId>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiBooksIdQueryKey(id);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiBooksId>>> = ({ signal }) => getApiBooksId(id, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiBooksId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetApiBooksIdQueryResult = NonNullable<Awaited<ReturnType<typeof getApiBooksId>>>
+export type GetApiBooksIdQueryError = GetApiBooksId404
+
+
+export function useGetApiBooksId<TData = Awaited<ReturnType<typeof getApiBooksId>>, TError = GetApiBooksId404>(
+ id: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBooksId>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiBooksId>>,
+          TError,
+          Awaited<ReturnType<typeof getApiBooksId>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiBooksId<TData = Awaited<ReturnType<typeof getApiBooksId>>, TError = GetApiBooksId404>(
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBooksId>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiBooksId>>,
+          TError,
+          Awaited<ReturnType<typeof getApiBooksId>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiBooksId<TData = Awaited<ReturnType<typeof getApiBooksId>>, TError = GetApiBooksId404>(
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBooksId>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetApiBooksId<TData = Awaited<ReturnType<typeof getApiBooksId>>, TError = GetApiBooksId404>(
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBooksId>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetApiBooksIdQueryOptions(id,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
