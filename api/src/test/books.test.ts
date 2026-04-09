@@ -80,7 +80,7 @@ describe('books', () => {
       createdAt: '2026-01-01T00:00:00.000Z',
       updatedAt: '2026-01-01T00:00:00.000Z',
     })
-    const res = await client.api.books.$get({ params: { id: 1 } })
+    const res = await client.api.books[':id'].$get({ param: { id: '1' } })
     expect(res.status).toBe(200)
   })
 
