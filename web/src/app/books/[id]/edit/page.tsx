@@ -71,7 +71,7 @@ export default function BookEditPage() {
             >
               キャンセル
             </Button>
-            <Button type="submit" form="form-create">
+            <Button type="submit" form="book-form">
               更新
             </Button>
           </div>

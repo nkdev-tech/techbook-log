@@ -56,7 +56,7 @@ export default function BookNewPage() {
             >
               キャンセル
             </Button>
-            <Button type="submit" form="form-create">
+            <Button type="submit" form="book-form">
               登録
             </Button>
           </div>
