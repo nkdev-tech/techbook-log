@@ -5,6 +5,7 @@ import { useGetApiBooksId } from "@/external/api";
 import { Button } from "@/components/ui/button";
 import {
   Card,
+  CardAction,
   CardContent,
   CardDescription,
   CardFooter,
@@ -48,6 +49,15 @@ export default function BookDetailPage() {
         <CardHeader>
           <CardTitle className="text-2xl font-bold">{book.title}</CardTitle>
           <CardDescription className="">{book.author}</CardDescription>
+          <CardAction>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => router.push(`/books/${id}/edit`)}
+            >
+              編集
+            </Button>
+          </CardAction>
         </CardHeader>
         <CardContent className="space-y-2 text-base">
           <div className="flex gap-1">
