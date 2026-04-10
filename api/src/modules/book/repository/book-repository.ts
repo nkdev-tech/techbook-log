@@ -23,8 +23,11 @@ export const BookRepository = {
     d1: D1Database,
   ): Promise<SelectBook | null> => {
     const db = createDb(d1)
-    await db.update(bookTable).set(data).where(eq(bookTable.id, id))
-    const result = await db.select().from(bookTable).where(eq(bookTable.id, id))
+    const result = await db
+      .update(bookTable)
+      .set(data)
+      .where(eq(bookTable.id, id))
+      .returning()
     return result[0] ?? null
   },
 }
