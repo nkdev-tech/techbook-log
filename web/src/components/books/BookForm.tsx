@@ -87,7 +87,9 @@ export function BookForm({ defaultValues, onSubmit }: Props) {
         <form.Field name="title">
           {(field) => (
             <Field>
-              <FieldLabel className="font-semibold text-muted-foreground">タイトル</FieldLabel>
+              <FieldLabel className="font-semibold text-muted-foreground">
+                タイトル
+              </FieldLabel>
               <Input
                 value={field.state.value}
                 onChange={(e) => field.handleChange(e.target.value)}
@@ -105,7 +107,9 @@ export function BookForm({ defaultValues, onSubmit }: Props) {
         <form.Field name="author">
           {(field) => (
             <Field>
-              <FieldLabel className="font-semibold text-muted-foreground">著者名</FieldLabel>
+              <FieldLabel className="font-semibold text-muted-foreground">
+                著者名
+              </FieldLabel>
               <Input
                 value={field.state.value}
                 onChange={(e) => field.handleChange(e.target.value)}
@@ -123,7 +127,9 @@ export function BookForm({ defaultValues, onSubmit }: Props) {
         <form.Field name="status">
           {(field) => (
             <Field>
-              <FieldLabel className="font-semibold text-muted-foreground">ステータス</FieldLabel>
+              <FieldLabel className="font-semibold text-muted-foreground">
+                ステータス
+              </FieldLabel>
               <Select
                 value={field.state.value}
                 onValueChange={(value) => {
@@ -155,7 +161,9 @@ export function BookForm({ defaultValues, onSubmit }: Props) {
               <form.Field name="finishedAt">
                 {(field) => (
                   <Field>
-                    <FieldLabel className="font-semibold text-muted-foreground">読了日</FieldLabel>
+                    <FieldLabel className="font-semibold text-muted-foreground">
+                      読了日
+                    </FieldLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <Button
@@ -189,7 +197,9 @@ export function BookForm({ defaultValues, onSubmit }: Props) {
         <form.Field name="rating">
           {(field) => (
             <Field>
-              <FieldLabel className="font-semibold text-muted-foreground">評価</FieldLabel>
+              <FieldLabel className="font-semibold text-muted-foreground">
+                評価
+              </FieldLabel>
               <StarRating
                 rating={field.state.value}
                 onChange={(value) => field.handleChange(value)}

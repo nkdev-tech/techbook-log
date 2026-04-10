@@ -62,11 +62,7 @@ export default function BookEditPage() {
       </CardContent>
       <CardFooter className="">
         <div className="flex justify-end w-full gap-2">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => router.back()}
-          >
+          <Button type="button" variant="outline" onClick={() => router.back()}>
             キャンセル
           </Button>
           <Button type="submit" form="book-form">

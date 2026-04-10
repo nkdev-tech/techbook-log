@@ -23,7 +23,7 @@ export function StarRating({
           fill={i < (rating ?? 0) ? "var(--color-border)" : "none"}
           onClick={() => {
             if (disabled) return;
-            const newValue = i + 1 === rating ? null : i + 1
+            const newValue = i + 1 === rating ? null : i + 1;
             onChange?.(newValue);
           }}
           style={{ cursor: disabled ? "default" : "pointer" }}

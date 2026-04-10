@@ -10,36 +10,36 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
+} from "@/components/ui/breadcrumb";
 
 export const PageRoute = {
   HOME: { pattern: /^\/books$/, label: "ホーム" },
   BOOKS_NEW: { pattern: /^\/books\/new$/, label: "新規登録" },
   BOOKS_DETAIL: { pattern: /^\/books\/\d+$/, label: "詳細" },
   BOOKS_EDIT: { pattern: /^\/books\/\d+\/edit$/, label: "編集" },
-} as const
+} as const;
 
 function generateBreadcrumbs(segments: string[]) {
-  if (segments.length < 2) return null
+  if (segments.length < 2) return null;
 
-  let currentPath = ''
+  let currentPath = "";
   return segments.map((item) => {
-    currentPath += `/${item}`
-    const matched = Object.values(PageRoute).find(
-      ({ pattern }) => pattern.test(currentPath)
-    )
+    currentPath += `/${item}`;
+    const matched = Object.values(PageRoute).find(({ pattern }) =>
+      pattern.test(currentPath)
+    );
     return {
       path: currentPath,
       label: matched?.label ?? item,
-    }
-  })
+    };
+  });
 }
 
 export default function Navigation() {
-  const segments = useSelectedLayoutSegments()
+  const segments = useSelectedLayoutSegments();
   const breadcrumbPaths = generateBreadcrumbs(segments);
 
-  if (breadcrumbPaths === null) return
+  if (breadcrumbPaths === null) return;
 
   return (
     <div className="flex item-center my-3 h-[2rem]">
@@ -55,7 +55,9 @@ export default function Navigation() {
                   </BreadcrumbLink>
                 )}
                 {index === breadcrumbPaths.length - 1 && (
-                  <BreadcrumbPage className="font-medium">{label}</BreadcrumbPage>
+                  <BreadcrumbPage className="font-medium">
+                    {label}
+                  </BreadcrumbPage>
                 )}
               </BreadcrumbItem>
             </Fragment>
@@ -63,5 +65,5 @@ export default function Navigation() {
         </BreadcrumbList>
       </Breadcrumb>
     </div>
-  )
+  );
 }

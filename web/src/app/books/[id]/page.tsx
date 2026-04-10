@@ -2,13 +2,11 @@
 
 import { useParams, useRouter, notFound } from "next/navigation";
 import { useGetApiBooksId } from "@/external/api";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardAction,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -54,7 +52,11 @@ export default function BookDetailPage() {
         <CardDescription className="">{book.author}</CardDescription>
         <CardAction className="flex px-2 gap-4">
           <DeleteButton id={id} />
-          <button type="button" className="cursor-pointer" onClick={() => router.push(`/books/${id}/edit`)}>
+          <button
+            type="button"
+            className="cursor-pointer"
+            onClick={() => router.push(`/books/${id}/edit`)}
+          >
             <SquarePen className="text-primary" />
           </button>
         </CardAction>
