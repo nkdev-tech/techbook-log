@@ -42,7 +42,7 @@ export default function Navigation() {
   if (breadcrumbPaths === null) return null;
 
   return (
-    <div className="flex item-center my-3 h-[2rem]">
+    <div className="flex item-center mt-1 mb-3 h-[2rem]">
       <Breadcrumb className="h-full">
         <BreadcrumbList className="h-full">
           {breadcrumbPaths.map(({ path, label }, index) => (

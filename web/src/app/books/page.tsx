@@ -31,7 +31,7 @@ export default function BooksPage() {
 
   return (
     <div className="w-full">
-      <div className="flex justify-end my-3 h-[2rem]">
+      <div className="flex justify-end mt-1 mb-3 h-[2rem]">
         <Button type="button" onClick={() => router.push("/books/new")}>
           新規登録
         </Button>

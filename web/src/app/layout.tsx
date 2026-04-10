@@ -34,7 +34,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         <Providers>
           <Header />
-          <main className="w-full max-w-5xl container mx-auto px-5 py-2">
+          <main className="w-full max-w-5xl container mx-auto px-5">
             <Navigation />
             {children}
           </main>
