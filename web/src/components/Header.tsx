@@ -1,5 +1,3 @@
-"use client";
-
 export default function Header() {
   return (
     <header className="sticky top-0 px-4 bg-background">

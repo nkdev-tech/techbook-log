@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useSelectedLayoutSegments } from "next/navigation";
-import { Fragment } from "react/jsx-runtime";
+import { Fragment } from "react";
 import {
   Breadcrumb,
   BreadcrumbItem,
