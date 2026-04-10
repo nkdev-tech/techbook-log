@@ -31,7 +31,7 @@ export default function BookDetailPage() {
   }
 
   if (error) {
-    if ((error as unknown as { status?: number }).status === 404) {
+    if (error instanceof Error && error.message.includes("Not Found")) {
       notFound();
     }
     throw error;
