@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import { ApiError } from "@/shared/types/api";
 
 export function DeleteButton() {
   const router = useRouter();
@@ -30,7 +31,7 @@ export function DeleteButton() {
           router.replace("/books");
         },
         onError(error) {
-          const err = error as { status?: number; message?: string };
+          const err = error as ApiError;
           if (err.status === 404) {
             router.replace("/books");
           } else {

@@ -17,6 +17,7 @@ import { DeleteButton } from "@/components/books/DeleteButton";
 import { StarRating } from "@/components/books/StarRating";
 import { format } from "date-fns";
 import { SquarePen } from "lucide-react";
+import { ApiError } from "@/shared/types/api";
 
 export default function BookDetailPage() {
   const router = useRouter();
@@ -33,7 +34,7 @@ export default function BookDetailPage() {
   }
 
   if (error) {
-    const err = error as { status?: number; message?: string };
+    const err = error as ApiError;
     if (err.status === 404) {
       notFound();
     }

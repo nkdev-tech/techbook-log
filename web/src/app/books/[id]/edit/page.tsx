@@ -6,6 +6,7 @@ import { BookForm, BookFormValues } from "@/components/books/BookForm";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { toast } from "sonner";
+import { ApiError } from "@/shared/types/api";
 
 export default function BookEditPage() {
   const router = useRouter();
@@ -44,7 +45,7 @@ export default function BookEditPage() {
           router.replace(`/books/${id}`);
         },
         onError(error) {
-          const err = error as { status?: number; message?: string };
+          const err = error as ApiError;
           toast.error(err.message ?? "サーバーエラーが発生しました");
           if (err.status === 404) {
             router.replace("/books");
