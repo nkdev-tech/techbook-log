@@ -19,8 +19,8 @@ export function StarRating({
         <Star
           key={i}
           size={size}
-          color="#b0d7d5"
-          fill={i < (rating ?? 0) ? "#b0d7d5" : "none"}
+          color="var(--color-border)"
+          fill={i < (rating ?? 0) ? "var(--color-border)" : "none"}
           onClick={() => {
             if (disabled) return;
             const newValue = i + 1 === rating ? null : i + 1

@@ -56,26 +56,24 @@ export default function BookEditPage() {
   };
 
   return (
-    <div className="container mx-auto px-5 py-10">
-      <Card className="w-full">
-        <CardContent className="space-y-1">
-          <BookForm defaultValues={data.data} onSubmit={onSubmit} />
-        </CardContent>
-        <CardFooter className="">
-          <div className="flex justify-end w-full gap-2">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => router.back()}
-            >
-              キャンセル
-            </Button>
-            <Button type="submit" form="book-form">
-              更新
-            </Button>
-          </div>
-        </CardFooter>
-      </Card>
-    </div>
+    <Card className="w-full max-w-2xl mx-auto">
+      <CardContent className="space-y-1">
+        <BookForm defaultValues={data.data} onSubmit={onSubmit} />
+      </CardContent>
+      <CardFooter className="">
+        <div className="flex justify-end w-full gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => router.back()}
+          >
+            キャンセル
+          </Button>
+          <Button type="submit" form="book-form">
+            更新
+          </Button>
+        </div>
+      </CardFooter>
+    </Card>
   );
 }

@@ -30,8 +30,8 @@ export default function BooksPage() {
   }
 
   return (
-    <div className="container mx-auto px-5 py-10">
-      <div className="flex justify-end my-3">
+    <div className="w-full">
+      <div className="flex justify-end my-3 h-[2rem]">
         <Button type="button" onClick={() => router.push("/books/new")}>
           新規登録
         </Button>
@@ -44,10 +44,10 @@ export default function BooksPage() {
               onClick={() => router.push(`/books/${book.id}`)}
             >
               <CardHeader>
-                <CardTitle className="text-lg font-bold">
+                <CardTitle className="text-lg font-bold truncate">
                   {book.title}
                 </CardTitle>
-                <CardDescription className="text-xs">
+                <CardDescription className="text-xs truncate">
                   {book.author}
                 </CardDescription>
               </CardHeader>
