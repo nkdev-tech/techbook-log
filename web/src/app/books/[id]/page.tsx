@@ -73,7 +73,7 @@ export default function BookDetailPage() {
             <Button
               type="button"
               variant="outline"
-              onClick={() => router.back()}
+              onClick={() => router.push("/books")}
             >
               戻る
             </Button>

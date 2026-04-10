@@ -52,7 +52,7 @@ export default function BookNewPage() {
             <Button
               type="button"
               variant="outline"
-              onClick={() => router.back()}
+              onClick={() => router.push("/books")}
             >
               キャンセル
             </Button>
