@@ -240,6 +240,46 @@ export type PatchApiBooksId404 = {
   error: PatchApiBooksId404Error;
 };
 
+export type DeleteApiBooksId200Status = typeof DeleteApiBooksId200Status[keyof typeof DeleteApiBooksId200Status];
+
+
+export const DeleteApiBooksId200Status = {
+  unread: 'unread',
+  reading: 'reading',
+  done: 'done',
+} as const;
+
+export type DeleteApiBooksId200 = {
+  /**
+     * @minimum -9007199254740991
+     * @maximum 9007199254740991
+     */
+  id: number;
+  title: string;
+  author: string;
+  status: DeleteApiBooksId200Status;
+  /**
+     * @minimum -9007199254740991
+     * @maximum 9007199254740991
+     * @nullable
+     */
+  rating: number | null;
+  /** @nullable */
+  finishedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type DeleteApiBooksId404Error = {
+  name: string;
+  message: string;
+};
+
+export type DeleteApiBooksId404 = {
+  success: boolean;
+  error: DeleteApiBooksId404Error;
+};
+
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 
@@ -633,4 +673,87 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
         TContext
       > => {
       return useMutation(getPatchApiBooksIdMutationOptions(options), queryClient);
+    }
+
+export type deleteApiBooksIdResponse200 = {
+  data: DeleteApiBooksId200
+  status: 200
+}
+
+export type deleteApiBooksIdResponse404 = {
+  data: DeleteApiBooksId404
+  status: 404
+}
+
+export type deleteApiBooksIdResponseSuccess = (deleteApiBooksIdResponse200) & {
+  headers: Headers;
+};
+export type deleteApiBooksIdResponseError = (deleteApiBooksIdResponse404) & {
+  headers: Headers;
+};
+
+export type deleteApiBooksIdResponse = (deleteApiBooksIdResponseSuccess | deleteApiBooksIdResponseError)
+
+export const getDeleteApiBooksIdUrl = (id: string,) => {
+
+
+
+
+  return `http://localhost:8787/api/books/${id}`
+}
+
+export const deleteApiBooksId = async (id: string, options?: RequestInit): Promise<deleteApiBooksIdResponse> => {
+
+  return customFetch<deleteApiBooksIdResponse>(getDeleteApiBooksIdUrl(id),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+export const getDeleteApiBooksIdMutationOptions = <TError = DeleteApiBooksId404,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiBooksId>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteApiBooksId>>, TError,{id: string}, TContext> => {
+
+const mutationKey = ['deleteApiBooksId'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteApiBooksId>>, {id: string}> = (props) => {
+          const {id} = props ?? {};
+
+          return  deleteApiBooksId(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteApiBooksIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteApiBooksId>>>
+
+    export type DeleteApiBooksIdMutationError = DeleteApiBooksId404
+
+    export const useDeleteApiBooksId = <TError = DeleteApiBooksId404,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiBooksId>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof deleteApiBooksId>>,
+        TError,
+        {id: string},
+        TContext
+      > => {
+      return useMutation(getDeleteApiBooksIdMutationOptions(options), queryClient);
     }

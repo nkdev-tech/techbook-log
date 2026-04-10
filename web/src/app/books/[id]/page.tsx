@@ -13,8 +13,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { STATUS_LABEL } from "@/shared/utils/book";
+import { DeleteButton } from "@/components/books/DeleteButton";
 import { StarRating } from "@/components/books/StarRating";
 import { format } from "date-fns";
+import { SquarePen } from "lucide-react";
 
 export default function BookDetailPage() {
   const router = useRouter();
@@ -49,14 +51,14 @@ export default function BookDetailPage() {
         <CardHeader>
           <CardTitle className="text-2xl font-bold">{book.title}</CardTitle>
           <CardDescription className="">{book.author}</CardDescription>
-          <CardAction>
-            <Button
-              type="button"
-              variant="outline"
+          <CardAction className="flex px-2 gap-4">
+            <DeleteButton />
+            <SquarePen
+              color="#7a7a7a"
               onClick={() => router.push(`/books/${id}/edit`)}
             >
               編集
-            </Button>
+            </SquarePen>
           </CardAction>
         </CardHeader>
         <CardContent className="space-y-2 text-base">

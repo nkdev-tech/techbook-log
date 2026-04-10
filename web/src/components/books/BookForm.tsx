@@ -38,7 +38,6 @@ export type BookFormValues = {
 type Props = {
   defaultValues: BookFormValues;
   onSubmit: (value: BookFormValues) => void;
-  errorMessage: string | null;
 };
 
 const bookSchema = z.object({
@@ -52,7 +51,7 @@ const bookSchema = z.object({
   finishedAt: z.date().nullable(),
 });
 
-export function BookForm({ defaultValues, onSubmit, errorMessage }: Props) {
+export function BookForm({ defaultValues, onSubmit }: Props) {
   const form = useForm({
     defaultValues: {
       title: defaultValues.title,
@@ -85,7 +84,6 @@ export function BookForm({ defaultValues, onSubmit, errorMessage }: Props) {
       }}
     >
       <FieldGroup>
-        {errorMessage && <FieldError>{errorMessage}</FieldError>}
         <form.Field name="title">
           {(field) => (
             <Field>
