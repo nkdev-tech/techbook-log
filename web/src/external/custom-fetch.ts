@@ -28,8 +28,8 @@ export const customFetch = async <T>(
   const data = await getBody<T>(response);
 
   if (!response.ok) {
-    const errData = data as Record<string, unknown>;
-    throw Object.assign(new Error(String(errData?.error ?? 'API Error')), errData, { status: response.status });
+    const errData = data as { error?: { message?: string } };
+    throw new Error(errData?.error?.message ?? 'サーバーエラーが発生しました');
   }
 
   return { status: response.status, data } as T;

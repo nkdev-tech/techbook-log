@@ -5,6 +5,7 @@ import { useGetApiBooksId } from "@/external/api";
 import { Button } from "@/components/ui/button";
 import {
   Card,
+  CardAction,
   CardContent,
   CardDescription,
   CardFooter,
@@ -30,7 +31,7 @@ export default function BookDetailPage() {
   }
 
   if (error) {
-    if ((error as unknown as { status?: number }).status === 404) {
+    if (error instanceof Error && error.message.includes("Not Found")) {
       notFound();
     }
     throw error;
@@ -48,6 +49,15 @@ export default function BookDetailPage() {
         <CardHeader>
           <CardTitle className="text-2xl font-bold">{book.title}</CardTitle>
           <CardDescription className="">{book.author}</CardDescription>
+          <CardAction>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => router.push(`/books/${id}/edit`)}
+            >
+              編集
+            </Button>
+          </CardAction>
         </CardHeader>
         <CardContent className="space-y-2 text-base">
           <div className="flex gap-1">
@@ -63,7 +73,7 @@ export default function BookDetailPage() {
             <Button
               type="button"
               variant="outline"
-              onClick={() => router.back()}
+              onClick={() => router.push("/books")}
             >
               戻る
             </Button>

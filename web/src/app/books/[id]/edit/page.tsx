@@ -1,33 +1,48 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { usePostApiBooks } from "@/external/api";
+import { notFound, useParams, useRouter } from "next/navigation";
+import { useGetApiBooksId, usePatchApiBooksId } from "@/external/api";
 import { BookForm, BookFormValues } from "@/components/books/BookForm";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 
-export default function BookNewPage() {
+export default function BookEditPage() {
   const router = useRouter();
+  const params = useParams<{ id: string }>();
+  const id = params.id;
+  const { data, isLoading, error } = useGetApiBooksId(id);
+  const { mutate } = usePatchApiBooksId({});
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const { mutate } = usePostApiBooks({});
 
-  const defaultValues: BookFormValues = {
-    title: "",
-    author: "",
-    status: "unread",
-    rating: null,
-    finishedAt: null,
-  };
+  if (isLoading) {
+    return (
+      <div className="w-full max-w-5xl">
+        <p className="text-lg">Loading...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    if (error instanceof Error && error.message.includes("Not Found")) {
+      notFound();
+    }
+    throw error;
+  }
+
+  if (!data || data.status !== 200) {
+    notFound();
+  }
 
   const onSubmit = (value: BookFormValues) => {
     mutate(
       {
+        id: id,
         data: value,
       },
       {
         onSuccess() {
-          router.replace("/books");
+          router.replace(`/books/${id}`);
         },
         onError(error) {
           setErrorMessage(error.error.message);
@@ -42,7 +57,7 @@ export default function BookNewPage() {
       <Card className="w-full">
         <CardContent className="space-y-1">
           <BookForm
-            defaultValues={defaultValues}
+            defaultValues={data.data}
             onSubmit={onSubmit}
             errorMessage={errorMessage}
           />
@@ -52,12 +67,12 @@ export default function BookNewPage() {
             <Button
               type="button"
               variant="outline"
-              onClick={() => router.push("/books")}
+              onClick={() => router.back()}
             >
               キャンセル
             </Button>
             <Button type="submit" form="book-form">
-              登録
+              更新
             </Button>
           </div>
         </CardFooter>

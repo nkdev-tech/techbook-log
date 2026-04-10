@@ -6,7 +6,7 @@ const { createInsertSchema, createSelectSchema } = createSchemaFactory({
   zodInstance: z,
 })
 
-export const booksSchema = createSelectSchema(bookTable, {
+const booksSchema = createSelectSchema(bookTable, {
   id: (schema) => schema.openapi({ example: 1 }),
   title: (schema) => schema.openapi({ example: 'タイトル' }),
   author: (schema) => schema.openapi({ example: '著者名' }),
@@ -19,9 +19,7 @@ export const booksSchema = createSelectSchema(bookTable, {
     schema.openapi({ example: '2026-01-01T00:00:00.000Z' }),
 })
 
-export const getBooksSchema = booksSchema.array()
-
-export const createBookReqSchema = createInsertSchema(bookTable, {
+const inputBookSchema = createInsertSchema(bookTable, {
   title: (schema) =>
     schema
       .min(1, 'タイトルを入力してください')
@@ -40,9 +38,17 @@ export const createBookReqSchema = createInsertSchema(bookTable, {
   updatedAt: true,
 })
 
+export const getBooksSchema = booksSchema.array()
+
+export const createBookReqSchema = inputBookSchema
+
 export const createBookResSchema = booksSchema
 
 export const getBookSchema = booksSchema
+
+export const updateBookReqSchema = inputBookSchema
+
+export const updateBookResSchema = booksSchema
 
 export const ParamsSchema = z.object({
   id: z

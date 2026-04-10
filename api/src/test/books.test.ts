@@ -89,4 +89,57 @@ describe('books', () => {
     const res = await client.api.books[':id'].$get({ param: { id: '1' } })
     expect(res.status).toBe(404)
   })
+
+  it('can update book', async () => {
+    vi.mocked(BookRepository.update).mockResolvedValue({
+      id: 1,
+      title: 'タイトル',
+      author: '著者名',
+      status: 'unread' as const,
+      rating: null,
+      finishedAt: null,
+      createdAt: '2026-01-01T00:00:00.000Z',
+      updatedAt: '2026-01-01T00:00:00.000Z',
+    })
+    const res = await client.api.books[':id'].$patch({
+      param: { id: '1' },
+      json: {
+        title: 'タイトル',
+        author: '著者名',
+        status: 'unread' as const,
+        rating: null,
+        finishedAt: null,
+      },
+    })
+    expect(res.status).toBe(200)
+  })
+
+  it('cannot update book with invalid value', async () => {
+    const res = await client.api.books[':id'].$patch({
+      param: { id: '1' },
+      json: {
+        title: '',
+        author: '著者名',
+        status: 'unread' as const,
+        rating: null,
+        finishedAt: null,
+      },
+    })
+    expect(res.status).toBe(400)
+  })
+
+  it('cannot update book that does not exist', async () => {
+    vi.mocked(BookRepository.update).mockResolvedValue(null)
+    const res = await client.api.books[':id'].$patch({
+      param: { id: '1' },
+      json: {
+        title: 'タイトル',
+        author: '著者名',
+        status: 'unread' as const,
+        rating: null,
+        finishedAt: null,
+      },
+    })
+    expect(res.status).toBe(404)
+  })
 })

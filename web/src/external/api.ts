@@ -162,6 +162,84 @@ export type GetApiBooksId404 = {
   error: GetApiBooksId404Error;
 };
 
+export type PatchApiBooksIdBodyStatus = typeof PatchApiBooksIdBodyStatus[keyof typeof PatchApiBooksIdBodyStatus];
+
+
+export const PatchApiBooksIdBodyStatus = {
+  unread: 'unread',
+  reading: 'reading',
+  done: 'done',
+} as const;
+
+export type PatchApiBooksIdBody = {
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  title: string;
+  /** @maxLength 100 */
+  author: string;
+  status?: PatchApiBooksIdBodyStatus;
+  /**
+     * @minimum 1
+     * @maximum 5
+     * @nullable
+     */
+  rating?: number | null;
+  /** @nullable */
+  finishedAt?: string | null;
+};
+
+export type PatchApiBooksId200Status = typeof PatchApiBooksId200Status[keyof typeof PatchApiBooksId200Status];
+
+
+export const PatchApiBooksId200Status = {
+  unread: 'unread',
+  reading: 'reading',
+  done: 'done',
+} as const;
+
+export type PatchApiBooksId200 = {
+  /**
+     * @minimum -9007199254740991
+     * @maximum 9007199254740991
+     */
+  id: number;
+  title: string;
+  author: string;
+  status: PatchApiBooksId200Status;
+  /**
+     * @minimum -9007199254740991
+     * @maximum 9007199254740991
+     * @nullable
+     */
+  rating: number | null;
+  /** @nullable */
+  finishedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type PatchApiBooksId400Error = {
+  name: string;
+  message: string;
+};
+
+export type PatchApiBooksId400 = {
+  success: boolean;
+  error: PatchApiBooksId400Error;
+};
+
+export type PatchApiBooksId404Error = {
+  name: string;
+  message: string;
+};
+
+export type PatchApiBooksId404 = {
+  success: boolean;
+  error: PatchApiBooksId404Error;
+};
+
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 
@@ -462,3 +540,97 @@ export function useGetApiBooksId<TData = Awaited<ReturnType<typeof getApiBooksId
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
+
+
+
+
+
+export type patchApiBooksIdResponse200 = {
+  data: PatchApiBooksId200
+  status: 200
+}
+
+export type patchApiBooksIdResponse400 = {
+  data: PatchApiBooksId400
+  status: 400
+}
+
+export type patchApiBooksIdResponse404 = {
+  data: PatchApiBooksId404
+  status: 404
+}
+
+export type patchApiBooksIdResponseSuccess = (patchApiBooksIdResponse200) & {
+  headers: Headers;
+};
+export type patchApiBooksIdResponseError = (patchApiBooksIdResponse400 | patchApiBooksIdResponse404) & {
+  headers: Headers;
+};
+
+export type patchApiBooksIdResponse = (patchApiBooksIdResponseSuccess | patchApiBooksIdResponseError)
+
+export const getPatchApiBooksIdUrl = (id: string,) => {
+
+
+
+
+  return `http://localhost:8787/api/books/${id}`
+}
+
+export const patchApiBooksId = async (id: string,
+    patchApiBooksIdBody: PatchApiBooksIdBody, options?: RequestInit): Promise<patchApiBooksIdResponse> => {
+
+  return customFetch<patchApiBooksIdResponse>(getPatchApiBooksIdUrl(id),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      patchApiBooksIdBody,)
+  }
+);}
+
+
+
+
+export const getPatchApiBooksIdMutationOptions = <TError = PatchApiBooksId400 | PatchApiBooksId404,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof patchApiBooksId>>, TError,{id: string;data: PatchApiBooksIdBody}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof patchApiBooksId>>, TError,{id: string;data: PatchApiBooksIdBody}, TContext> => {
+
+const mutationKey = ['patchApiBooksId'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof patchApiBooksId>>, {id: string;data: PatchApiBooksIdBody}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  patchApiBooksId(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PatchApiBooksIdMutationResult = NonNullable<Awaited<ReturnType<typeof patchApiBooksId>>>
+    export type PatchApiBooksIdMutationBody = PatchApiBooksIdBody
+    export type PatchApiBooksIdMutationError = PatchApiBooksId400 | PatchApiBooksId404
+
+    export const usePatchApiBooksId = <TError = PatchApiBooksId400 | PatchApiBooksId404,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof patchApiBooksId>>, TError,{id: string;data: PatchApiBooksIdBody}, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof patchApiBooksId>>,
+        TError,
+        {id: string;data: PatchApiBooksIdBody},
+        TContext
+      > => {
+      return useMutation(getPatchApiBooksIdMutationOptions(options), queryClient);
+    }
