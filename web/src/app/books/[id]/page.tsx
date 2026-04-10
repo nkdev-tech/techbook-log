@@ -54,13 +54,10 @@ export default function BookDetailPage() {
           <CardTitle className="text-2xl font-bold">{book.title}</CardTitle>
           <CardDescription className="">{book.author}</CardDescription>
           <CardAction className="flex px-2 gap-4">
-            <DeleteButton />
-            <SquarePen
-              color="#7a7a7a"
-              onClick={() => router.push(`/books/${id}/edit`)}
-            >
-              編集
-            </SquarePen>
+            <DeleteButton id={id} />
+            <button type="button" className="cursor-pointer" onClick={() => router.push(`/books/${id}/edit`)}>
+              <SquarePen color="#7a7a7a" />
+            </button>
           </CardAction>
         </CardHeader>
         <CardContent className="space-y-2 text-base">

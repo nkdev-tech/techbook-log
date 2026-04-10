@@ -1,4 +1,4 @@
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useDeleteApiBooksId } from "@/external/api";
 import {
   AlertDialog,
@@ -15,10 +15,12 @@ import { Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { ApiError } from "@/shared/types/api";
 
-export function DeleteButton() {
+type Props = {
+  id: string;
+};
+
+export function DeleteButton({ id }: Props) {
   const router = useRouter();
-  const params = useParams<{ id: string }>();
-  const id = params.id;
   const { mutate } = useDeleteApiBooksId();
 
   const handleDelete = () => {
@@ -45,7 +47,9 @@ export function DeleteButton() {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Trash2 color="red" />
+        <button type="button" aria-label="削除" className="cursor-pointer">
+          <Trash2 color="red" />
+        </button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
