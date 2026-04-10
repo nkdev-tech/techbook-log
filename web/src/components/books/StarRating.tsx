@@ -4,7 +4,7 @@ type Props = {
   rating: number | null;
   size?: number;
   disabled?: boolean;
-  onChange?: (value: number) => void;
+  onChange?: (value: number | null) => void;
 };
 
 export function StarRating({
@@ -19,11 +19,12 @@ export function StarRating({
         <Star
           key={i}
           size={size}
-          color="#b0d7d5"
-          fill={i < (rating ?? 0) ? "#b0d7d5" : "none"}
+          color="var(--color-border)"
+          fill={i < (rating ?? 0) ? "var(--color-border)" : "none"}
           onClick={() => {
             if (disabled) return;
-            onChange?.(i + 1);
+            const newValue = i + 1 === rating ? null : i + 1;
+            onChange?.(newValue);
           }}
           style={{ cursor: disabled ? "default" : "pointer" }}
         />

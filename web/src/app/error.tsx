@@ -1,19 +1,26 @@
 "use client";
 
-import Link from "next/link";
+import { AlertCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
-export default function ErrorMessage({}: {
-  error: Error & { digest?: string };
+type Props = {
+  _error: Error;
   reset: () => void;
-}) {
+};
+
+export default function Error({ reset }: Props) {
   return (
-    <div className="w-full max-w-5xl">
-      <p className="text-lg text-red-500 m-4">
-        {"サーバーエラーが発生しました"}
+    <div className="flex flex-col items-center justify-center py-20 gap-4">
+      <AlertCircle size={64} className="text-muted-foreground" />
+      <h2 className="text-2xl font-bold text-muted-foreground">
+        エラーが発生しました
+      </h2>
+      <p className="text-muted-foreground">
+        予期せぬエラーが発生しました。しばらくしてから再度お試しください。
       </p>
-      <Link href="/" className="btn-link">
-        ＜ 戻る
-      </Link>
+      <Button variant="link" onClick={reset}>
+        再試行
+      </Button>
     </div>
   );
 }

@@ -38,26 +38,24 @@ export default function BookNewPage() {
   };
 
   return (
-    <div className="container mx-auto px-5 py-10">
-      <Card className="w-full">
-        <CardContent className="space-y-1">
-          <BookForm defaultValues={defaultValues} onSubmit={onSubmit} />
-        </CardContent>
-        <CardFooter className="">
-          <div className="flex justify-end w-full gap-2">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => router.push("/books")}
-            >
-              キャンセル
-            </Button>
-            <Button type="submit" form="book-form">
-              登録
-            </Button>
-          </div>
-        </CardFooter>
-      </Card>
-    </div>
+    <Card className="w-full max-w-2xl mx-auto">
+      <CardContent className="space-y-1">
+        <BookForm defaultValues={defaultValues} onSubmit={onSubmit} />
+      </CardContent>
+      <CardFooter className="">
+        <div className="flex justify-end w-full gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => router.push("/books")}
+          >
+            キャンセル
+          </Button>
+          <Button type="submit" form="book-form">
+            登録
+          </Button>
+        </div>
+      </CardFooter>
+    </Card>
   );
 }
