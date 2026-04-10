@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
 import { notFound, useParams, useRouter } from "next/navigation";
 import { useGetApiBooksId, usePatchApiBooksId } from "@/external/api";
 import { BookForm, BookFormValues } from "@/components/books/BookForm";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { toast } from "sonner";
 
 export default function BookEditPage() {
   const router = useRouter();
@@ -13,7 +13,6 @@ export default function BookEditPage() {
   const id = params.id;
   const { data, isLoading, error } = useGetApiBooksId(id);
   const { mutate } = usePatchApiBooksId({});
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   if (isLoading) {
     return (
@@ -45,8 +44,11 @@ export default function BookEditPage() {
           router.replace(`/books/${id}`);
         },
         onError(error) {
-          setErrorMessage(error.error.message);
-          return;
+          const err = error as { status?: number; message?: string };
+          toast.error(err.message ?? "サーバーエラーが発生しました");
+          if (err.status === 404) {
+            router.replace("/books");
+          }
         },
       }
     );
@@ -56,11 +58,7 @@ export default function BookEditPage() {
     <div className="container mx-auto px-5 py-10">
       <Card className="w-full">
         <CardContent className="space-y-1">
-          <BookForm
-            defaultValues={data.data}
-            onSubmit={onSubmit}
-            errorMessage={errorMessage}
-          />
+          <BookForm defaultValues={data.data} onSubmit={onSubmit} />
         </CardContent>
         <CardFooter className="">
           <div className="flex justify-end w-full gap-2">

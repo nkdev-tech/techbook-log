@@ -1,15 +1,14 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { usePostApiBooks } from "@/external/api";
 import { BookForm, BookFormValues } from "@/components/books/BookForm";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { toast } from "sonner";
 
 export default function BookNewPage() {
   const router = useRouter();
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { mutate } = usePostApiBooks({});
 
   const defaultValues: BookFormValues = {
@@ -30,8 +29,8 @@ export default function BookNewPage() {
           router.replace("/books");
         },
         onError(error) {
-          setErrorMessage(error.error.message);
-          return;
+          const err = error as { status?: number; message?: string };
+          toast.error(err.message ?? "サーバーエラーが発生しました");
         },
       }
     );
@@ -41,11 +40,7 @@ export default function BookNewPage() {
     <div className="container mx-auto px-5 py-10">
       <Card className="w-full">
         <CardContent className="space-y-1">
-          <BookForm
-            defaultValues={defaultValues}
-            onSubmit={onSubmit}
-            errorMessage={errorMessage}
-          />
+          <BookForm defaultValues={defaultValues} onSubmit={onSubmit} />
         </CardContent>
         <CardFooter className="">
           <div className="flex justify-end w-full gap-2">

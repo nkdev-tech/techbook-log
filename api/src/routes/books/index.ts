@@ -176,7 +176,7 @@ const app = new OpenAPIHono<{ Bindings: Bindings }>()
     const result = await getBook(Number(id), c.env.DB)
     if (result === null) {
       return c.json(
-        { success: false, error: { name: 'NotFound', message: 'Not Found' } },
+        { success: false, error: { name: 'NotFound', message: 'データが見つかりませんでした' } },
         404,
       )
     }
@@ -188,7 +188,7 @@ const app = new OpenAPIHono<{ Bindings: Bindings }>()
     const result = await updateBook(Number(id), data, c.env.DB)
     if (result === null) {
       return c.json(
-        { success: false, error: { name: 'NotFound', message: 'Not Found' } },
+        { success: false, error: { name: 'NotFound', message: 'データが見つかりませんでした' } },
         404,
       )
     }
@@ -199,7 +199,7 @@ const app = new OpenAPIHono<{ Bindings: Bindings }>()
     const result = await deleteBook(Number(id), c.env.DB)
     if (result === null) {
       return c.json(
-        { success: false, error: { name: 'NotFound', message: 'Not Found' } },
+        { success: false, error: { name: 'NotFound', message: 'データが見つかりませんでした' } },
         404,
       )
     }

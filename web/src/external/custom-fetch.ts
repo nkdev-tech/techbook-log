@@ -24,12 +24,20 @@ export const customFetch = async <T>(
   options: RequestInit,
 ): Promise<T> => {
   const request = new Request(getUrl(url), options);
-  const response = await fetch(request);
+  let response: Response;
+  try {
+    response = await fetch(request);
+  } catch {
+    throw new Error('サーバーに接続できませんでした')
+  }
   const data = await getBody<T>(response);
 
   if (!response.ok) {
     const errData = data as { error?: { message?: string } };
-    throw new Error(errData?.error?.message ?? 'サーバーエラーが発生しました');
+    throw {
+      status: response.status,
+      message: errData?.error?.message ?? 'サーバーエラーが発生しました'
+    };
   }
 
   return { status: response.status, data } as T;

@@ -33,7 +33,8 @@ export default function BookDetailPage() {
   }
 
   if (error) {
-    if (error instanceof Error && error.message.includes("Not Found")) {
+    const err = error as { status?: number; message?: string };
+    if (err.status === 404) {
       notFound();
     }
     throw error;
