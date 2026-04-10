@@ -30,4 +30,9 @@ export const BookRepository = {
       .returning()
     return result[0] ?? null
   },
+  delete: async (id: number, d1: D1Database): Promise<SelectBook | null> => {
+    const db = createDb(d1)
+    const result = await db.delete(bookTable).where(eq(bookTable.id, id)).returning().get()
+    return result ?? null
+  },
 }

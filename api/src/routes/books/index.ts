@@ -3,10 +3,12 @@ import { getBook } from '../../modules/book/usecase/get-book'
 import { getBooks } from '../../modules/book/usecase/get-books'
 import { createBook } from '../../modules/book/usecase/create-book'
 import { updateBook } from '../../modules/book/usecase/update-book'
+import { deleteBook } from '../../modules/book/usecase/delete-book'
 import { createRoute } from '@hono/zod-openapi'
 import {
   createBookReqSchema,
   createBookResSchema,
+  deleteBookSchema,
   errorResBodySchema,
   getBookSchema,
   getBooksSchema,
@@ -133,6 +135,32 @@ const updateBookRoute = createRoute({
   },
 })
 
+const deleteBookRoute = createRoute({
+  method: 'delete',
+  path: '/{id}',
+  request: {
+    params: ParamsSchema,
+  },
+  responses: {
+    200: {
+      content: {
+        'application/json': {
+          schema: deleteBookSchema,
+        },
+      },
+      description: 'delete the book',
+    },
+    404: {
+      content: {
+        'application/json': {
+          schema: errorResBodySchema,
+        },
+      },
+      description: 'Not Found',
+    },
+  },
+})
+
 const app = new OpenAPIHono<{ Bindings: Bindings }>()
   .openapi(getBooksRoute, async (c) => {
     const result = await getBooks(c.env.DB)
@@ -148,7 +176,7 @@ const app = new OpenAPIHono<{ Bindings: Bindings }>()
     const result = await getBook(Number(id), c.env.DB)
     if (result === null) {
       return c.json(
-        { success: false, error: { name: 'NotFound', message: 'Not Found' } },
+        { success: false, error: { name: 'NotFound', message: 'データが見つかりませんでした' } },
         404,
       )
     }
@@ -160,7 +188,18 @@ const app = new OpenAPIHono<{ Bindings: Bindings }>()
     const result = await updateBook(Number(id), data, c.env.DB)
     if (result === null) {
       return c.json(
-        { success: false, error: { name: 'NotFound', message: 'Not Found' } },
+        { success: false, error: { name: 'NotFound', message: 'データが見つかりませんでした' } },
+        404,
+      )
+    }
+    return c.json(result, 200)
+  })
+  .openapi(deleteBookRoute, async (c) => {
+    const { id } = c.req.valid('param')
+    const result = await deleteBook(Number(id), c.env.DB)
+    if (result === null) {
+      return c.json(
+        { success: false, error: { name: 'NotFound', message: 'データが見つかりませんでした' } },
         404,
       )
     }

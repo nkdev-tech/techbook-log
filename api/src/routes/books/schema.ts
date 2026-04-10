@@ -50,6 +50,8 @@ export const updateBookReqSchema = inputBookSchema
 
 export const updateBookResSchema = booksSchema
 
+export const deleteBookSchema = booksSchema
+
 export const ParamsSchema = z.object({
   id: z
     .string()
