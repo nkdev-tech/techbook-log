@@ -69,10 +69,9 @@ export function BookForm({ defaultValues, onSubmit, errorMessage }: Props) {
     onSubmit: async ({ value }) => {
       onSubmit({
         ...value,
-        finishedAt:
-          value.status === "done" && value.finishedAt
-            ? format(value.finishedAt, "yyyy-MM-dd")
-            : null,
+        finishedAt: value.finishedAt
+          ? format(value.finishedAt, "yyyy-MM-dd")
+          : null,
       });
     },
   });
