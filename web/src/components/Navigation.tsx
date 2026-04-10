@@ -39,7 +39,7 @@ export default function Navigation() {
   const segments = useSelectedLayoutSegments();
   const breadcrumbPaths = generateBreadcrumbs(segments);
 
-  if (breadcrumbPaths === null) return;
+  if (breadcrumbPaths === null) return null;
 
   return (
     <div className="flex item-center my-3 h-[2rem]">
