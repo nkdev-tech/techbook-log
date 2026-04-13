@@ -17,6 +17,13 @@ describe('getBook', () => {
       finishedAt: '2026-01-01',
       createdAt: '2026-01-01T00:00:00.000Z',
       updatedAt: '2026-01-01T00:00:00.000Z',
+      tags: [
+        {
+          id: 1,
+          name: 'React',
+          createdAt: '2026-01-01T00:00:00.000Z',
+        },
+      ],
     }
 
     vi.mocked(BookRepository.findById).mockResolvedValue(mockBook)

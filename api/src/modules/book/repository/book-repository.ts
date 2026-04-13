@@ -6,7 +6,15 @@ import { eq } from 'drizzle-orm'
 export const BookRepository = {
   findAll: async (d1: D1Database): Promise<SelectBook[]> => {
     const db = createDb(d1)
-    return await db.select().from(bookTable)
+    return await db.query.bookTable.findMany({
+      with: {
+        taggings: {
+          with: {
+            tag: true
+          }
+        }
+      }
+    })
   },
   create: async (data: InsertBook, d1: D1Database): Promise<SelectBook> => {
     const db = createDb(d1)
@@ -14,8 +22,17 @@ export const BookRepository = {
   },
   findById: async (id: number, d1: D1Database): Promise<SelectBook | null> => {
     const db = createDb(d1)
-    const result = await db.select().from(bookTable).where(eq(bookTable.id, id))
-    return result[0] ?? null
+    const result = await db.query.bookTable.findFirst({
+      where: eq(bookTable.id, id),
+      with: {
+        taggings: {
+          with: {
+            tag: true
+          }
+        }
+      }
+    })
+    return result ?? null
   },
   update: async (
     id: number,

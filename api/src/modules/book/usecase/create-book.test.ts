@@ -1,8 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createBook } from './create-book'
 import { BookRepository } from '../repository/book-repository'
+import { TagRepository } from '../repository/tag-repository'
 
 vi.mock('../repository/book-repository')
+vi.mock('../repository/tag-repository')
+vi.mock('../repository/tagging-repository')
 
 describe('createBook', () => {
   beforeEach(() => vi.clearAllMocks())
@@ -13,6 +16,11 @@ describe('createBook', () => {
       status: 'done' as const,
       rating: 5,
       finishedAt: '2026-01-01',
+      tags: [
+        {
+          name: 'React',
+        },
+      ],
     }
 
     const mockBook = {
@@ -24,9 +32,23 @@ describe('createBook', () => {
       finishedAt: '2026-01-01',
       createdAt: '2026-01-01T00:00:00.000Z',
       updatedAt: '2026-01-01T00:00:00.000Z',
+      tags: [
+        {
+          id: 1,
+          name: 'React',
+          createdAt: '2026-01-01T00:00:00.000Z',
+        },
+      ],
     }
 
     vi.mocked(BookRepository.create).mockResolvedValue(mockBook)
+    vi.mocked(BookRepository.findById).mockResolvedValue(mockBook)
+
+    vi.mocked(TagRepository.findOrCreate).mockResolvedValue({
+      id: 1,
+      name: 'React',
+      createdAt: '2026-01-01T00:00:00.000Z',
+    })
 
     const mockD1 = {} as D1Database
     const result = await createBook(data, mockD1)
@@ -45,6 +67,11 @@ describe('createBook', () => {
       status: 'unread' as const,
       rating: 3,
       finishedAt: '2026-01-01',
+      tags: [
+        {
+          name: 'React',
+        },
+      ],
     }
 
     const mockBook = {
@@ -56,9 +83,23 @@ describe('createBook', () => {
       finishedAt: null,
       createdAt: '2026-01-01T00:00:00.000Z',
       updatedAt: '2026-01-01T00:00:00.000Z',
+      tags: [
+        {
+          id: 1,
+          name: 'React',
+          createdAt: '2026-01-01T00:00:00.000Z',
+        },
+      ],
     }
 
     vi.mocked(BookRepository.create).mockResolvedValue(mockBook)
+    vi.mocked(BookRepository.findById).mockResolvedValue(mockBook)
+
+    vi.mocked(TagRepository.findOrCreate).mockResolvedValue({
+      id: 1,
+      name: 'React',
+      createdAt: '2026-01-01T00:00:00.000Z',
+    })
 
     const mockD1 = {} as D1Database
     await createBook(data, mockD1)
@@ -76,6 +117,11 @@ describe('createBook', () => {
       status: 'unread' as const,
       rating: 3,
       finishedAt: '2026-01-01',
+      tags: [
+        {
+          name: 'React',
+        },
+      ],
     }
     const mockD1 = {} as D1Database
     vi.mocked(BookRepository.create).mockRejectedValue(new Error('DB error'))
