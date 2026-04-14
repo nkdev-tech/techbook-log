@@ -30,6 +30,6 @@ export const TagRepository = {
   },
   findAll: async (d1: D1Database): Promise<SelectTag[]> => {
     const db = createDb(d1)
-    return await db.select().from(tagTable)
+    return await db.select().from(tagTable).orderBy(tagTable.name)
   },
 }

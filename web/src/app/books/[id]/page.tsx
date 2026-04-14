@@ -63,7 +63,7 @@ export default function BookDetailPage() {
         </CardAction>
       </CardHeader>
       <CardContent className="space-y-2 text-base">
-        <Tag tags={book.tags ?? []} />
+        <Tag tags={book.tags ?? []} iconSize={14} textSize="text-sm" />
         <div className="flex gap-1">
           <span>{STATUS_LABEL[book.status] ?? book.status}</span>
           {book.finishedAt && (
