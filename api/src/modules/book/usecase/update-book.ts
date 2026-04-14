@@ -1,7 +1,7 @@
 import { BookRepository } from '../repository/book-repository'
 import { toBook, type Book, type InsertBook } from '../entity/book'
-import { TagRepository } from '../repository/tag-repository'
-import { TaggingRepository } from '../repository/tagging-repository'
+import { TagRepository } from '../../tag/repository/tag-repository'
+import { TaggingRepository } from '../../tag/repository/tagging-repository'
 
 export const updateBook = async (
   id: number,

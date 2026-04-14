@@ -327,6 +327,16 @@ export type DeleteApiBooksId404 = {
   error: DeleteApiBooksId404Error;
 };
 
+export type GetApiTags200Item = {
+  /**
+     * @minimum -9007199254740991
+     * @maximum 9007199254740991
+     */
+  id: number;
+  name: string;
+  createdAt: string;
+};
+
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 
@@ -804,3 +814,104 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       > => {
       return useMutation(getDeleteApiBooksIdMutationOptions(options), queryClient);
     }
+
+export type getApiTagsResponse200 = {
+  data: GetApiTags200Item[]
+  status: 200
+}
+
+export type getApiTagsResponseSuccess = (getApiTagsResponse200) & {
+  headers: Headers;
+};
+;
+
+export type getApiTagsResponse = (getApiTagsResponseSuccess)
+
+export const getGetApiTagsUrl = () => {
+
+
+
+
+  return `http://localhost:8787/api/tags`
+}
+
+export const getApiTags = async ( options?: RequestInit): Promise<getApiTagsResponse> => {
+
+  return customFetch<getApiTagsResponse>(getGetApiTagsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiTagsQueryKey = () => {
+    return [
+    `http://localhost:8787/api/tags`
+    ] as const;
+    }
+
+
+export const getGetApiTagsQueryOptions = <TData = Awaited<ReturnType<typeof getApiTags>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTags>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiTagsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiTags>>> = ({ signal }) => getApiTags({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiTags>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetApiTagsQueryResult = NonNullable<Awaited<ReturnType<typeof getApiTags>>>
+export type GetApiTagsQueryError = unknown
+
+
+export function useGetApiTags<TData = Awaited<ReturnType<typeof getApiTags>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTags>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiTags>>,
+          TError,
+          Awaited<ReturnType<typeof getApiTags>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiTags<TData = Awaited<ReturnType<typeof getApiTags>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTags>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiTags>>,
+          TError,
+          Awaited<ReturnType<typeof getApiTags>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiTags<TData = Awaited<ReturnType<typeof getApiTags>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTags>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetApiTags<TData = Awaited<ReturnType<typeof getApiTags>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTags>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetApiTagsQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}

@@ -39,6 +39,7 @@ import {
 } from "@/components/ui/select";
 import { StarRating } from "@/components/books/StarRating";
 import { STATUS_LABEL } from "@/shared/utils/book";
+import { useGetApiTags } from "@/external/api";
 
 export type BookFormValues = {
   title: string;
@@ -92,6 +93,22 @@ export function BookForm({ defaultValues, onSubmit }: Props) {
       });
     },
   });
+
+  const { data, isLoading, error } = useGetApiTags()
+
+  if (isLoading) {
+    return (
+      <div className="w-full max-w-5xl">
+        <p className="text-lg">Loading...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    throw error;
+  }
+
+  const tags = data?.data.map((item) => item.name) ?? []
 
   return (
     <form
@@ -151,7 +168,7 @@ export function BookForm({ defaultValues, onSubmit }: Props) {
               <Combobox
                 multiple
                 autoHighlight
-                items={[]}
+                items={tags}
                 value={field.state.value.map(t => t.name)}
                 onValueChange={(values) => field.handleChange((values as string[]).map(v => ({ name: v })))}
                 inputValue={inputValue}

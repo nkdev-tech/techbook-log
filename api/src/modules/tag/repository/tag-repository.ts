@@ -20,4 +20,8 @@ export const TagRepository = {
     .innerJoin(taggingTable, eq(tagTable.id, taggingTable.tagId))
     .where(eq(taggingTable.bookId, bookId))
   },
+  findAll: async (d1: D1Database): Promise<SelectTag[]> => {
+    const db = createDb(d1)
+    return await db.select().from(tagTable)
+  }
 }

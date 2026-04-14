@@ -1,11 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createBook } from './create-book'
 import { BookRepository } from '../repository/book-repository'
-import { TagRepository } from '../repository/tag-repository'
+import { TagRepository } from '../../tag/repository/tag-repository'
 
 vi.mock('../repository/book-repository')
-vi.mock('../repository/tag-repository')
-vi.mock('../repository/tagging-repository')
+vi.mock('../../tag/repository/tag-repository')
+vi.mock('../../tag/repository/tagging-repository')
 
 describe('createBook', () => {
   beforeEach(() => vi.clearAllMocks())
