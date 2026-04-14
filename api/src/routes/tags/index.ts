@@ -22,10 +22,12 @@ const getTagsRoute = createRoute({
   },
 })
 
-const app = new OpenAPIHono<{ Bindings: Bindings }>()
-  .openapi(getTagsRoute, async (c) => {
+const app = new OpenAPIHono<{ Bindings: Bindings }>().openapi(
+  getTagsRoute,
+  async (c) => {
     const result = await getTags(c.env.DB)
     return c.json(result, 200)
-  })
+  },
+)
 
 export default app

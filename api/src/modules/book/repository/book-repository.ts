@@ -10,10 +10,10 @@ export const BookRepository = {
       with: {
         taggings: {
           with: {
-            tag: true
-          }
-        }
-      }
+            tag: true,
+          },
+        },
+      },
     })
   },
   create: async (data: InsertBook, d1: D1Database): Promise<SelectBook> => {
@@ -27,10 +27,10 @@ export const BookRepository = {
       with: {
         taggings: {
           with: {
-            tag: true
-          }
-        }
-      }
+            tag: true,
+          },
+        },
+      },
     })
     return result ?? null
   },
@@ -49,7 +49,11 @@ export const BookRepository = {
   },
   delete: async (id: number, d1: D1Database): Promise<SelectBook | null> => {
     const db = createDb(d1)
-    const result = await db.delete(bookTable).where(eq(bookTable.id, id)).returning().get()
+    const result = await db
+      .delete(bookTable)
+      .where(eq(bookTable.id, id))
+      .returning()
+      .get()
     return result ?? null
   },
 }

@@ -15,7 +15,7 @@ import {
   ComboboxList,
   ComboboxValue,
   useComboboxAnchor,
-} from "@/components/ui/combobox"
+} from "@/components/ui/combobox";
 import { Calendar } from "@/components/ui/calendar";
 import {
   Field,
@@ -64,17 +64,17 @@ const bookSchema = z.object({
   status: z.enum(["unread", "reading", "done"]),
   rating: z.number().min(1).max(5).nullable(),
   finishedAt: z.date().nullable(),
-  tags: z.array(z.object({ name: z.string().max(20) }))
+  tags: z.array(z.object({ name: z.string().max(20) })),
 });
 
 export function BookForm({ defaultValues, onSubmit }: Props) {
-  const [inputValue, setInputValue] = useState('')
-  const anchor = useComboboxAnchor()
+  const [inputValue, setInputValue] = useState("");
+  const anchor = useComboboxAnchor();
   const form = useForm({
     defaultValues: {
-      title: defaultValues.title ?? '',
-      author: defaultValues.author ?? '',
-      status: defaultValues.status ?? 'unread',
+      title: defaultValues.title ?? "",
+      author: defaultValues.author ?? "",
+      status: defaultValues.status ?? "unread",
       rating: defaultValues.rating ?? null,
       finishedAt: defaultValues.finishedAt
         ? new Date(defaultValues.finishedAt)
@@ -94,7 +94,7 @@ export function BookForm({ defaultValues, onSubmit }: Props) {
     },
   });
 
-  const { data, isLoading, error } = useGetApiTags()
+  const { data, isLoading, error } = useGetApiTags();
 
   if (isLoading) {
     return (
@@ -108,7 +108,7 @@ export function BookForm({ defaultValues, onSubmit }: Props) {
     throw error;
   }
 
-  const tags = data?.data.map((item) => item.name) ?? []
+  const tags = data?.data.map((item) => item.name) ?? [];
 
   return (
     <form
@@ -169,8 +169,12 @@ export function BookForm({ defaultValues, onSubmit }: Props) {
                 multiple
                 autoHighlight
                 items={tags}
-                value={field.state.value.map(t => t.name)}
-                onValueChange={(values) => field.handleChange((values as string[]).map(v => ({ name: v })))}
+                value={field.state.value.map((t) => t.name)}
+                onValueChange={(values) =>
+                  field.handleChange(
+                    (values as string[]).map((v) => ({ name: v }))
+                  )
+                }
                 inputValue={inputValue}
                 onInputValueChange={(value) => setInputValue(value)}
               >
@@ -183,12 +187,18 @@ export function BookForm({ defaultValues, onSubmit }: Props) {
                         ))}
                         <ComboboxChipsInput
                           onKeyDown={(e) => {
-                            if (e.key === 'Enter') {
-                              const input = inputValue.trim()
-                              if (input && !field.state.value.some(t => t.name === input)) {
-                                e.preventDefault()
-                                field.handleChange([...field.state.value, { name: input }])
-                                setInputValue('')
+                            if (e.key === "Enter") {
+                              const input = inputValue.trim();
+                              if (
+                                input &&
+                                !field.state.value.some((t) => t.name === input)
+                              ) {
+                                e.preventDefault();
+                                field.handleChange([
+                                  ...field.state.value,
+                                  { name: input },
+                                ]);
+                                setInputValue("");
                               }
                             }
                           }}

@@ -18,11 +18,15 @@ const booksSchema = createSelectSchema(bookTable, {
   updatedAt: (schema) =>
     schema.openapi({ example: '2026-01-01T00:00:00.000Z' }),
 }).extend({
-  tags: z.array(z.object({
-    id: z.number().openapi({ example: 1 }),
-    name: z.string().openapi({ example: 'React' }),
-    createdAt: z.string().openapi({ example: '2026-01-01T00:00:00.000Z' }),
-  })).optional(),
+  tags: z
+    .array(
+      z.object({
+        id: z.number().openapi({ example: 1 }),
+        name: z.string().openapi({ example: 'React' }),
+        createdAt: z.string().openapi({ example: '2026-01-01T00:00:00.000Z' }),
+      }),
+    )
+    .optional(),
 })
 
 const inputBookSchema = createInsertSchema(bookTable, {
@@ -38,15 +42,24 @@ const inputBookSchema = createInsertSchema(bookTable, {
   status: (schema) => schema.openapi({ example: 'unread' }),
   rating: (schema) => schema.min(1).max(5).openapi({ example: 3 }),
   finishedAt: (schema) => schema.openapi({ example: '2026-01-01' }),
-}).extend({
-  tags: z.array(z.object({
-    name: z.string().max(20, 'タグは20文字以内で入力してください').openapi({ example: 'React' }),
-  })).optional(),
-}).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
 })
+  .extend({
+    tags: z
+      .array(
+        z.object({
+          name: z
+            .string()
+            .max(20, 'タグは20文字以内で入力してください')
+            .openapi({ example: 'React' }),
+        }),
+      )
+      .optional(),
+  })
+  .omit({
+    id: true,
+    createdAt: true,
+    updatedAt: true,
+  })
 
 export const getBooksSchema = booksSchema.array()
 

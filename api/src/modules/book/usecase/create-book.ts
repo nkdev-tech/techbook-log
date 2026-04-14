@@ -8,10 +8,13 @@ export const createBook = async (
   d1: D1Database,
 ): Promise<Book> => {
   const { tags, ...bookData } = data
-  const book = await BookRepository.create({
-    ...bookData,
-    finishedAt: data.status === 'done' ? data.finishedAt : null,
-  }, d1)
+  const book = await BookRepository.create(
+    {
+      ...bookData,
+      finishedAt: data.status === 'done' ? data.finishedAt : null,
+    },
+    d1,
+  )
 
   if (tags && tags.length > 0) {
     for (const tagData of tags) {

@@ -1,4 +1,4 @@
-import { relations } from 'drizzle-orm';
+import { relations } from 'drizzle-orm'
 import { integer, sqliteTable, text, primaryKey } from 'drizzle-orm/sqlite-core'
 
 export const bookTable = sqliteTable('books', {
@@ -26,12 +26,18 @@ export const tagTable = sqliteTable('tags', {
     .$defaultFn(() => new Date().toISOString()),
 })
 
-export const taggingTable = sqliteTable('taggings', {
-  bookId: integer('book_id').notNull().references(() => bookTable.id, { onDelete: 'cascade' }),
-  tagId: integer('tag_id').notNull().references(() => tagTable.id, { onDelete: 'cascade' }),
-}, (table) => [
-  primaryKey({ columns: [table.bookId, table.tagId] }),
-])
+export const taggingTable = sqliteTable(
+  'taggings',
+  {
+    bookId: integer('book_id')
+      .notNull()
+      .references(() => bookTable.id, { onDelete: 'cascade' }),
+    tagId: integer('tag_id')
+      .notNull()
+      .references(() => tagTable.id, { onDelete: 'cascade' }),
+  },
+  (table) => [primaryKey({ columns: [table.bookId, table.tagId] })],
+)
 
 export const booksRelations = relations(bookTable, ({ many }) => ({
   taggings: many(taggingTable),
@@ -49,5 +55,5 @@ export const taggingRelations = relations(taggingTable, ({ one }) => ({
   tag: one(tagTable, {
     fields: [taggingTable.tagId],
     references: [tagTable.id],
-  })
+  }),
 }))

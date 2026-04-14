@@ -16,15 +16,17 @@ describe('getBooks', () => {
         finishedAt: '2026-01-01',
         createdAt: '2026-01-01T00:00:00.000Z',
         updatedAt: '2026-01-01T00:00:00.000Z',
-        taggings: [{
-          bookId: 1,
-          tagId: 1,
-          tag: {
-            id: 1,
-            name: 'React',
-            createdAt: '2026-01-01T00:00:00.000Z',
+        taggings: [
+          {
+            bookId: 1,
+            tagId: 1,
+            tag: {
+              id: 1,
+              name: 'React',
+              createdAt: '2026-01-01T00:00:00.000Z',
+            },
           },
-        }],
+        ],
       },
       {
         id: 2,
@@ -63,11 +65,13 @@ describe('getBooks', () => {
         finishedAt: '2026-01-01',
         createdAt: '2026-01-01T00:00:00.000Z',
         updatedAt: '2026-01-01T00:00:00.000Z',
-        tags: [{
-          id: 1,
-          name: 'React',
-          createdAt: '2026-01-01T00:00:00.000Z',
-        }],
+        tags: [
+          {
+            id: 1,
+            name: 'React',
+            createdAt: '2026-01-01T00:00:00.000Z',
+          },
+        ],
       },
       {
         id: 2,

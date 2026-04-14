@@ -9,10 +9,14 @@ export const updateBook = async (
   d1: D1Database,
 ): Promise<Book | null> => {
   const { tags, ...bookData } = data
-  const book = await BookRepository.update(id, {
-    ...bookData,
-    finishedAt: data.status === 'done' ? data.finishedAt : null,
-  }, d1)
+  const book = await BookRepository.update(
+    id,
+    {
+      ...bookData,
+      finishedAt: data.status === 'done' ? data.finishedAt : null,
+    },
+    d1,
+  )
 
   if (book === null) return null
 

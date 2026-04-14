@@ -2,7 +2,7 @@ import { createSchemaFactory } from 'drizzle-zod'
 import { z } from '@hono/zod-openapi'
 import { tagTable } from '../../db/schema'
 
-const { createInsertSchema, createSelectSchema } = createSchemaFactory({
+const { createSelectSchema } = createSchemaFactory({
   zodInstance: z,
 })
 

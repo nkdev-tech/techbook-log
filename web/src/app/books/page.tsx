@@ -54,7 +54,9 @@ export default function BooksPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-1">
-                <div className="overflow-hidden max-h-[2.1rem]"><Tag tags={book.tags ?? []} /></div>
+                <div className="overflow-hidden max-h-[2.1rem]">
+                  <Tag tags={book.tags ?? []} />
+                </div>
                 <div>{STATUS_LABEL[book.status] ?? book.status}</div>
                 <StarRating rating={book.rating} size={16} disabled={true} />
               </CardContent>
