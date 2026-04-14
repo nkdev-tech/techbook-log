@@ -18,15 +18,13 @@ const booksSchema = createSelectSchema(bookTable, {
   updatedAt: (schema) =>
     schema.openapi({ example: '2026-01-01T00:00:00.000Z' }),
 }).extend({
-  tags: z
-    .array(
-      z.object({
-        id: z.number().openapi({ example: 1 }),
-        name: z.string().openapi({ example: 'React' }),
-        createdAt: z.string().openapi({ example: '2026-01-01T00:00:00.000Z' }),
-      }),
-    )
-    .optional(),
+  tags: z.array(
+    z.object({
+      id: z.number().openapi({ example: 1 }),
+      name: z.string().openapi({ example: 'React' }),
+      createdAt: z.string().openapi({ example: '2026-01-01T00:00:00.000Z' }),
+    }),
+  ),
 })
 
 const inputBookSchema = createInsertSchema(bookTable, {

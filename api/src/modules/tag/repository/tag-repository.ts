@@ -6,12 +6,12 @@ import { eq } from 'drizzle-orm'
 export const TagRepository = {
   findOrCreate: async (data: InsertTag, d1: D1Database): Promise<SelectTag> => {
     const db = createDb(d1)
-    const result = await db
-      .select()
-      .from(tagTable)
-      .where(eq(tagTable.name, data.name))
-    if (result[0]) return result[0]
-    return await db.insert(tagTable).values(data).returning().get()
+    return await db
+      .insert(tagTable)
+      .values(data)
+      .onConflictDoUpdate({ target: tagTable.name, set: { name: data.name } })
+      .returning()
+      .get()
   },
   findByBookId: async (
     bookId: number,

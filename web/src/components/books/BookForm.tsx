@@ -185,7 +185,12 @@ export function BookForm({ defaultValues, onSubmit }: Props) {
                     {(values) => (
                       <Fragment>
                         {(values as string[]).map((value) => (
-                          <ComboboxChip key={value} className={cn(getTagColor(value))}>{value}</ComboboxChip>
+                          <ComboboxChip
+                            key={value}
+                            className={cn(getTagColor(value))}
+                          >
+                            {value}
+                          </ComboboxChip>
                         ))}
                         <ComboboxChipsInput
                           onKeyDown={(e) => {

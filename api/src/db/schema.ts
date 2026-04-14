@@ -35,9 +35,7 @@ export const taggingTable = sqliteTable(
     tagId: integer('tag_id')
       .notNull()
       .references(() => tagTable.id, { onDelete: 'cascade' }),
-    order: integer('order')
-      .notNull()
-      .default(0),
+    order: integer('order').notNull().default(0),
   },
   (table) => [primaryKey({ columns: [table.bookId, table.tagId] })],
 )

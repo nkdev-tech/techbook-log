@@ -10,7 +10,7 @@ export type SelectBook = typeof bookTable.$inferSelect & {
 }
 
 export type Book = typeof bookTable.$inferSelect & {
-  tags?: SelectTag[]
+  tags: SelectTag[]
 }
 
 export type InsertBook = typeof bookTable.$inferInsert & {

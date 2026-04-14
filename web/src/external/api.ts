@@ -58,7 +58,7 @@ export type GetApiBooks200Item = {
   finishedAt: string | null;
   createdAt: string;
   updatedAt: string;
-  tags?: GetApiBooks200ItemTagsItem[];
+  tags: GetApiBooks200ItemTagsItem[];
 };
 
 export type PostApiBooksBodyStatus = typeof PostApiBooksBodyStatus[keyof typeof PostApiBooksBodyStatus];
@@ -129,7 +129,7 @@ export type PostApiBooks201 = {
   finishedAt: string | null;
   createdAt: string;
   updatedAt: string;
-  tags?: PostApiBooks201TagsItem[];
+  tags: PostApiBooks201TagsItem[];
 };
 
 export type PostApiBooks400Error = {
@@ -176,7 +176,7 @@ export type GetApiBooksId200 = {
   finishedAt: string | null;
   createdAt: string;
   updatedAt: string;
-  tags?: GetApiBooksId200TagsItem[];
+  tags: GetApiBooksId200TagsItem[];
 };
 
 export type GetApiBooksId404Error = {
@@ -257,7 +257,7 @@ export type PatchApiBooksId200 = {
   finishedAt: string | null;
   createdAt: string;
   updatedAt: string;
-  tags?: PatchApiBooksId200TagsItem[];
+  tags: PatchApiBooksId200TagsItem[];
 };
 
 export type PatchApiBooksId400Error = {
@@ -314,7 +314,7 @@ export type DeleteApiBooksId200 = {
   finishedAt: string | null;
   createdAt: string;
   updatedAt: string;
-  tags?: DeleteApiBooksId200TagsItem[];
+  tags: DeleteApiBooksId200TagsItem[];
 };
 
 export type DeleteApiBooksId404Error = {

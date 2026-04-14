@@ -21,19 +21,21 @@ const colors = [
   "bg-cyan-100 text-cyan-700",
   "bg-lime-100 text-lime-700",
   "bg-emerald-100 text-emerald-700",
-]
+];
 
 export const getTagColor = (name: string) => {
-  const hash = name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)
-  return colors[hash % colors.length]
-}
+  const hash = name
+    .split("")
+    .reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  return colors[hash % colors.length];
+};
 
 export function Tag({ tags, iconSize, textSize }: Props) {
   return (
     <div className="flex flex-wrap gap-1">
-      {tags.map((tag, i) => (
+      {tags.map((tag) => (
         <Badge
-          key={`tag-${i}`}
+          key={tag.name}
           variant="secondary"
           className={cn("my-1 p-3 text-sm", textSize, getTagColor(tag.name))}
         >
