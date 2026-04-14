@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card";
 import { STATUS_LABEL } from "@/shared/utils/book";
 import { StarRating } from "@/components/books/StarRating";
+import { Tag } from "@/components/books/Tag";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 
@@ -41,6 +42,7 @@ export default function BooksPage() {
           return (
             <Card
               key={book.id}
+              className="gap-1"
               onClick={() => router.push(`/books/${book.id}`)}
             >
               <CardHeader>
@@ -52,6 +54,7 @@ export default function BooksPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-1">
+                <div className="overflow-hidden max-h-[2.1rem]"><Tag tags={book.tags ?? []} /></div>
                 <div>{STATUS_LABEL[book.status] ?? book.status}</div>
                 <StarRating rating={book.rating} size={16} disabled={true} />
               </CardContent>

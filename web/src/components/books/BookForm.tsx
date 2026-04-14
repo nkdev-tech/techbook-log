@@ -1,8 +1,21 @@
 import { format } from "date-fns";
 import z from "zod";
+import { Fragment, useState } from "react";
 import { useForm } from "@tanstack/react-form";
 import { ChevronDownIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  Combobox,
+  ComboboxChip,
+  ComboboxChips,
+  ComboboxChipsInput,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxItem,
+  ComboboxList,
+  ComboboxValue,
+  useComboboxAnchor,
+} from "@/components/ui/combobox"
 import { Calendar } from "@/components/ui/calendar";
 import {
   Field,
@@ -33,10 +46,11 @@ export type BookFormValues = {
   status: "unread" | "reading" | "done";
   rating: number | null;
   finishedAt: string | null;
+  tags: { name: string }[];
 };
 
 type Props = {
-  defaultValues: BookFormValues;
+  defaultValues: Partial<BookFormValues>;
   onSubmit: (value: BookFormValues) => void;
 };
 
@@ -49,18 +63,22 @@ const bookSchema = z.object({
   status: z.enum(["unread", "reading", "done"]),
   rating: z.number().min(1).max(5).nullable(),
   finishedAt: z.date().nullable(),
+  tags: z.array(z.object({ name: z.string().max(20) }))
 });
 
 export function BookForm({ defaultValues, onSubmit }: Props) {
+  const [inputValue, setInputValue] = useState('')
+  const anchor = useComboboxAnchor()
   const form = useForm({
     defaultValues: {
-      title: defaultValues.title,
-      author: defaultValues.author,
-      status: defaultValues.status,
-      rating: defaultValues.rating,
+      title: defaultValues.title ?? '',
+      author: defaultValues.author ?? '',
+      status: defaultValues.status ?? 'unread',
+      rating: defaultValues.rating ?? null,
       finishedAt: defaultValues.finishedAt
         ? new Date(defaultValues.finishedAt)
         : null,
+      tags: defaultValues.tags ?? [],
     },
     validators: {
       onSubmit: bookSchema,
@@ -114,6 +132,65 @@ export function BookForm({ defaultValues, onSubmit }: Props) {
                 value={field.state.value}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
+              {!field.state.meta.isValid && (
+                <FieldError>
+                  {field.state.meta.errors
+                    .map((e) => (typeof e === "string" ? e : e?.message))
+                    .join(",")}
+                </FieldError>
+              )}
+            </Field>
+          )}
+        </form.Field>
+        <form.Field name="tags">
+          {(field) => (
+            <Field>
+              <FieldLabel className="font-semibold text-muted-foreground">
+                タグ
+              </FieldLabel>
+              <Combobox
+                multiple
+                autoHighlight
+                items={[]}
+                value={field.state.value.map(t => t.name)}
+                onValueChange={(values) => field.handleChange((values as string[]).map(v => ({ name: v })))}
+                inputValue={inputValue}
+                onInputValueChange={(value) => setInputValue(value)}
+              >
+                <ComboboxChips ref={anchor}>
+                  <ComboboxValue>
+                    {(values) => (
+                      <Fragment>
+                        {(values as string[]).map((value) => (
+                          <ComboboxChip key={value}>{value}</ComboboxChip>
+                        ))}
+                        <ComboboxChipsInput
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              const input = inputValue.trim()
+                              if (input && !field.state.value.some(t => t.name === input)) {
+                                e.preventDefault()
+                                field.handleChange([...field.state.value, { name: input }])
+                                setInputValue('')
+                              }
+                            }
+                          }}
+                        />
+                      </Fragment>
+                    )}
+                  </ComboboxValue>
+                </ComboboxChips>
+                <ComboboxContent anchor={anchor}>
+                  <ComboboxEmpty></ComboboxEmpty>
+                  <ComboboxList>
+                    {(item) => (
+                      <ComboboxItem key={item} value={item}>
+                        {item}
+                      </ComboboxItem>
+                    )}
+                  </ComboboxList>
+                </ComboboxContent>
+              </Combobox>
               {!field.state.meta.isValid && (
                 <FieldError>
                   {field.state.meta.errors
