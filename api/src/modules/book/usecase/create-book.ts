@@ -17,9 +17,9 @@ export const createBook = async (
   )
 
   if (tags && tags.length > 0) {
-    for (const tagData of tags) {
+    for (const [index, tagData] of tags.entries()) {
       const tag = await TagRepository.findOrCreate(tagData, d1)
-      await TaggingRepository.create(book.id, tag.id, d1)
+      await TaggingRepository.create(book.id, tag.id, index, d1)
     }
   }
 

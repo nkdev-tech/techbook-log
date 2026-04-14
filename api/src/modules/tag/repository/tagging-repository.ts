@@ -6,10 +6,11 @@ export const TaggingRepository = {
   create: async (
     bookId: number,
     tagId: number,
+    order: number,
     d1: D1Database,
   ): Promise<void> => {
     const db = createDb(d1)
-    await db.insert(taggingTable).values({ bookId, tagId })
+    await db.insert(taggingTable).values({ bookId, tagId, order })
   },
   deleteByBookId: async (bookId: number, d1: D1Database): Promise<void> => {
     const db = createDb(d1)

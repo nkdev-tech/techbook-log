@@ -9,6 +9,7 @@ export const BookRepository = {
     return await db.query.bookTable.findMany({
       with: {
         taggings: {
+          orderBy: (taggings, { asc }) => [asc(taggings.order)],
           with: {
             tag: true,
           },
@@ -26,6 +27,7 @@ export const BookRepository = {
       where: eq(bookTable.id, id),
       with: {
         taggings: {
+          orderBy: (taggings, { asc }) => [asc(taggings.order)],
           with: {
             tag: true,
           },
