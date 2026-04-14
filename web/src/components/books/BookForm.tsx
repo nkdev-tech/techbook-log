@@ -40,6 +40,8 @@ import {
 import { StarRating } from "@/components/books/StarRating";
 import { STATUS_LABEL } from "@/shared/utils/book";
 import { useGetApiTags } from "@/external/api";
+import { getTagColor } from "./Tag";
+import { cn } from "@/lib/utils";
 
 export type BookFormValues = {
   title: string;
@@ -183,7 +185,7 @@ export function BookForm({ defaultValues, onSubmit }: Props) {
                     {(values) => (
                       <Fragment>
                         {(values as string[]).map((value) => (
-                          <ComboboxChip key={value}>{value}</ComboboxChip>
+                          <ComboboxChip key={value} className={cn(getTagColor(value))}>{value}</ComboboxChip>
                         ))}
                         <ComboboxChipsInput
                           onKeyDown={(e) => {
