@@ -16,13 +16,15 @@ describe('getBooks', () => {
         finishedAt: '2026-01-01',
         createdAt: '2026-01-01T00:00:00.000Z',
         updatedAt: '2026-01-01T00:00:00.000Z',
-        tags: [
-          {
+        taggings: [{
+          bookId: 1,
+          tagId: 1,
+          tag: {
             id: 1,
             name: 'React',
             createdAt: '2026-01-01T00:00:00.000Z',
           },
-        ],
+        }],
       },
       {
         id: 2,
@@ -51,7 +53,45 @@ describe('getBooks', () => {
     const mockD1 = {} as D1Database
     const result = await getBooks(mockD1)
 
-    expect(result).toEqual(mockBooks)
+    expect(result).toEqual([
+      {
+        id: 1,
+        title: 'タイトル1',
+        author: '著者1',
+        status: 'unread' as const,
+        rating: 3,
+        finishedAt: '2026-01-01',
+        createdAt: '2026-01-01T00:00:00.000Z',
+        updatedAt: '2026-01-01T00:00:00.000Z',
+        tags: [{
+          id: 1,
+          name: 'React',
+          createdAt: '2026-01-01T00:00:00.000Z',
+        }],
+      },
+      {
+        id: 2,
+        title: 'タイトル2',
+        author: '著者2',
+        status: 'reading' as const,
+        rating: 4,
+        finishedAt: '2026-01-02',
+        createdAt: '2026-01-01T00:00:00.000Z',
+        updatedAt: '2026-01-01T00:00:00.000Z',
+        tags: [],
+      },
+      {
+        id: 3,
+        title: 'タイトル3',
+        author: '著者3',
+        status: 'done' as const,
+        rating: 5,
+        finishedAt: '2026-01-03',
+        createdAt: '2026-01-01T00:00:00.000Z',
+        updatedAt: '2026-01-01T00:00:00.000Z',
+        tags: [],
+      },
+    ])
     expect(BookRepository.findAll).toHaveBeenCalledTimes(1)
   })
 })

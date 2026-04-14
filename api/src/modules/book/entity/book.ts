@@ -8,6 +8,16 @@ export type SelectBook = typeof bookTable.$inferSelect & {
     tag: SelectTag
   }[]
 }
+
+export type Book = typeof bookTable.$inferSelect & {
+  tags?: SelectTag[]
+}
+
 export type InsertBook = typeof bookTable.$inferInsert & {
   tags?: { name: string }[]
+}
+
+export function toBook(raw: SelectBook): Book {
+  const { taggings, ...bookData } = raw
+  return { ...bookData, tags: taggings?.map((t) => t.tag) ?? [] }
 }

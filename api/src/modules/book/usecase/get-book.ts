@@ -1,9 +1,10 @@
 import { BookRepository } from '../repository/book-repository'
-import { type SelectBook } from '../entity/book'
+import { toBook, type Book } from '../entity/book'
 
 export const getBook = async (
   id: number,
   d1: D1Database,
-): Promise<SelectBook | null> => {
-  return await BookRepository.findById(id, d1)
+): Promise<Book | null> => {
+  const book = await BookRepository.findById(id, d1)
+  return book ? toBook(book) : null
 }

@@ -1,12 +1,12 @@
 import { BookRepository } from '../repository/book-repository'
-import { type InsertBook, type SelectBook } from '../entity/book'
+import { toBook, type Book, type InsertBook } from '../entity/book'
 import { TagRepository } from '../repository/tag-repository'
 import { TaggingRepository } from '../repository/tagging-repository'
 
 export const createBook = async (
   data: InsertBook,
   d1: D1Database,
-): Promise<SelectBook> => {
+): Promise<Book> => {
   const { tags, ...bookData } = data
   const book = await BookRepository.create({
     ...bookData,
@@ -20,5 +20,6 @@ export const createBook = async (
     }
   }
 
-  return await BookRepository.findById(book.id, d1) as SelectBook
+  const raw = await BookRepository.findById(book.id, d1)
+  return toBook(raw!)
 }
