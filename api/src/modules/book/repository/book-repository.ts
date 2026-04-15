@@ -1,21 +1,45 @@
-import { bookTable } from '../../../db/schema'
+import { bookTable, taggingTable, tagTable } from '../../../db/schema'
 import { createDb } from '../../../db'
 import { toBook, type Book, type InsertBook } from '../entity/book'
-import { eq } from 'drizzle-orm'
+import { eq, inArray, sql } from 'drizzle-orm'
 
 export const BookRepository = {
-  findAll: async (d1: D1Database): Promise<Book[]> => {
+  findAll: async (query: string[], d1: D1Database): Promise<Book[]> => {
     const db = createDb(d1)
+
+    if (query.length === 0) {
+      const rows = await db.query.bookTable.findMany({
+        with: {
+          taggings: {
+            orderBy: (taggings, { asc }) => [asc(taggings.order)],
+            with: { tag: true },
+          },
+        },
+      })
+      return rows.map(toBook)
+    }
+
+    const bookIds = await db
+      .select({ bookId: taggingTable.bookId })
+      .from(taggingTable)
+      .innerJoin(tagTable, eq(taggingTable.tagId, tagTable.id))
+      .where(inArray(tagTable.name, query))
+      .groupBy(taggingTable.bookId)
+      .having(sql`COUNT(DISTINCT ${tagTable.name}) = ${query.length}`)
+
     const rows = await db.query.bookTable.findMany({
+      where: inArray(
+        bookTable.id,
+        bookIds.map((r) => r.bookId),
+      ),
       with: {
         taggings: {
           orderBy: (taggings, { asc }) => [asc(taggings.order)],
-          with: {
-            tag: true,
-          },
+          with: { tag: true },
         },
       },
     })
+
     return rows.map(toBook)
   },
   create: async (data: InsertBook, d1: D1Database): Promise<Book> => {

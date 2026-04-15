@@ -24,6 +24,10 @@ import type {
 } from '@tanstack/react-query';
 
 import { customFetch } from './custom-fetch';
+export type GetApiBooksParams = {
+tags?: string;
+};
+
 export type GetApiBooks200ItemStatus = typeof GetApiBooks200ItemStatus[keyof typeof GetApiBooks200ItemStatus];
 
 
@@ -353,17 +357,24 @@ export type getApiBooksResponseSuccess = (getApiBooksResponse200) & {
 
 export type getApiBooksResponse = (getApiBooksResponseSuccess)
 
-export const getGetApiBooksUrl = () => {
+export const getGetApiBooksUrl = (params?: GetApiBooksParams,) => {
+  const normalizedParams = new URLSearchParams();
 
+  Object.entries(params || {}).forEach(([key, value]) => {
 
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
 
+  const stringifiedParams = normalizedParams.toString();
 
-  return `http://localhost:8787/api/books`
+  return stringifiedParams.length > 0 ? `http://localhost:8787/api/books?${stringifiedParams}` : `http://localhost:8787/api/books`
 }
 
-export const getApiBooks = async ( options?: RequestInit): Promise<getApiBooksResponse> => {
+export const getApiBooks = async (params?: GetApiBooksParams, options?: RequestInit): Promise<getApiBooksResponse> => {
 
-  return customFetch<getApiBooksResponse>(getGetApiBooksUrl(),
+  return customFetch<getApiBooksResponse>(getGetApiBooksUrl(params),
   {
     ...options,
     method: 'GET'
@@ -376,23 +387,23 @@ export const getApiBooks = async ( options?: RequestInit): Promise<getApiBooksRe
 
 
 
-export const getGetApiBooksQueryKey = () => {
+export const getGetApiBooksQueryKey = (params?: GetApiBooksParams,) => {
     return [
-    `http://localhost:8787/api/books`
+    `http://localhost:8787/api/books`, ...(params ? [params] : [])
     ] as const;
     }
 
 
-export const getGetApiBooksQueryOptions = <TData = Awaited<ReturnType<typeof getApiBooks>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBooks>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+export const getGetApiBooksQueryOptions = <TData = Awaited<ReturnType<typeof getApiBooks>>, TError = unknown>(params?: GetApiBooksParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBooks>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetApiBooksQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getGetApiBooksQueryKey(params);
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiBooks>>> = ({ signal }) => getApiBooks({ signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiBooks>>> = ({ signal }) => getApiBooks(params, { signal, ...requestOptions });
 
 
 
@@ -406,7 +417,7 @@ export type GetApiBooksQueryError = unknown
 
 
 export function useGetApiBooks<TData = Awaited<ReturnType<typeof getApiBooks>>, TError = unknown>(
-  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBooks>>, TError, TData>> & Pick<
+ params: undefined |  GetApiBooksParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBooks>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getApiBooks>>,
           TError,
@@ -416,7 +427,7 @@ export function useGetApiBooks<TData = Awaited<ReturnType<typeof getApiBooks>>, 
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetApiBooks<TData = Awaited<ReturnType<typeof getApiBooks>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBooks>>, TError, TData>> & Pick<
+ params?: GetApiBooksParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBooks>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getApiBooks>>,
           TError,
@@ -426,16 +437,16 @@ export function useGetApiBooks<TData = Awaited<ReturnType<typeof getApiBooks>>, 
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetApiBooks<TData = Awaited<ReturnType<typeof getApiBooks>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBooks>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ params?: GetApiBooksParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBooks>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetApiBooks<TData = Awaited<ReturnType<typeof getApiBooks>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBooks>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ params?: GetApiBooksParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBooks>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getGetApiBooksQueryOptions(options)
+  const queryOptions = getGetApiBooksQueryOptions(params,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

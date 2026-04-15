@@ -1,6 +1,7 @@
 "use client";
 
 import { useGetApiBooks } from "@/external/api";
+import { keepPreviousData } from "@tanstack/react-query";
 import {
   Card,
   CardContent,
@@ -10,13 +11,19 @@ import {
 } from "@/components/ui/card";
 import { STATUS_LABEL } from "@/shared/utils/book";
 import { StarRating } from "@/components/books/StarRating";
+import { SearchField } from "@/components/books/SearchField";
 import { Tag } from "@/components/books/Tag";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function BooksPage() {
   const router = useRouter();
-  const { data, isLoading, error } = useGetApiBooks();
+  const searchParams = useSearchParams();
+  const tagsParam = searchParams.get("tags") ?? undefined;
+  const { data, isLoading, error } = useGetApiBooks(
+    tagsParam ? { tags: tagsParam } : undefined,
+    { query: { placeholderData: keepPreviousData } }
+  );
 
   if (isLoading) {
     return (
@@ -32,8 +39,13 @@ export default function BooksPage() {
 
   return (
     <div className="w-full">
-      <div className="flex justify-end mt-1 mb-3 h-[2rem]">
-        <Button type="button" onClick={() => router.push("/books/new")}>
+      <div className="flex justify-between item-center mt-1 mb-3 h-[2rem]">
+        <SearchField />
+        <Button
+          type="button"
+          className="shrink-0 ml-2"
+          onClick={() => router.push("/books/new")}
+        >
           新規登録
         </Button>
       </div>

@@ -45,9 +45,33 @@ describe('getBooks', () => {
     vi.mocked(BookRepository.findAll).mockResolvedValue(mockBooks)
 
     const mockD1 = {} as D1Database
-    const result = await getBooks(mockD1)
+    const result = await getBooks([], mockD1)
 
     expect(result).toEqual(mockBooks)
     expect(BookRepository.findAll).toHaveBeenCalledTimes(1)
+  })
+
+  it('can get books filtered by tags', async () => {
+    const mockBooks = [
+      {
+        id: 1,
+        title: 'タイトル1',
+        author: '著者1',
+        status: 'unread' as const,
+        rating: 3,
+        finishedAt: '2026-01-01',
+        createdAt: '2026-01-01T00:00:00.000Z',
+        updatedAt: '2026-01-01T00:00:00.000Z',
+        tags: [{ id: 1, name: 'React', createdAt: '2026-01-01T00:00:00.000Z' }],
+      },
+    ]
+
+    vi.mocked(BookRepository.findAll).mockResolvedValue(mockBooks)
+
+    const mockD1 = {} as D1Database
+    const result = await getBooks(['React'], mockD1)
+
+    expect(result).toEqual(mockBooks)
+    expect(BookRepository.findAll).toHaveBeenCalledWith(['React'], mockD1)
   })
 })
