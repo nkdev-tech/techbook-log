@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useGetApiTags } from "@/external/api";
 import { getTagColor } from "./Tag";
@@ -23,7 +22,7 @@ export function SearchField() {
   const searchParams = useSearchParams();
 
   const anchor = useComboboxAnchor();
-  const { data, isLoading, error } = useGetApiTags();
+  const { data, error } = useGetApiTags();
   const tags = data?.data.map((item) => item.name) ?? [];
   const selectedTags =
     searchParams.get("tags")?.split(",").filter(Boolean) ?? [];
@@ -38,20 +37,12 @@ export function SearchField() {
     router.push(`/books?${params.toString()}`);
   };
 
-  if (isLoading) {
-    return (
-      <div className="w-full max-w-5xl">
-        <p className="text-lg">Loading...</p>
-      </div>
-    );
-  }
-
   if (error) {
     throw error;
   }
 
   return (
-    <div className="flex w-full item-center flex-1 min-w-0">
+    <div className="flex flex-1 min-w-0">
       <Combobox
         multiple
         autoHighlight
@@ -73,20 +64,18 @@ export function SearchField() {
             <ComboboxValue>
               {(values) => (
                 <div className="flex gap-1">
-                  <Fragment>
-                    {(values as string[]).map((value) => (
-                      <ComboboxChip
-                        key={value}
-                        className={cn(getTagColor(value))}
-                      >
-                        {value}
-                      </ComboboxChip>
-                    ))}
-                    <ComboboxChipsInput
-                      className="!min-w-0 !flex-none"
-                      size={1}
-                    />
-                  </Fragment>
+                  {(values as string[]).map((value) => (
+                    <ComboboxChip
+                      key={value}
+                      className={cn(getTagColor(value))}
+                    >
+                      {value}
+                    </ComboboxChip>
+                  ))}
+                  <ComboboxChipsInput
+                    className="!min-w-0 !flex-none"
+                    size={1}
+                  />
                 </div>
               )}
             </ComboboxValue>

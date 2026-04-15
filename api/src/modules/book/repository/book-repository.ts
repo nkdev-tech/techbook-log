@@ -27,6 +27,8 @@ export const BookRepository = {
       .groupBy(taggingTable.bookId)
       .having(sql`COUNT(DISTINCT ${tagTable.name}) = ${query.length}`)
 
+    if (bookIds.length === 0) return []
+
     const rows = await db.query.bookTable.findMany({
       where: inArray(
         bookTable.id,

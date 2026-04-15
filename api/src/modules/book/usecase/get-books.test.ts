@@ -48,7 +48,7 @@ describe('getBooks', () => {
     const result = await getBooks([], mockD1)
 
     expect(result).toEqual(mockBooks)
-    expect(BookRepository.findAll).toHaveBeenCalledTimes(1)
+    expect(BookRepository.findAll).toHaveBeenCalledWith([], mockD1)
   })
 
   it('can get books filtered by tags', async () => {
