@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { useGetApiBooks } from "@/external/api";
 import { keepPreviousData } from "@tanstack/react-query";
 import {
@@ -16,7 +17,7 @@ import { Tag } from "@/components/books/Tag";
 import { Button } from "@/components/ui/button";
 import { useRouter, useSearchParams } from "next/navigation";
 
-export default function BooksPage() {
+function BooksContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const tagsParam = searchParams.get("tags") ?? undefined;
@@ -81,5 +82,13 @@ export default function BooksPage() {
         })}
       </div>
     </div>
+  );
+}
+
+export default function BooksPage() {
+  return (
+    <Suspense>
+      <BooksContent />
+    </Suspense>
   );
 }
