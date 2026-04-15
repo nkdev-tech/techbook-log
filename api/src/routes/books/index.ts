@@ -13,6 +13,7 @@ import {
   getBookSchema,
   getBooksSchema,
   ParamsSchema,
+  querySchema,
   updateBookReqSchema,
   updateBookResSchema,
 } from './schema'
@@ -24,6 +25,9 @@ type Bindings = {
 const getBooksRoute = createRoute({
   method: 'get',
   path: '/',
+  request: {
+    query: querySchema,
+  },
   responses: {
     200: {
       content: {
@@ -163,7 +167,9 @@ const deleteBookRoute = createRoute({
 
 const app = new OpenAPIHono<{ Bindings: Bindings }>()
   .openapi(getBooksRoute, async (c) => {
-    const result = await getBooks(c.env.DB)
+    const { tags } = c.req.valid('query')
+    const tagArray = tags ? tags.split(',').filter(Boolean) : []
+    const result = await getBooks(tagArray, c.env.DB)
     return c.json(result, 200)
   })
   .openapi(createBookRoute, async (c) => {

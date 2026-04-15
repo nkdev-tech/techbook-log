@@ -86,6 +86,10 @@ export const ParamsSchema = z.object({
     }),
 })
 
+export const querySchema = z.object({
+  tags: z.string().optional().openapi({ example: 'React,Next.js' }),
+})
+
 export const errorResBodySchema = z.object({
   success: z.boolean(),
   error: z.object({
