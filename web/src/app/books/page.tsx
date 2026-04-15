@@ -16,6 +16,7 @@ import { SearchField } from "@/components/books/SearchField";
 import { Tag } from "@/components/books/Tag";
 import { Button } from "@/components/ui/button";
 import { useRouter, useSearchParams } from "next/navigation";
+import { BookOpen, SearchX } from "lucide-react";
 
 function BooksContent() {
   const router = useRouter();
@@ -50,37 +51,57 @@ function BooksContent() {
           新規登録
         </Button>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {data?.data.map((book) => {
-          return (
-            <Card
-              key={book.id}
-              className="gap-1"
-              onClick={() => router.push(`/books/${book.id}`)}
-            >
-              <CardHeader>
-                <CardTitle className="text-lg font-bold truncate">
-                  {book.title}
-                </CardTitle>
-                <CardDescription className="text-xs truncate">
-                  {book.author}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-1">
-                <div className="overflow-hidden max-h-[2.1rem]">
-                  <Tag
-                    tags={book.tags ?? []}
-                    iconSize={12}
-                    textSize="text-xs"
-                  />
-                </div>
-                <div>{STATUS_LABEL[book.status] ?? book.status}</div>
-                <StarRating rating={book.rating} size={16} disabled={true} />
-              </CardContent>
-            </Card>
-          );
-        })}
-      </div>
+      {data?.data.length === 0 ? (
+        <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
+          {tagsParam ? (
+            <>
+              <SearchX size={80} className="text-muted-foreground" />
+              <p className="text-2xl font-bold text-muted-foreground">
+                一致する本が見つかりませんでした
+              </p>
+            </>
+          ) : (
+            <>
+              <BookOpen size={80} className="text-muted-foreground" />
+              <p className="text-2xl font-bold text-muted-foreground">
+                本が登録されていません
+              </p>
+            </>
+          )}
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {data?.data.map((book) => {
+            return (
+              <Card
+                key={book.id}
+                className="gap-1"
+                onClick={() => router.push(`/books/${book.id}`)}
+              >
+                <CardHeader>
+                  <CardTitle className="text-lg font-bold truncate">
+                    {book.title}
+                  </CardTitle>
+                  <CardDescription className="text-xs truncate">
+                    {book.author}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-1">
+                  <div className="overflow-hidden max-h-[2.1rem]">
+                    <Tag
+                      tags={book.tags ?? []}
+                      iconSize={12}
+                      textSize="text-xs"
+                    />
+                  </div>
+                  <div>{STATUS_LABEL[book.status] ?? book.status}</div>
+                  <StarRating rating={book.rating} size={16} disabled={true} />
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
