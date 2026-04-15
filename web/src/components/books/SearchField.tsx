@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useGetApiTags } from "@/external/api";
 import { getTagColor } from "./Tag";
@@ -22,6 +23,19 @@ export function SearchField() {
   const searchParams = useSearchParams();
 
   const anchor = useComboboxAnchor();
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const handler = (e: WheelEvent) => {
+      if (e.deltaX !== 0) return;
+      e.preventDefault();
+      el.scrollLeft += e.deltaY;
+    };
+    el.addEventListener("wheel", handler, { passive: false });
+    return () => el.removeEventListener("wheel", handler);
+  }, []);
   const { data, error } = useGetApiTags();
   const tags = data?.data.map((item) => item.name) ?? [];
   const selectedTags =
@@ -56,10 +70,8 @@ export function SearchField() {
         >
           <Search size={18} className="shrink-0 text-muted-foreground" />
           <div
+            ref={scrollRef}
             className="overflow-x-auto flex-1 flex items-center [&::-webkit-scrollbar]:hidden"
-            onWheel={(e) => {
-              e.currentTarget.scrollLeft += e.deltaY;
-            }}
           >
             <ComboboxValue>
               {(values) => (
