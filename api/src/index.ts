@@ -1,6 +1,7 @@
 import { OpenAPIHono } from '@hono/zod-openapi'
 import { swaggerUI } from '@hono/swagger-ui'
 import books from './routes/books'
+import tags from './routes/tags'
 import { cors } from 'hono/cors'
 
 type Bindings = {
@@ -25,7 +26,7 @@ app.doc('/doc', {
 
 app.get('/ui', swaggerUI({ url: '/doc' }))
 
-const _route = app.route('/api/books', books)
+const _route = app.route('/api/books', books).route('/api/tags', tags)
 
 export type AppType = typeof _route
 

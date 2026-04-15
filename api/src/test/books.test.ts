@@ -2,9 +2,12 @@ import { testClient } from 'hono/testing'
 import { beforeEach, describe, it, expect, vi } from 'vitest'
 import app from '../../src'
 import type { AppType } from '../../src'
-import { BookRepository } from '../../src/modules/book/repository/book-repository'
+import { BookRepository } from '../modules/book/repository/book-repository'
+import { TagRepository } from '../modules/tag/repository/tag-repository'
 
-vi.mock('../../src/modules/book/repository/book-repository')
+vi.mock('../modules/book/repository/book-repository')
+vi.mock('../modules/tag/repository/tag-repository')
+vi.mock('../modules/tag/repository/tagging-repository')
 
 describe('books', () => {
   beforeEach(() => vi.clearAllMocks())
@@ -20,7 +23,7 @@ describe('books', () => {
   })
 
   it('can create book', async () => {
-    vi.mocked(BookRepository.create).mockResolvedValue({
+    const mockBook = {
       id: 1,
       title: 'タイトル',
       author: '著者名',
@@ -29,6 +32,14 @@ describe('books', () => {
       finishedAt: null,
       createdAt: '2026-01-01T00:00:00.000Z',
       updatedAt: '2026-01-01T00:00:00.000Z',
+      tags: [{ id: 1, name: 'React', createdAt: '2026-01-01T00:00:00.000Z' }],
+    }
+    vi.mocked(BookRepository.create).mockResolvedValue(mockBook)
+    vi.mocked(BookRepository.findById).mockResolvedValue(mockBook)
+    vi.mocked(TagRepository.findOrCreate).mockResolvedValue({
+      id: 1,
+      name: 'React',
+      createdAt: '2026-01-01T00:00:00.000Z',
     })
     const res = await client.api.books.$post({
       json: {
@@ -37,6 +48,7 @@ describe('books', () => {
         status: 'unread' as const,
         rating: null,
         finishedAt: null,
+        tags: [{ name: 'React' }],
       },
     })
     expect(res.status).toBe(201)
@@ -50,6 +62,7 @@ describe('books', () => {
         status: 'unread' as const,
         rating: null,
         finishedAt: null,
+        tags: [{ name: 'React' }],
       },
     })
     expect(res.status).toBe(400)
@@ -64,6 +77,7 @@ describe('books', () => {
         status: 'unread' as const,
         rating: null,
         finishedAt: null,
+        tags: [{ name: 'React' }],
       },
     })
     expect(res.status).toBe(500)
@@ -79,6 +93,7 @@ describe('books', () => {
       finishedAt: null,
       createdAt: '2026-01-01T00:00:00.000Z',
       updatedAt: '2026-01-01T00:00:00.000Z',
+      tags: [{ id: 1, name: 'React', createdAt: '2026-01-01T00:00:00.000Z' }],
     })
     const res = await client.api.books[':id'].$get({ param: { id: '1' } })
     expect(res.status).toBe(200)
@@ -91,7 +106,7 @@ describe('books', () => {
   })
 
   it('can update book', async () => {
-    vi.mocked(BookRepository.update).mockResolvedValue({
+    const mockBook = {
       id: 1,
       title: 'タイトル',
       author: '著者名',
@@ -100,6 +115,14 @@ describe('books', () => {
       finishedAt: null,
       createdAt: '2026-01-01T00:00:00.000Z',
       updatedAt: '2026-01-01T00:00:00.000Z',
+      tags: [{ id: 1, name: 'React', createdAt: '2026-01-01T00:00:00.000Z' }],
+    }
+    vi.mocked(BookRepository.update).mockResolvedValue(mockBook)
+    vi.mocked(BookRepository.findById).mockResolvedValue(mockBook)
+    vi.mocked(TagRepository.findOrCreate).mockResolvedValue({
+      id: 1,
+      name: 'React',
+      createdAt: '2026-01-01T00:00:00.000Z',
     })
     const res = await client.api.books[':id'].$patch({
       param: { id: '1' },
@@ -109,6 +132,7 @@ describe('books', () => {
         status: 'unread' as const,
         rating: null,
         finishedAt: null,
+        tags: [{ name: 'React' }],
       },
     })
     expect(res.status).toBe(200)
@@ -123,6 +147,7 @@ describe('books', () => {
         status: 'unread' as const,
         rating: null,
         finishedAt: null,
+        tags: [{ name: 'React' }],
       },
     })
     expect(res.status).toBe(400)
@@ -138,6 +163,7 @@ describe('books', () => {
         status: 'unread' as const,
         rating: null,
         finishedAt: null,
+        tags: [{ name: 'React' }],
       },
     })
     expect(res.status).toBe(404)
@@ -153,6 +179,7 @@ describe('books', () => {
       finishedAt: null,
       createdAt: '2026-01-01T00:00:00.000Z',
       updatedAt: '2026-01-01T00:00:00.000Z',
+      tags: [],
     })
     const res = await client.api.books[':id'].$delete({ param: { id: '1' } })
     expect(res.status).toBe(200)

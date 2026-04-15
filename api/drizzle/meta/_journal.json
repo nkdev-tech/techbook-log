@@ -8,6 +8,27 @@
       "when": 1775217907862,
       "tag": "0000_same_brood",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1776047072614,
+      "tag": "0001_melted_smiling_tiger",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1776063170844,
+      "tag": "0002_unknown_deadpool",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1776153594632,
+      "tag": "0003_warm_jack_murdock",
+      "breakpoints": true
     }
   ]
 }

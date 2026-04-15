@@ -33,6 +33,12 @@ export const GetApiBooks200ItemStatus = {
   done: 'done',
 } as const;
 
+export type GetApiBooks200ItemTagsItem = {
+  id: number;
+  name: string;
+  createdAt: string;
+};
+
 export type GetApiBooks200Item = {
   /**
      * @minimum -9007199254740991
@@ -52,6 +58,7 @@ export type GetApiBooks200Item = {
   finishedAt: string | null;
   createdAt: string;
   updatedAt: string;
+  tags: GetApiBooks200ItemTagsItem[];
 };
 
 export type PostApiBooksBodyStatus = typeof PostApiBooksBodyStatus[keyof typeof PostApiBooksBodyStatus];
@@ -62,6 +69,11 @@ export const PostApiBooksBodyStatus = {
   reading: 'reading',
   done: 'done',
 } as const;
+
+export type PostApiBooksBodyTagsItem = {
+  /** @maxLength 20 */
+  name: string;
+};
 
 export type PostApiBooksBody = {
   /**
@@ -80,6 +92,7 @@ export type PostApiBooksBody = {
   rating?: number | null;
   /** @nullable */
   finishedAt?: string | null;
+  tags?: PostApiBooksBodyTagsItem[];
 };
 
 export type PostApiBooks201Status = typeof PostApiBooks201Status[keyof typeof PostApiBooks201Status];
@@ -90,6 +103,12 @@ export const PostApiBooks201Status = {
   reading: 'reading',
   done: 'done',
 } as const;
+
+export type PostApiBooks201TagsItem = {
+  id: number;
+  name: string;
+  createdAt: string;
+};
 
 export type PostApiBooks201 = {
   /**
@@ -110,6 +129,7 @@ export type PostApiBooks201 = {
   finishedAt: string | null;
   createdAt: string;
   updatedAt: string;
+  tags: PostApiBooks201TagsItem[];
 };
 
 export type PostApiBooks400Error = {
@@ -131,6 +151,12 @@ export const GetApiBooksId200Status = {
   done: 'done',
 } as const;
 
+export type GetApiBooksId200TagsItem = {
+  id: number;
+  name: string;
+  createdAt: string;
+};
+
 export type GetApiBooksId200 = {
   /**
      * @minimum -9007199254740991
@@ -150,6 +176,7 @@ export type GetApiBooksId200 = {
   finishedAt: string | null;
   createdAt: string;
   updatedAt: string;
+  tags: GetApiBooksId200TagsItem[];
 };
 
 export type GetApiBooksId404Error = {
@@ -171,6 +198,11 @@ export const PatchApiBooksIdBodyStatus = {
   done: 'done',
 } as const;
 
+export type PatchApiBooksIdBodyTagsItem = {
+  /** @maxLength 20 */
+  name: string;
+};
+
 export type PatchApiBooksIdBody = {
   /**
      * @minLength 1
@@ -188,6 +220,7 @@ export type PatchApiBooksIdBody = {
   rating?: number | null;
   /** @nullable */
   finishedAt?: string | null;
+  tags?: PatchApiBooksIdBodyTagsItem[];
 };
 
 export type PatchApiBooksId200Status = typeof PatchApiBooksId200Status[keyof typeof PatchApiBooksId200Status];
@@ -198,6 +231,12 @@ export const PatchApiBooksId200Status = {
   reading: 'reading',
   done: 'done',
 } as const;
+
+export type PatchApiBooksId200TagsItem = {
+  id: number;
+  name: string;
+  createdAt: string;
+};
 
 export type PatchApiBooksId200 = {
   /**
@@ -218,6 +257,7 @@ export type PatchApiBooksId200 = {
   finishedAt: string | null;
   createdAt: string;
   updatedAt: string;
+  tags: PatchApiBooksId200TagsItem[];
 };
 
 export type PatchApiBooksId400Error = {
@@ -249,6 +289,12 @@ export const DeleteApiBooksId200Status = {
   done: 'done',
 } as const;
 
+export type DeleteApiBooksId200TagsItem = {
+  id: number;
+  name: string;
+  createdAt: string;
+};
+
 export type DeleteApiBooksId200 = {
   /**
      * @minimum -9007199254740991
@@ -268,6 +314,7 @@ export type DeleteApiBooksId200 = {
   finishedAt: string | null;
   createdAt: string;
   updatedAt: string;
+  tags: DeleteApiBooksId200TagsItem[];
 };
 
 export type DeleteApiBooksId404Error = {
@@ -278,6 +325,16 @@ export type DeleteApiBooksId404Error = {
 export type DeleteApiBooksId404 = {
   success: boolean;
   error: DeleteApiBooksId404Error;
+};
+
+export type GetApiTags200Item = {
+  /**
+     * @minimum -9007199254740991
+     * @maximum 9007199254740991
+     */
+  id: number;
+  name: string;
+  createdAt: string;
 };
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
@@ -757,3 +814,104 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       > => {
       return useMutation(getDeleteApiBooksIdMutationOptions(options), queryClient);
     }
+
+export type getApiTagsResponse200 = {
+  data: GetApiTags200Item[]
+  status: 200
+}
+
+export type getApiTagsResponseSuccess = (getApiTagsResponse200) & {
+  headers: Headers;
+};
+;
+
+export type getApiTagsResponse = (getApiTagsResponseSuccess)
+
+export const getGetApiTagsUrl = () => {
+
+
+
+
+  return `http://localhost:8787/api/tags`
+}
+
+export const getApiTags = async ( options?: RequestInit): Promise<getApiTagsResponse> => {
+
+  return customFetch<getApiTagsResponse>(getGetApiTagsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiTagsQueryKey = () => {
+    return [
+    `http://localhost:8787/api/tags`
+    ] as const;
+    }
+
+
+export const getGetApiTagsQueryOptions = <TData = Awaited<ReturnType<typeof getApiTags>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTags>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiTagsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiTags>>> = ({ signal }) => getApiTags({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiTags>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetApiTagsQueryResult = NonNullable<Awaited<ReturnType<typeof getApiTags>>>
+export type GetApiTagsQueryError = unknown
+
+
+export function useGetApiTags<TData = Awaited<ReturnType<typeof getApiTags>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTags>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiTags>>,
+          TError,
+          Awaited<ReturnType<typeof getApiTags>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiTags<TData = Awaited<ReturnType<typeof getApiTags>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTags>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiTags>>,
+          TError,
+          Awaited<ReturnType<typeof getApiTags>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiTags<TData = Awaited<ReturnType<typeof getApiTags>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTags>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetApiTags<TData = Awaited<ReturnType<typeof getApiTags>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiTags>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetApiTagsQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}

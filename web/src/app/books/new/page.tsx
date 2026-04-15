@@ -18,6 +18,7 @@ export default function BookNewPage() {
     status: "unread",
     rating: null,
     finishedAt: null,
+    tags: [],
   };
 
   const onSubmit = (value: BookFormValues) => {

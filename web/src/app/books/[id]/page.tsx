@@ -13,6 +13,7 @@ import {
 import { STATUS_LABEL } from "@/shared/utils/book";
 import { DeleteButton } from "@/components/books/DeleteButton";
 import { StarRating } from "@/components/books/StarRating";
+import { Tag } from "@/components/books/Tag";
 import { format } from "date-fns";
 import { SquarePen } from "lucide-react";
 import { ApiError } from "@/shared/types/api";
@@ -62,6 +63,7 @@ export default function BookDetailPage() {
         </CardAction>
       </CardHeader>
       <CardContent className="space-y-2 text-base">
+        <Tag tags={book.tags ?? []} iconSize={14} textSize="text-sm" />
         <div className="flex gap-1">
           <span>{STATUS_LABEL[book.status] ?? book.status}</span>
           {book.finishedAt && (

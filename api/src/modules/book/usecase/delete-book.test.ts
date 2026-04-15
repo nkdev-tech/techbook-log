@@ -7,7 +7,6 @@ vi.mock('../repository/book-repository')
 describe('deleteBook', () => {
   beforeEach(() => vi.clearAllMocks())
   it('can delete book', async () => {
-
     const mockBook = {
       id: 1,
       title: 'タイトル1',
@@ -17,6 +16,7 @@ describe('deleteBook', () => {
       finishedAt: '2026-01-01',
       createdAt: '2026-01-01T00:00:00.000Z',
       updatedAt: '2026-01-01T00:00:00.000Z',
+      tags: [{ id: 1, name: 'React', createdAt: '2026-01-01T00:00:00.000Z' }],
     }
     vi.mocked(BookRepository.delete).mockResolvedValue(mockBook)
 
