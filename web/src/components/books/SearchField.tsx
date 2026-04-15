@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useGetApiTags } from "@/external/api";
 import { getTagColor } from "./Tag";
@@ -22,6 +22,7 @@ export function SearchField() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  const [open, setOpen] = useState(false);
   const anchor = useComboboxAnchor();
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -62,7 +63,12 @@ export function SearchField() {
         autoHighlight
         items={tags}
         value={selectedTags}
-        onValueChange={(value) => handleSearch(value as string[])}
+        open={open}
+        onOpenChange={setOpen}
+        onValueChange={(value) => {
+          handleSearch(value as string[]);
+          setOpen(false);
+        }}
       >
         <ComboboxChips
           ref={anchor}
