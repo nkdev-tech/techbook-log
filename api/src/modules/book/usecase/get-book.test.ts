@@ -17,17 +17,7 @@ describe('getBook', () => {
       finishedAt: '2026-01-01',
       createdAt: '2026-01-01T00:00:00.000Z',
       updatedAt: '2026-01-01T00:00:00.000Z',
-      taggings: [
-        {
-          bookId: 1,
-          tagId: 1,
-          tag: {
-            id: 1,
-            name: 'React',
-            createdAt: '2026-01-01T00:00:00.000Z',
-          },
-        },
-      ],
+      tags: [{ id: 1, name: 'React', createdAt: '2026-01-01T00:00:00.000Z' }],
     }
 
     vi.mocked(BookRepository.findById).mockResolvedValue(mockBook)
@@ -36,23 +26,7 @@ describe('getBook', () => {
     const mockD1 = {} as D1Database
     const result = await getBook(id, mockD1)
 
-    expect(result).toEqual({
-      id: 1,
-      title: 'タイトル1',
-      author: '著者1',
-      status: 'done' as const,
-      rating: 3,
-      finishedAt: '2026-01-01',
-      createdAt: '2026-01-01T00:00:00.000Z',
-      updatedAt: '2026-01-01T00:00:00.000Z',
-      tags: [
-        {
-          id: 1,
-          name: 'React',
-          createdAt: '2026-01-01T00:00:00.000Z',
-        },
-      ],
-    })
+    expect(result).toEqual(mockBook)
     expect(BookRepository.findById).toHaveBeenCalledTimes(1)
   })
 

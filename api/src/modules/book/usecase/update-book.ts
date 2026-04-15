@@ -1,5 +1,5 @@
 import { BookRepository } from '../repository/book-repository'
-import { toBook, type Book, type InsertBook } from '../entity/book'
+import { type Book, type InsertBook } from '../entity/book'
 import { TagRepository } from '../../tag/repository/tag-repository'
 import { TaggingRepository } from '../../tag/repository/tagging-repository'
 
@@ -29,6 +29,5 @@ export const updateBook = async (
     }
   }
 
-  const raw = await BookRepository.findById(book.id, d1)
-  return toBook(raw!)
+  return await BookRepository.findById(book.id, d1)
 }

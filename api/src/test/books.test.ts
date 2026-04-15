@@ -32,17 +32,7 @@ describe('books', () => {
       finishedAt: null,
       createdAt: '2026-01-01T00:00:00.000Z',
       updatedAt: '2026-01-01T00:00:00.000Z',
-      taggings: [
-        {
-          bookId: 1,
-          tagId: 1,
-          tag: {
-            id: 1,
-            name: 'React',
-            createdAt: '2026-01-01T00:00:00.000Z',
-          },
-        },
-      ],
+      tags: [{ id: 1, name: 'React', createdAt: '2026-01-01T00:00:00.000Z' }],
     }
     vi.mocked(BookRepository.create).mockResolvedValue(mockBook)
     vi.mocked(BookRepository.findById).mockResolvedValue(mockBook)
@@ -58,11 +48,7 @@ describe('books', () => {
         status: 'unread' as const,
         rating: null,
         finishedAt: null,
-        tags: [
-          {
-            name: 'React',
-          },
-        ],
+        tags: [{ name: 'React' }],
       },
     })
     expect(res.status).toBe(201)
@@ -76,11 +62,7 @@ describe('books', () => {
         status: 'unread' as const,
         rating: null,
         finishedAt: null,
-        tags: [
-          {
-            name: 'React',
-          },
-        ],
+        tags: [{ name: 'React' }],
       },
     })
     expect(res.status).toBe(400)
@@ -95,11 +77,7 @@ describe('books', () => {
         status: 'unread' as const,
         rating: null,
         finishedAt: null,
-        tags: [
-          {
-            name: 'React',
-          },
-        ],
+        tags: [{ name: 'React' }],
       },
     })
     expect(res.status).toBe(500)
@@ -115,17 +93,7 @@ describe('books', () => {
       finishedAt: null,
       createdAt: '2026-01-01T00:00:00.000Z',
       updatedAt: '2026-01-01T00:00:00.000Z',
-      taggings: [
-        {
-          bookId: 1,
-          tagId: 1,
-          tag: {
-            id: 1,
-            name: 'React',
-            createdAt: '2026-01-01T00:00:00.000Z',
-          },
-        },
-      ],
+      tags: [{ id: 1, name: 'React', createdAt: '2026-01-01T00:00:00.000Z' }],
     })
     const res = await client.api.books[':id'].$get({ param: { id: '1' } })
     expect(res.status).toBe(200)
@@ -147,17 +115,7 @@ describe('books', () => {
       finishedAt: null,
       createdAt: '2026-01-01T00:00:00.000Z',
       updatedAt: '2026-01-01T00:00:00.000Z',
-      taggings: [
-        {
-          bookId: 1,
-          tagId: 1,
-          tag: {
-            id: 1,
-            name: 'React',
-            createdAt: '2026-01-01T00:00:00.000Z',
-          },
-        },
-      ],
+      tags: [{ id: 1, name: 'React', createdAt: '2026-01-01T00:00:00.000Z' }],
     }
     vi.mocked(BookRepository.update).mockResolvedValue(mockBook)
     vi.mocked(BookRepository.findById).mockResolvedValue(mockBook)
@@ -174,11 +132,7 @@ describe('books', () => {
         status: 'unread' as const,
         rating: null,
         finishedAt: null,
-        tags: [
-          {
-            name: 'React',
-          },
-        ],
+        tags: [{ name: 'React' }],
       },
     })
     expect(res.status).toBe(200)
@@ -193,11 +147,7 @@ describe('books', () => {
         status: 'unread' as const,
         rating: null,
         finishedAt: null,
-        tags: [
-          {
-            name: 'React',
-          },
-        ],
+        tags: [{ name: 'React' }],
       },
     })
     expect(res.status).toBe(400)
@@ -213,11 +163,7 @@ describe('books', () => {
         status: 'unread' as const,
         rating: null,
         finishedAt: null,
-        tags: [
-          {
-            name: 'React',
-          },
-        ],
+        tags: [{ name: 'React' }],
       },
     })
     expect(res.status).toBe(404)
@@ -233,17 +179,7 @@ describe('books', () => {
       finishedAt: null,
       createdAt: '2026-01-01T00:00:00.000Z',
       updatedAt: '2026-01-01T00:00:00.000Z',
-      taggings: [
-        {
-          bookId: 1,
-          tagId: 1,
-          tag: {
-            id: 1,
-            name: 'React',
-            createdAt: '2026-01-01T00:00:00.000Z',
-          },
-        },
-      ],
+      tags: [],
     })
     const res = await client.api.books[':id'].$delete({ param: { id: '1' } })
     expect(res.status).toBe(200)

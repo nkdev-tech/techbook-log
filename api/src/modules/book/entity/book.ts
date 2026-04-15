@@ -1,7 +1,7 @@
 import { bookTable } from '../../../db/schema'
 import { SelectTag } from '../../tag/entity/tag'
 
-export type SelectBook = typeof bookTable.$inferSelect & {
+type SelectBook = typeof bookTable.$inferSelect & {
   taggings?: {
     bookId: number
     tagId: number
