@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path // .tool_response.filePath // empty' | { read -r f; root=$(git rev-parse --show-toplevel); case \"$f\" in *\"/web/\"*) dir=\"$root/web\" ;; *\"/api/\"*) dir=\"$root/api\" ;; *) exit 0 ;; esac; cd \"$dir\" && npx prettier --write \"$f\"; } 2>/dev/null || true",
+            "statusMessage": "Formatting..."
+          }
+        ]
+      }
+    ]
+  }
+}
