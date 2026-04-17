@@ -15,9 +15,9 @@ const memosSchema = createSelectSchema(memoTable, {
 })
 
 const inputMemoSchema = createInsertSchema(memoTable, {
-  content: (schema) => schema.min(1).max(200).openapi({ example: 'This is a memo.' }),
-})
-.omit({
+  content: (schema) =>
+    schema.min(1).max(200).openapi({ example: 'This is a memo.' }),
+}).omit({
   id: true,
   bookId: true,
   createdAt: true,

@@ -4,7 +4,10 @@ import { type InsertMemo, type SelectMemo } from '../entity/memo'
 import { eq } from 'drizzle-orm'
 
 export const MemoRepository = {
-  findByBookId: async (bookId: number, d1: D1Database): Promise<SelectMemo[]> => {
+  findByBookId: async (
+    bookId: number,
+    d1: D1Database,
+  ): Promise<SelectMemo[]> => {
     const db = createDb(d1)
     return await db.query.memoTable.findMany({
       where: eq(memoTable.bookId, bookId),

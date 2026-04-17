@@ -72,7 +72,8 @@ const app = new OpenAPIHono<{ Bindings: Bindings }>()
     const result = await createMemo({ ...data, bookId }, c.env.DB)
     if (result === null) {
       return c.json(
-        { success: false,
+        {
+          success: false,
           error: {
             name: 'NotFound',
             message: '関連する本が見つかりませんでした',

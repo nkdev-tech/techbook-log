@@ -42,7 +42,9 @@ export const taggingTable = sqliteTable(
 
 export const memoTable = sqliteTable('memos', {
   id: integer('id').primaryKey(),
-  bookId: integer('book_id').notNull().references(() => bookTable.id, { onDelete: 'cascade'}),
+  bookId: integer('book_id')
+    .notNull()
+    .references(() => bookTable.id, { onDelete: 'cascade' }),
   content: text('content').notNull(),
   createdAt: text('created_at')
     .notNull()
