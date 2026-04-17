@@ -40,12 +40,29 @@ export const taggingTable = sqliteTable(
   (table) => [primaryKey({ columns: [table.bookId, table.tagId] })],
 )
 
+export const memoTable = sqliteTable('memos', {
+  id: integer('id').primaryKey(),
+  bookId: integer('book_id').notNull().references(() => bookTable.id, { onDelete: 'cascade'}),
+  content: text('content').notNull(),
+  createdAt: text('created_at')
+    .notNull()
+    .$defaultFn(() => new Date().toISOString()),
+})
+
 export const booksRelations = relations(bookTable, ({ many }) => ({
   taggings: many(taggingTable),
+  memos: many(memoTable),
 }))
 
 export const tagsRelations = relations(tagTable, ({ many }) => ({
   taggings: many(taggingTable),
+}))
+
+export const memosRelations = relations(memoTable, ({ one }) => ({
+  book: one(bookTable, {
+    fields: [memoTable.bookId],
+    references: [bookTable.id],
+  }),
 }))
 
 export const taggingRelations = relations(taggingTable, ({ one }) => ({
