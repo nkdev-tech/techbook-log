@@ -11,7 +11,7 @@ export const MemoRepository = {
     const db = createDb(d1)
     return await db.query.memoTable.findMany({
       where: eq(memoTable.bookId, bookId),
-      orderBy: (memo, { desc }) => [desc(memo.createdAt)],
+      orderBy: (memo, { asc }) => [asc(memo.createdAt)],
     })
   },
   create: async (data: InsertMemo, d1: D1Database): Promise<SelectMemo> => {
