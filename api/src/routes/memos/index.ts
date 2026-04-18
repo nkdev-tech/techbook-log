@@ -7,6 +7,7 @@ import {
   createMemoResSchema,
   errorResBodySchema,
   getMemosSchema,
+  ParamsSchema,
 } from './schema'
 
 type Bindings = {
@@ -16,6 +17,9 @@ type Bindings = {
 const getMemosRoute = createRoute({
   method: 'get',
   path: '/{id}/memos',
+  request: {
+    params: ParamsSchema,
+  },
   responses: {
     200: {
       content: {
@@ -32,6 +36,7 @@ const createMemoRoute = createRoute({
   method: 'post',
   path: '/{id}/memos',
   request: {
+    params: ParamsSchema,
     body: {
       content: {
         'application/json': {
