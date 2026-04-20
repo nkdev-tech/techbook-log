@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { useParams } from "next/navigation";
 import { useGetApiBooksIdMemos } from "@/external/api";
+import { Memo } from "@/components/books/Memo";
 import { MemoForm } from "@/components/books/MemoForm";
-import { Card, CardContent } from "@/components/ui/card";
 import { Plus } from "lucide-react";
 
 export function MemoList() {
   const { id } = useParams<{ id: string }>();
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [editingMemoId, setEditingMemoId] = useState<number | null>(null);
   const { data } = useGetApiBooksIdMemos(id);
 
   if (!data || data.status !== 200) {
@@ -18,16 +19,22 @@ export function MemoList() {
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 items-start gap-4 my-4">
-      {memos.map((memo) => (
-        <Card
-          key={memo.id}
-          className="bg-yellow-100 rounded-none min-h-40 py-5"
-        >
-          <CardContent className="h-full px-5">
-            <p className="whitespace-pre-wrap">{memo.content}</p>
-          </CardContent>
-        </Card>
-      ))}
+      {memos.map((memo) =>
+        editingMemoId === memo.id ? (
+          <MemoForm
+            key={memo.id}
+            memo={memo}
+            onSuccess={() => setEditingMemoId(null)}
+            onCancel={() => setEditingMemoId(null)}
+          />
+        ) : (
+          <Memo
+            key={memo.id}
+            memo={memo}
+            onEdit={() => setEditingMemoId(memo.id)}
+          />
+        )
+      )}
       {isFormOpen ? (
         <MemoForm
           onSuccess={() => setIsFormOpen(false)}

@@ -49,6 +49,9 @@ export const memoTable = sqliteTable('memos', {
   createdAt: text('created_at')
     .notNull()
     .$defaultFn(() => new Date().toISOString()),
+  updatedAt: text('updated_at')
+    .notNull()
+    .$defaultFn(() => new Date().toISOString()),
 })
 
 export const booksRelations = relations(bookTable, ({ many }) => ({

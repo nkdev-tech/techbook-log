@@ -19,4 +19,25 @@ export const MemoRepository = {
     const result = await db.insert(memoTable).values(data).returning().get()
     return result
   },
+  findById: async (id: number, d1: D1Database): Promise<SelectMemo | null> => {
+    const db = createDb(d1)
+    const result = await db.query.memoTable.findFirst({
+      where: eq(memoTable.id, id),
+    })
+    return result ?? null
+  },
+  update: async (
+    id: number,
+    data: Partial<InsertMemo>,
+    d1: D1Database,
+  ): Promise<SelectMemo | null> => {
+    const db = createDb(d1)
+    const result = await db
+      .update(memoTable)
+      .set({ ...data, updatedAt: new Date().toISOString() })
+      .where(eq(memoTable.id, id))
+      .returning()
+      .get()
+    return result ?? null
+  },
 }

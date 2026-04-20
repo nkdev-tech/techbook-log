@@ -7,8 +7,12 @@ import {
   createMemoResSchema,
   errorResBodySchema,
   getMemosSchema,
+  memoParamSchema,
+  updateMemoReqSchema,
+  updateMemoResSchema,
   ParamsSchema,
 } from './schema'
+import { updateMemo } from '../../modules/memo/usecase/update-memo'
 
 type Bindings = {
   DB: D1Database
@@ -54,6 +58,55 @@ const createMemoRoute = createRoute({
       },
       description: 'Create a memo',
     },
+    400: {
+      content: {
+        'application/json': {
+          schema: errorResBodySchema,
+        },
+      },
+      description: 'Bad Request',
+    },
+    404: {
+      content: {
+        'application/json': {
+          schema: errorResBodySchema,
+        },
+      },
+      description: 'Not Found',
+    },
+  },
+})
+
+const updateMemoRoute = createRoute({
+  method: 'patch',
+  path: '/{id}/memos/{memoId}',
+  request: {
+    params: memoParamSchema,
+    body: {
+      content: {
+        'application/json': {
+          schema: updateMemoReqSchema,
+        },
+      },
+    },
+  },
+  responses: {
+    200: {
+      content: {
+        'application/json': {
+          schema: updateMemoResSchema,
+        },
+      },
+      description: 'Update a memo',
+    },
+    400: {
+      content: {
+        'application/json': {
+          schema: errorResBodySchema,
+        },
+      },
+      description: 'Bad Request',
+    },
     404: {
       content: {
         'application/json': {
@@ -88,6 +141,24 @@ const app = new OpenAPIHono<{ Bindings: Bindings }>()
       )
     }
     return c.json(result, 201)
+  })
+  .openapi(updateMemoRoute, async (c) => {
+    const { memoId } = c.req.valid('param')
+    const data = c.req.valid('json')
+    const result = await updateMemo(Number(memoId), data, c.env.DB)
+    if (result === null) {
+      return c.json(
+        {
+          success: false,
+          error: {
+            name: 'NotFound',
+            message: 'メモが見つかりませんでした',
+          },
+        },
+        404,
+      )
+    }
+    return c.json(result, 200)
   })
 
 export default app

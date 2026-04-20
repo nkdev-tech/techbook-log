@@ -27,6 +27,7 @@ describe('memos', () => {
       bookId: 1,
       content: 'メモ1',
       createdAt: '2026-01-01T00:00:00.000Z',
+      updatedAt: '2026-01-01T00:00:00.000Z',
     }
     vi.mocked(BookRepository.findById).mockResolvedValue({
       id: 1,
@@ -79,5 +80,64 @@ describe('memos', () => {
       },
     })
     expect(res.status).toBe(404)
+  })
+
+  it('can update memo', async () => {
+    const data = {
+      content: 'メモ更新',
+    }
+
+    const mockMemo = {
+      id: 1,
+      bookId: 1,
+      content: 'メモ1',
+      createdAt: '2026-01-01T00:00:00.000Z',
+      updatedAt: '2026-01-01T00:00:00.000Z',
+    }
+    vi.mocked(MemoRepository.findById).mockResolvedValue(mockMemo)
+    vi.mocked(MemoRepository.update).mockResolvedValue({ ...mockMemo, ...data })
+
+    const result = await client.api.books[':id'].memos[':memoId'].$patch({
+      param: { id: '1', memoId: '1' },
+      json: data,
+    })
+
+    expect(result.status).toBe(200)
+  })
+
+  it('cannot update memo with invalid value', async () => {
+    const data = {
+      content: '',
+    }
+
+    const mockMemo = {
+      id: 1,
+      bookId: 1,
+      content: 'メモ1',
+      createdAt: '2026-01-01T00:00:00.000Z',
+      updatedAt: '2026-01-01T00:00:00.000Z',
+    }
+    vi.mocked(MemoRepository.findById).mockResolvedValue(mockMemo)
+
+    const result = await client.api.books[':id'].memos[':memoId'].$patch({
+      param: { id: '1', memoId: '1' },
+      json: data,
+    })
+
+    expect(result.status).toBe(400)
+  })
+
+  it('cannot update memo when memo does not exist', async () => {
+    const data = {
+      content: 'メモ更新',
+    }
+    vi.mocked(MemoRepository.findById).mockResolvedValue(null)
+
+    const result = await client.api.books[':id'].memos[':memoId'].$patch({
+      param: { id: '1', memoId: '1' },
+      json: data,
+    })
+
+    expect(result.status).toBe(404)
   })
 })

@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import {
   usePostApiBooksIdMemos,
   getGetApiBooksIdMemosQueryKey,
+  usePatchApiBooksIdMemosMemoId,
 } from "@/external/api";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -13,38 +14,59 @@ import { Textarea } from "@/components/ui/textarea";
 import { SendHorizontal } from "lucide-react";
 
 type Props = {
+  memo?: {
+    id: number;
+    content: string;
+  };
   onSuccess?: () => void;
   onCancel?: () => void;
 };
 
-export function MemoForm({ onSuccess, onCancel }: Props) {
+export function MemoForm({ memo, onSuccess, onCancel }: Props) {
   const { id } = useParams<{ id: string }>();
   const ref = useRef<HTMLDivElement>(null);
   const queryClient = useQueryClient();
-  const { mutate, error } = usePostApiBooksIdMemos();
+
+  const create = usePostApiBooksIdMemos();
+
+  const update = usePatchApiBooksIdMemosMemoId();
+
+  const mutationOptions = {
+    onSuccess() {
+      onSuccess?.();
+      form.reset();
+      queryClient.invalidateQueries({
+        queryKey: getGetApiBooksIdMemosQueryKey(id),
+      });
+    },
+    onError(error: unknown) {
+      throw error;
+    },
+  };
+
   const form = useForm({
     defaultValues: {
-      content: "",
+      content: memo?.content || "",
     },
     onSubmit: async ({ value }) => {
-      mutate(
-        {
-          id,
-          data: value,
-        },
-        {
-          onSuccess() {
-            onSuccess?.();
-            form.reset();
-            queryClient.invalidateQueries({
-              queryKey: getGetApiBooksIdMemosQueryKey(id),
-            });
+      if (memo) {
+        update.mutate(
+          {
+            id,
+            memoId: String(memo.id),
+            data: value,
           },
-          onError(error) {
-            throw error;
+          mutationOptions
+        );
+      } else {
+        create.mutate(
+          {
+            id,
+            data: value,
           },
-        }
-      );
+          mutationOptions
+        );
+      }
     },
   });
 
@@ -61,8 +83,8 @@ export function MemoForm({ onSuccess, onCancel }: Props) {
     };
   }, [onCancel]);
 
-  if (error) {
-    throw error;
+  if (update.error || create.error) {
+    throw update.error || create.error;
   }
 
   return (

@@ -344,6 +344,7 @@ export type GetApiBooksIdMemos200Item = {
   bookId: number;
   content: string;
   createdAt: string;
+  updatedAt: string;
 };
 
 export type PostApiBooksIdMemosBody = {
@@ -367,6 +368,17 @@ export type PostApiBooksIdMemos201 = {
   bookId: number;
   content: string;
   createdAt: string;
+  updatedAt: string;
+};
+
+export type PostApiBooksIdMemos400Error = {
+  name: string;
+  message: string;
+};
+
+export type PostApiBooksIdMemos400 = {
+  success: boolean;
+  error: PostApiBooksIdMemos400Error;
 };
 
 export type PostApiBooksIdMemos404Error = {
@@ -377,6 +389,50 @@ export type PostApiBooksIdMemos404Error = {
 export type PostApiBooksIdMemos404 = {
   success: boolean;
   error: PostApiBooksIdMemos404Error;
+};
+
+export type PatchApiBooksIdMemosMemoIdBody = {
+  /**
+     * @minLength 1
+     * @maxLength 140
+     */
+  content: string;
+};
+
+export type PatchApiBooksIdMemosMemoId200 = {
+  /**
+     * @minimum -9007199254740991
+     * @maximum 9007199254740991
+     */
+  id: number;
+  /**
+     * @minimum -9007199254740991
+     * @maximum 9007199254740991
+     */
+  bookId: number;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type PatchApiBooksIdMemosMemoId400Error = {
+  name: string;
+  message: string;
+};
+
+export type PatchApiBooksIdMemosMemoId400 = {
+  success: boolean;
+  error: PatchApiBooksIdMemosMemoId400Error;
+};
+
+export type PatchApiBooksIdMemosMemoId404Error = {
+  name: string;
+  message: string;
+};
+
+export type PatchApiBooksIdMemosMemoId404 = {
+  success: boolean;
+  error: PatchApiBooksIdMemosMemoId404Error;
 };
 
 export type GetApiTags200Item = {
@@ -984,6 +1040,11 @@ export type postApiBooksIdMemosResponse201 = {
   status: 201
 }
 
+export type postApiBooksIdMemosResponse400 = {
+  data: PostApiBooksIdMemos400
+  status: 400
+}
+
 export type postApiBooksIdMemosResponse404 = {
   data: PostApiBooksIdMemos404
   status: 404
@@ -992,7 +1053,7 @@ export type postApiBooksIdMemosResponse404 = {
 export type postApiBooksIdMemosResponseSuccess = (postApiBooksIdMemosResponse201) & {
   headers: Headers;
 };
-export type postApiBooksIdMemosResponseError = (postApiBooksIdMemosResponse404) & {
+export type postApiBooksIdMemosResponseError = (postApiBooksIdMemosResponse400 | postApiBooksIdMemosResponse404) & {
   headers: Headers;
 };
 
@@ -1022,7 +1083,7 @@ export const postApiBooksIdMemos = async (id: string,
 
 
 
-export const getPostApiBooksIdMemosMutationOptions = <TError = PostApiBooksIdMemos404,
+export const getPostApiBooksIdMemosMutationOptions = <TError = PostApiBooksIdMemos400 | PostApiBooksIdMemos404,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiBooksIdMemos>>, TError,{id: string;data: PostApiBooksIdMemosBody}, TContext>, request?: SecondParameter<typeof customFetch>}
 ): UseMutationOptions<Awaited<ReturnType<typeof postApiBooksIdMemos>>, TError,{id: string;data: PostApiBooksIdMemosBody}, TContext> => {
 
@@ -1051,9 +1112,9 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
     export type PostApiBooksIdMemosMutationResult = NonNullable<Awaited<ReturnType<typeof postApiBooksIdMemos>>>
     export type PostApiBooksIdMemosMutationBody = PostApiBooksIdMemosBody
-    export type PostApiBooksIdMemosMutationError = PostApiBooksIdMemos404
+    export type PostApiBooksIdMemosMutationError = PostApiBooksIdMemos400 | PostApiBooksIdMemos404
 
-    export const usePostApiBooksIdMemos = <TError = PostApiBooksIdMemos404,
+    export const usePostApiBooksIdMemos = <TError = PostApiBooksIdMemos400 | PostApiBooksIdMemos404,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiBooksIdMemos>>, TError,{id: string;data: PostApiBooksIdMemosBody}, TContext>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiBooksIdMemos>>,
@@ -1062,6 +1123,98 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
         TContext
       > => {
       return useMutation(getPostApiBooksIdMemosMutationOptions(options), queryClient);
+    }
+
+export type patchApiBooksIdMemosMemoIdResponse200 = {
+  data: PatchApiBooksIdMemosMemoId200
+  status: 200
+}
+
+export type patchApiBooksIdMemosMemoIdResponse400 = {
+  data: PatchApiBooksIdMemosMemoId400
+  status: 400
+}
+
+export type patchApiBooksIdMemosMemoIdResponse404 = {
+  data: PatchApiBooksIdMemosMemoId404
+  status: 404
+}
+
+export type patchApiBooksIdMemosMemoIdResponseSuccess = (patchApiBooksIdMemosMemoIdResponse200) & {
+  headers: Headers;
+};
+export type patchApiBooksIdMemosMemoIdResponseError = (patchApiBooksIdMemosMemoIdResponse400 | patchApiBooksIdMemosMemoIdResponse404) & {
+  headers: Headers;
+};
+
+export type patchApiBooksIdMemosMemoIdResponse = (patchApiBooksIdMemosMemoIdResponseSuccess | patchApiBooksIdMemosMemoIdResponseError)
+
+export const getPatchApiBooksIdMemosMemoIdUrl = (id: string,
+    memoId: string,) => {
+
+
+
+
+  return `http://localhost:8787/api/books/${id}/memos/${memoId}`
+}
+
+export const patchApiBooksIdMemosMemoId = async (id: string,
+    memoId: string,
+    patchApiBooksIdMemosMemoIdBody: PatchApiBooksIdMemosMemoIdBody, options?: RequestInit): Promise<patchApiBooksIdMemosMemoIdResponse> => {
+
+  return customFetch<patchApiBooksIdMemosMemoIdResponse>(getPatchApiBooksIdMemosMemoIdUrl(id,memoId),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      patchApiBooksIdMemosMemoIdBody,)
+  }
+);}
+
+
+
+
+export const getPatchApiBooksIdMemosMemoIdMutationOptions = <TError = PatchApiBooksIdMemosMemoId400 | PatchApiBooksIdMemosMemoId404,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof patchApiBooksIdMemosMemoId>>, TError,{id: string;memoId: string;data: PatchApiBooksIdMemosMemoIdBody}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof patchApiBooksIdMemosMemoId>>, TError,{id: string;memoId: string;data: PatchApiBooksIdMemosMemoIdBody}, TContext> => {
+
+const mutationKey = ['patchApiBooksIdMemosMemoId'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof patchApiBooksIdMemosMemoId>>, {id: string;memoId: string;data: PatchApiBooksIdMemosMemoIdBody}> = (props) => {
+          const {id,memoId,data} = props ?? {};
+
+          return  patchApiBooksIdMemosMemoId(id,memoId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PatchApiBooksIdMemosMemoIdMutationResult = NonNullable<Awaited<ReturnType<typeof patchApiBooksIdMemosMemoId>>>
+    export type PatchApiBooksIdMemosMemoIdMutationBody = PatchApiBooksIdMemosMemoIdBody
+    export type PatchApiBooksIdMemosMemoIdMutationError = PatchApiBooksIdMemosMemoId400 | PatchApiBooksIdMemosMemoId404
+
+    export const usePatchApiBooksIdMemosMemoId = <TError = PatchApiBooksIdMemosMemoId400 | PatchApiBooksIdMemosMemoId404,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof patchApiBooksIdMemosMemoId>>, TError,{id: string;memoId: string;data: PatchApiBooksIdMemosMemoIdBody}, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof patchApiBooksIdMemosMemoId>>,
+        TError,
+        {id: string;memoId: string;data: PatchApiBooksIdMemosMemoIdBody},
+        TContext
+      > => {
+      return useMutation(getPatchApiBooksIdMemosMemoIdMutationOptions(options), queryClient);
     }
 
 export type getApiTagsResponse200 = {

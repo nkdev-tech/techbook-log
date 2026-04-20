@@ -36,6 +36,13 @@
       "when": 1776407891461,
       "tag": "0004_smiling_sabretooth",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1776663807413,
+      "tag": "0005_vengeful_sugar_man",
+      "breakpoints": true
     }
   ]
 }

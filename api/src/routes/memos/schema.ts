@@ -21,6 +21,7 @@ const inputMemoSchema = createInsertSchema(memoTable, {
   id: true,
   bookId: true,
   createdAt: true,
+  updatedAt: true,
 })
 
 export const getMemosSchema = memosSchema.array()
@@ -29,6 +30,10 @@ export const createMemoReqSchema = inputMemoSchema
 
 export const createMemoResSchema = memosSchema
 
+export const updateMemoReqSchema = inputMemoSchema
+
+export const updateMemoResSchema = memosSchema
+
 export const ParamsSchema = z.object({
   id: z
     .string()
@@ -36,6 +41,20 @@ export const ParamsSchema = z.object({
     .openapi({
       param: {
         name: 'id',
+        in: 'path',
+      },
+      example: '1',
+    }),
+})
+
+export const memoParamSchema = z.object({
+  ...ParamsSchema.shape,
+  memoId: z
+    .string()
+    .regex(/^\d+$/)
+    .openapi({
+      param: {
+        name: 'memoId',
         in: 'path',
       },
       example: '1',
