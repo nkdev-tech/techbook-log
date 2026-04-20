@@ -8,19 +8,7 @@ import { Plus } from "lucide-react";
 export function MemoList() {
   const { id } = useParams<{ id: string }>();
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const { data, isLoading, error } = useGetApiBooksIdMemos(id);
-
-  if (isLoading) {
-    return (
-      <div className="w-full max-w-5xl">
-        <p className="text-lg">Loading...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    throw error;
-  }
+  const { data } = useGetApiBooksIdMemos(id);
 
   if (!data || data.status !== 200) {
     return null;
@@ -46,12 +34,13 @@ export function MemoList() {
           onCancel={() => setIsFormOpen(false)}
         />
       ) : (
-        <div
-          className="flex items-center justify-center border-2 border-dashed rounded-none cursor-pointer h-40"
+        <button
+          type="button"
+          className="flex items-center justify-center border-2 border-dashed rounded-none cursor-pointer h-40 w-full"
           onClick={() => setIsFormOpen(true)}
         >
           <Plus size={48} className="text-muted-foreground" />
-        </div>
+        </button>
       )}
     </div>
   );

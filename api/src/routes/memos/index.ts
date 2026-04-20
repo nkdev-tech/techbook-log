@@ -67,14 +67,14 @@ const createMemoRoute = createRoute({
 
 const app = new OpenAPIHono<{ Bindings: Bindings }>()
   .openapi(getMemosRoute, async (c) => {
-    const bookId = Number(c.req.param('id'))
-    const result = await getMemos(bookId, c.env.DB)
+    const { id } = c.req.valid('param')
+    const result = await getMemos(Number(id), c.env.DB)
     return c.json(result, 200)
   })
   .openapi(createMemoRoute, async (c) => {
-    const bookId = Number(c.req.param('id'))
+    const { id } = c.req.valid('param')
     const data = c.req.valid('json')
-    const result = await createMemo({ ...data, bookId }, c.env.DB)
+    const result = await createMemo({ ...data, bookId: Number(id) }, c.env.DB)
     if (result === null) {
       return c.json(
         {

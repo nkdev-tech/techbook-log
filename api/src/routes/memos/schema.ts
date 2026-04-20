@@ -32,7 +32,7 @@ export const createMemoResSchema = memosSchema
 export const ParamsSchema = z.object({
   id: z
     .string()
-    .min(1)
+    .regex(/^\d+$/)
     .openapi({
       param: {
         name: 'id',
