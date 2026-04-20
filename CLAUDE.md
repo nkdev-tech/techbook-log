@@ -10,7 +10,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **開発フロー（TDD）:**
 1. 設計相談 — 何を作るか・どんなテストが必要か整理。IssueごとにAC（完了条件）を定義する。曖昧な点・不明点は必ずユーザーに質問する
-2. テストを自分で書く
+2. issueに紐づくブランチを作成する
+3. テストを自分で書く
 3. テストが失敗することを確認（red）
 4. 実装を自分で書く
 5. レビュー依頼 — 「このテストと実装どう？」
