@@ -1,6 +1,7 @@
 import { OpenAPIHono } from '@hono/zod-openapi'
 import { swaggerUI } from '@hono/swagger-ui'
 import books from './routes/books'
+import memos from './routes/memos'
 import tags from './routes/tags'
 import { cors } from 'hono/cors'
 
@@ -26,7 +27,10 @@ app.doc('/doc', {
 
 app.get('/ui', swaggerUI({ url: '/doc' }))
 
-const _route = app.route('/api/books', books).route('/api/tags', tags)
+const _route = app
+  .route('/api/books', books)
+  .route('/api/books', memos)
+  .route('/api/tags', tags)
 
 export type AppType = typeof _route
 

@@ -331,6 +331,54 @@ export type DeleteApiBooksId404 = {
   error: DeleteApiBooksId404Error;
 };
 
+export type GetApiBooksIdMemos200Item = {
+  /**
+     * @minimum -9007199254740991
+     * @maximum 9007199254740991
+     */
+  id: number;
+  /**
+     * @minimum -9007199254740991
+     * @maximum 9007199254740991
+     */
+  bookId: number;
+  content: string;
+  createdAt: string;
+};
+
+export type PostApiBooksIdMemosBody = {
+  /**
+     * @minLength 1
+     * @maxLength 140
+     */
+  content: string;
+};
+
+export type PostApiBooksIdMemos201 = {
+  /**
+     * @minimum -9007199254740991
+     * @maximum 9007199254740991
+     */
+  id: number;
+  /**
+     * @minimum -9007199254740991
+     * @maximum 9007199254740991
+     */
+  bookId: number;
+  content: string;
+  createdAt: string;
+};
+
+export type PostApiBooksIdMemos404Error = {
+  name: string;
+  message: string;
+};
+
+export type PostApiBooksIdMemos404 = {
+  success: boolean;
+  error: PostApiBooksIdMemos404Error;
+};
+
 export type GetApiTags200Item = {
   /**
      * @minimum -9007199254740991
@@ -824,6 +872,196 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
         TContext
       > => {
       return useMutation(getDeleteApiBooksIdMutationOptions(options), queryClient);
+    }
+
+export type getApiBooksIdMemosResponse200 = {
+  data: GetApiBooksIdMemos200Item[]
+  status: 200
+}
+
+export type getApiBooksIdMemosResponseSuccess = (getApiBooksIdMemosResponse200) & {
+  headers: Headers;
+};
+;
+
+export type getApiBooksIdMemosResponse = (getApiBooksIdMemosResponseSuccess)
+
+export const getGetApiBooksIdMemosUrl = (id: string,) => {
+
+
+
+
+  return `http://localhost:8787/api/books/${id}/memos`
+}
+
+export const getApiBooksIdMemos = async (id: string, options?: RequestInit): Promise<getApiBooksIdMemosResponse> => {
+
+  return customFetch<getApiBooksIdMemosResponse>(getGetApiBooksIdMemosUrl(id),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiBooksIdMemosQueryKey = (id: string,) => {
+    return [
+    `http://localhost:8787/api/books/${id}/memos`
+    ] as const;
+    }
+
+
+export const getGetApiBooksIdMemosQueryOptions = <TData = Awaited<ReturnType<typeof getApiBooksIdMemos>>, TError = unknown>(id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBooksIdMemos>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiBooksIdMemosQueryKey(id);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiBooksIdMemos>>> = ({ signal }) => getApiBooksIdMemos(id, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiBooksIdMemos>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetApiBooksIdMemosQueryResult = NonNullable<Awaited<ReturnType<typeof getApiBooksIdMemos>>>
+export type GetApiBooksIdMemosQueryError = unknown
+
+
+export function useGetApiBooksIdMemos<TData = Awaited<ReturnType<typeof getApiBooksIdMemos>>, TError = unknown>(
+ id: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBooksIdMemos>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiBooksIdMemos>>,
+          TError,
+          Awaited<ReturnType<typeof getApiBooksIdMemos>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiBooksIdMemos<TData = Awaited<ReturnType<typeof getApiBooksIdMemos>>, TError = unknown>(
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBooksIdMemos>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiBooksIdMemos>>,
+          TError,
+          Awaited<ReturnType<typeof getApiBooksIdMemos>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiBooksIdMemos<TData = Awaited<ReturnType<typeof getApiBooksIdMemos>>, TError = unknown>(
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBooksIdMemos>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetApiBooksIdMemos<TData = Awaited<ReturnType<typeof getApiBooksIdMemos>>, TError = unknown>(
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBooksIdMemos>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetApiBooksIdMemosQueryOptions(id,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+export type postApiBooksIdMemosResponse201 = {
+  data: PostApiBooksIdMemos201
+  status: 201
+}
+
+export type postApiBooksIdMemosResponse404 = {
+  data: PostApiBooksIdMemos404
+  status: 404
+}
+
+export type postApiBooksIdMemosResponseSuccess = (postApiBooksIdMemosResponse201) & {
+  headers: Headers;
+};
+export type postApiBooksIdMemosResponseError = (postApiBooksIdMemosResponse404) & {
+  headers: Headers;
+};
+
+export type postApiBooksIdMemosResponse = (postApiBooksIdMemosResponseSuccess | postApiBooksIdMemosResponseError)
+
+export const getPostApiBooksIdMemosUrl = (id: string,) => {
+
+
+
+
+  return `http://localhost:8787/api/books/${id}/memos`
+}
+
+export const postApiBooksIdMemos = async (id: string,
+    postApiBooksIdMemosBody: PostApiBooksIdMemosBody, options?: RequestInit): Promise<postApiBooksIdMemosResponse> => {
+
+  return customFetch<postApiBooksIdMemosResponse>(getPostApiBooksIdMemosUrl(id),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      postApiBooksIdMemosBody,)
+  }
+);}
+
+
+
+
+export const getPostApiBooksIdMemosMutationOptions = <TError = PostApiBooksIdMemos404,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiBooksIdMemos>>, TError,{id: string;data: PostApiBooksIdMemosBody}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof postApiBooksIdMemos>>, TError,{id: string;data: PostApiBooksIdMemosBody}, TContext> => {
+
+const mutationKey = ['postApiBooksIdMemos'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiBooksIdMemos>>, {id: string;data: PostApiBooksIdMemosBody}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  postApiBooksIdMemos(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostApiBooksIdMemosMutationResult = NonNullable<Awaited<ReturnType<typeof postApiBooksIdMemos>>>
+    export type PostApiBooksIdMemosMutationBody = PostApiBooksIdMemosBody
+    export type PostApiBooksIdMemosMutationError = PostApiBooksIdMemos404
+
+    export const usePostApiBooksIdMemos = <TError = PostApiBooksIdMemos404,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiBooksIdMemos>>, TError,{id: string;data: PostApiBooksIdMemosBody}, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof postApiBooksIdMemos>>,
+        TError,
+        {id: string;data: PostApiBooksIdMemosBody},
+        TContext
+      > => {
+      return useMutation(getPostApiBooksIdMemosMutationOptions(options), queryClient);
     }
 
 export type getApiTagsResponse200 = {
