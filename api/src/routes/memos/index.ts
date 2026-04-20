@@ -77,7 +77,7 @@ const createMemoRoute = createRoute({
   },
 })
 
-const UpdateMemoRoute = createRoute({
+const updateMemoRoute = createRoute({
   method: 'patch',
   path: '/{id}/memos/{memoId}',
   request: {
@@ -142,7 +142,7 @@ const app = new OpenAPIHono<{ Bindings: Bindings }>()
     }
     return c.json(result, 201)
   })
-  .openapi(UpdateMemoRoute, async (c) => {
+  .openapi(updateMemoRoute, async (c) => {
     const { memoId } = c.req.valid('param')
     const data = c.req.valid('json')
     const result = await updateMemo(Number(memoId), data, c.env.DB)

@@ -83,6 +83,10 @@ export function MemoForm({ memo, onSuccess, onCancel }: Props) {
     };
   }, [onCancel]);
 
+  if (update.error || create.error) {
+    throw update.error || create.error;
+  }
+
   return (
     <Card
       key="new"

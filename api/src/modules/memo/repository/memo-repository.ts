@@ -24,7 +24,7 @@ export const MemoRepository = {
     const result = await db.query.memoTable.findFirst({
       where: eq(memoTable.id, id),
     })
-    return result || null
+    return result ?? null
   },
   update: async (
     id: number,
@@ -38,6 +38,6 @@ export const MemoRepository = {
       .where(eq(memoTable.id, id))
       .returning()
       .get()
-    return result || null
+    return result ?? null
   },
 }

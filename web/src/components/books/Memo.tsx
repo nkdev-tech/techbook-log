@@ -12,10 +12,7 @@ type Props = {
 
 export function Memo({ memo, onEdit }: Props) {
   return (
-    <Card
-      key={memo.id}
-      className="relative bg-yellow-100 rounded-none min-h-40 py-5 group"
-    >
+    <Card className="relative bg-yellow-100 rounded-none min-h-40 py-5 group">
       <CardContent className="h-full px-5">
         <p className="whitespace-pre-wrap">{memo.content}</p>
       </CardContent>
@@ -23,7 +20,7 @@ export function Memo({ memo, onEdit }: Props) {
         type="button"
         variant="ghost"
         className="absolute top-3 right-3 invisible group-hover:visible bg-yellow-100/80 hover:bg-yellow-100/80 backdrop-blur-xs rounded-full"
-        onClick={() => onEdit()}
+        onClick={onEdit}
       >
         <Pen
           size={16}
