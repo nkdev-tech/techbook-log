@@ -1,10 +1,8 @@
-import { OpenAPIHono } from '@hono/zod-openapi'
-import { getMemos } from '../../modules/memo/usecase/get-memos'
-import { createMemo } from '../../modules/memo/usecase/create-memo'
-import { createRoute } from '@hono/zod-openapi'
+import { OpenAPIHono, createRoute } from '@hono/zod-openapi'
 import {
   createMemoReqSchema,
   createMemoResSchema,
+  deleteMemoResSchema,
   errorResBodySchema,
   getMemosSchema,
   memoParamSchema,
@@ -12,7 +10,10 @@ import {
   updateMemoResSchema,
   ParamsSchema,
 } from './schema'
+import { getMemos } from '../../modules/memo/usecase/get-memos'
+import { createMemo } from '../../modules/memo/usecase/create-memo'
 import { updateMemo } from '../../modules/memo/usecase/update-memo'
+import { deleteMemo } from '../../modules/memo/usecase/delete-memo'
 
 type Bindings = {
   DB: D1Database
@@ -118,6 +119,32 @@ const updateMemoRoute = createRoute({
   },
 })
 
+const deleteMemoRoute = createRoute({
+  method: 'delete',
+  path: '/{id}/memos/{memoId}',
+  request: {
+    params: memoParamSchema,
+  },
+  responses: {
+    200: {
+      content: {
+        'application/json': {
+          schema: deleteMemoResSchema,
+        },
+      },
+      description: 'Delete a memo',
+    },
+    404: {
+      content: {
+        'application/json': {
+          schema: errorResBodySchema,
+        },
+      },
+      description: 'Not Found',
+    },
+  },
+})
+
 const app = new OpenAPIHono<{ Bindings: Bindings }>()
   .openapi(getMemosRoute, async (c) => {
     const { id } = c.req.valid('param')
@@ -146,6 +173,23 @@ const app = new OpenAPIHono<{ Bindings: Bindings }>()
     const { memoId } = c.req.valid('param')
     const data = c.req.valid('json')
     const result = await updateMemo(Number(memoId), data, c.env.DB)
+    if (result === null) {
+      return c.json(
+        {
+          success: false,
+          error: {
+            name: 'NotFound',
+            message: 'メモが見つかりませんでした',
+          },
+        },
+        404,
+      )
+    }
+    return c.json(result, 200)
+  })
+  .openapi(deleteMemoRoute, async (c) => {
+    const { memoId } = c.req.valid('param')
+    const result = await deleteMemo(Number(memoId), c.env.DB)
     if (result === null) {
       return c.json(
         {
