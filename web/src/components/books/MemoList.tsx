@@ -30,6 +30,7 @@ export function MemoList() {
         ) : (
           <Memo
             key={memo.id}
+            bookId={id}
             memo={memo}
             onEdit={() => setEditingMemoId(memo.id)}
           />
@@ -43,7 +44,7 @@ export function MemoList() {
       ) : (
         <button
           type="button"
-          className="flex items-center justify-center border-2 border-dashed rounded-none cursor-pointer h-40 w-full"
+          className="flex items-center justify-center border-2 border-dashed rounded-none cursor-pointer h-40 w-full hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           onClick={() => setIsFormOpen(true)}
         >
           <Plus size={48} className="text-muted-foreground" />

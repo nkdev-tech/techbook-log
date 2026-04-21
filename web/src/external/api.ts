@@ -435,6 +435,32 @@ export type PatchApiBooksIdMemosMemoId404 = {
   error: PatchApiBooksIdMemosMemoId404Error;
 };
 
+export type DeleteApiBooksIdMemosMemoId200 = {
+  /**
+     * @minimum -9007199254740991
+     * @maximum 9007199254740991
+     */
+  id: number;
+  /**
+     * @minimum -9007199254740991
+     * @maximum 9007199254740991
+     */
+  bookId: number;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type DeleteApiBooksIdMemosMemoId404Error = {
+  name: string;
+  message: string;
+};
+
+export type DeleteApiBooksIdMemosMemoId404 = {
+  success: boolean;
+  error: DeleteApiBooksIdMemosMemoId404Error;
+};
+
 export type GetApiTags200Item = {
   /**
      * @minimum -9007199254740991
@@ -1215,6 +1241,91 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
         TContext
       > => {
       return useMutation(getPatchApiBooksIdMemosMemoIdMutationOptions(options), queryClient);
+    }
+
+export type deleteApiBooksIdMemosMemoIdResponse200 = {
+  data: DeleteApiBooksIdMemosMemoId200
+  status: 200
+}
+
+export type deleteApiBooksIdMemosMemoIdResponse404 = {
+  data: DeleteApiBooksIdMemosMemoId404
+  status: 404
+}
+
+export type deleteApiBooksIdMemosMemoIdResponseSuccess = (deleteApiBooksIdMemosMemoIdResponse200) & {
+  headers: Headers;
+};
+export type deleteApiBooksIdMemosMemoIdResponseError = (deleteApiBooksIdMemosMemoIdResponse404) & {
+  headers: Headers;
+};
+
+export type deleteApiBooksIdMemosMemoIdResponse = (deleteApiBooksIdMemosMemoIdResponseSuccess | deleteApiBooksIdMemosMemoIdResponseError)
+
+export const getDeleteApiBooksIdMemosMemoIdUrl = (id: string,
+    memoId: string,) => {
+
+
+
+
+  return `http://localhost:8787/api/books/${id}/memos/${memoId}`
+}
+
+export const deleteApiBooksIdMemosMemoId = async (id: string,
+    memoId: string, options?: RequestInit): Promise<deleteApiBooksIdMemosMemoIdResponse> => {
+
+  return customFetch<deleteApiBooksIdMemosMemoIdResponse>(getDeleteApiBooksIdMemosMemoIdUrl(id,memoId),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+export const getDeleteApiBooksIdMemosMemoIdMutationOptions = <TError = DeleteApiBooksIdMemosMemoId404,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiBooksIdMemosMemoId>>, TError,{id: string;memoId: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteApiBooksIdMemosMemoId>>, TError,{id: string;memoId: string}, TContext> => {
+
+const mutationKey = ['deleteApiBooksIdMemosMemoId'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteApiBooksIdMemosMemoId>>, {id: string;memoId: string}> = (props) => {
+          const {id,memoId} = props ?? {};
+
+          return  deleteApiBooksIdMemosMemoId(id,memoId,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteApiBooksIdMemosMemoIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteApiBooksIdMemosMemoId>>>
+
+    export type DeleteApiBooksIdMemosMemoIdMutationError = DeleteApiBooksIdMemosMemoId404
+
+    export const useDeleteApiBooksIdMemosMemoId = <TError = DeleteApiBooksIdMemosMemoId404,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiBooksIdMemosMemoId>>, TError,{id: string;memoId: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof deleteApiBooksIdMemosMemoId>>,
+        TError,
+        {id: string;memoId: string},
+        TContext
+      > => {
+      return useMutation(getDeleteApiBooksIdMemosMemoIdMutationOptions(options), queryClient);
     }
 
 export type getApiTagsResponse200 = {

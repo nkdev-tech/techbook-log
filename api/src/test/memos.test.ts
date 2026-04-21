@@ -140,4 +140,31 @@ describe('memos', () => {
 
     expect(result.status).toBe(404)
   })
+
+  it('can delete memo', async () => {
+    const mockMemo = {
+      id: 1,
+      bookId: 1,
+      content: 'メモ1',
+      createdAt: '2026-01-01T00:00:00.000Z',
+      updatedAt: '2026-01-01T00:00:00.000Z',
+    }
+    vi.mocked(MemoRepository.delete).mockResolvedValue(mockMemo)
+
+    const result = await client.api.books[':id'].memos[':memoId'].$delete({
+      param: { id: '1', memoId: '1' },
+    })
+
+    expect(result.status).toBe(200)
+  })
+
+  it('cannot delete memo when memo does not exist', async () => {
+    vi.mocked(MemoRepository.delete).mockResolvedValue(null)
+
+    const result = await client.api.books[':id'].memos[':memoId'].$delete({
+      param: { id: '1', memoId: '1' },
+    })
+
+    expect(result.status).toBe(404)
+  })
 })

@@ -40,4 +40,13 @@ export const MemoRepository = {
       .get()
     return result ?? null
   },
+  delete: async (id: number, d1: D1Database): Promise<SelectMemo | null> => {
+    const db = createDb(d1)
+    const result = await db
+      .delete(memoTable)
+      .where(eq(memoTable.id, id))
+      .returning()
+      .get()
+    return result ?? null
+  },
 }

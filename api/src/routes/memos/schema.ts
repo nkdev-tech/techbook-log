@@ -34,6 +34,8 @@ export const updateMemoReqSchema = inputMemoSchema
 
 export const updateMemoResSchema = memosSchema
 
+export const deleteMemoResSchema = memosSchema
+
 export const ParamsSchema = z.object({
   id: z
     .string()
