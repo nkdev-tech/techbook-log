@@ -72,7 +72,7 @@ export function SearchField() {
       >
         <ComboboxChips
           ref={anchor}
-          className="flex-nowrap w-2/3 min-w-100 bg-card"
+          className="flex-nowrap w-2/3 min-w-100 bg-card !pl-2.5"
         >
           <Search size={18} className="shrink-0 text-muted-foreground" />
           <div
@@ -91,8 +91,13 @@ export function SearchField() {
                     </ComboboxChip>
                   ))}
                   <ComboboxChipsInput
-                    className="!min-w-0 !flex-none"
-                    size={1}
+                    className={
+                      values.length === 0 ? "flex-1" : "!min-w-0 !flex-none"
+                    }
+                    size={values.length === 0 ? undefined : 1}
+                    placeholder={
+                      values.length === 0 ? "タグで絞り込む" : undefined
+                    }
                   />
                 </div>
               )}
