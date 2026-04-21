@@ -16,6 +16,7 @@ import { MemoList } from "@/components/books/MemoList";
 import { StarRating } from "@/components/books/StarRating";
 import { Tag } from "@/components/books/Tag";
 import { format } from "date-fns";
+import { Button } from "@/components/ui/button";
 import { SquarePen } from "lucide-react";
 import { ApiError } from "@/shared/types/api";
 
@@ -51,17 +52,18 @@ export default function BookDetailPage() {
     <div className="w-full max-w-3xl mx-auto">
       <Card className="w-full mx-auto">
         <CardHeader>
-          <CardTitle className="text-xl font-bold">{book.title}</CardTitle>
+          <CardTitle className="text-2xl font-bold">{book.title}</CardTitle>
           <CardDescription className="">{book.author}</CardDescription>
-          <CardAction className="flex px-2 gap-4">
+          <CardAction className="flex px-2 gap-1">
             <DeleteButton id={id} />
-            <button
+            <Button
               type="button"
-              className="cursor-pointer"
+              variant="ghost"
+              size="icon-lg"
               onClick={() => router.push(`/books/${id}/edit`)}
             >
-              <SquarePen className="text-primary" />
-            </button>
+              <SquarePen className="text-primary size-6" />
+            </Button>
           </CardAction>
         </CardHeader>
         <CardContent className="space-y-2 text-base">

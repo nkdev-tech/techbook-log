@@ -313,6 +313,7 @@ export function BookForm({ defaultValues, onSubmit }: Props) {
               </FieldLabel>
               <StarRating
                 rating={field.state.value}
+                size="lg"
                 onChange={(value) => field.handleChange(value)}
               />
             </Field>

@@ -63,13 +63,13 @@ export function Memo({ bookId, memo, onEdit }: Props) {
       <CardContent className="h-full px-5">
         <p className="whitespace-pre-wrap">{memo.content}</p>
       </CardContent>
-      <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity bg-yellow-100/80 backdrop-blur-xs rounded-full">
+      <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity bg-yellow-100/80 backdrop-blur-xs rounded-full">
         <AlertDialog>
           <AlertDialogTrigger asChild>
             <Button
               type="button"
               variant="ghost"
-              size="icon"
+              size="icon-sm"
               disabled={isPending}
             >
               <Trash2 size={16} className="text-destructive" />
@@ -93,7 +93,7 @@ export function Memo({ bookId, memo, onEdit }: Props) {
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
-        <Button type="button" variant="ghost" size="icon" onClick={onEdit}>
+        <Button type="button" variant="ghost" size="icon-sm" onClick={onEdit}>
           <SquarePen size={16} className="text-primary" />
         </Button>
       </div>

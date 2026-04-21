@@ -15,6 +15,7 @@ import { StarRating } from "@/components/books/StarRating";
 import { SearchField } from "@/components/books/SearchField";
 import { Tag } from "@/components/books/Tag";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { BookOpen, SearchX } from "lucide-react";
 
@@ -73,31 +74,37 @@ function BooksContent() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {data?.data.map((book) => {
             return (
-              <Card
+              <Link
                 key={book.id}
-                className="gap-1"
-                onClick={() => router.push(`/books/${book.id}`)}
+                href={`/books/${book.id}`}
+                className="block h-full rounded-lg"
               >
-                <CardHeader>
-                  <CardTitle className="text-lg font-bold truncate">
-                    {book.title}
-                  </CardTitle>
-                  <CardDescription className="text-xs truncate">
-                    {book.author}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-1">
-                  <div className="overflow-hidden max-h-[2.1rem]">
-                    <Tag
-                      tags={book.tags ?? []}
-                      iconSize={12}
-                      textSize="text-xs"
+                <Card className="gap-1 cursor-pointer h-full">
+                  <CardHeader>
+                    <CardTitle className="text-lg font-bold truncate">
+                      {book.title}
+                    </CardTitle>
+                    <CardDescription className="text-xs truncate">
+                      {book.author}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-1">
+                    <div className="overflow-hidden max-h-[2.1rem]">
+                      <Tag
+                        tags={book.tags ?? []}
+                        iconSize={12}
+                        textSize="text-xs"
+                      />
+                    </div>
+                    <div>{STATUS_LABEL[book.status] ?? book.status}</div>
+                    <StarRating
+                      rating={book.rating}
+                      size="sm"
+                      disabled={true}
                     />
-                  </div>
-                  <div>{STATUS_LABEL[book.status] ?? book.status}</div>
-                  <StarRating rating={book.rating} size={16} disabled={true} />
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              </Link>
             );
           })}
         </div>

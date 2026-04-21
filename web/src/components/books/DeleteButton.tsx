@@ -11,6 +11,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { ApiError } from "@/shared/types/api";
@@ -47,9 +48,14 @@ export function DeleteButton({ id }: Props) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <button type="button" aria-label="削除" className="cursor-pointer">
-          <Trash2 color="red" />
-        </button>
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon-lg"
+          aria-label="削除"
+        >
+          <Trash2 color="red" className="size-6" />
+        </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

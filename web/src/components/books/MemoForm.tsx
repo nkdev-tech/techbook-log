@@ -83,6 +83,38 @@ export function MemoForm({ memo, onSuccess, onCancel }: Props) {
     };
   }, [onCancel]);
 
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== "Tab") return;
+
+      const focusable = Array.from(
+        el.querySelectorAll<HTMLElement>(
+          'button, textarea, input, [tabindex]:not([tabindex="-1"])'
+        )
+      );
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (e.shiftKey) {
+        if (document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        }
+      } else {
+        if (document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+
+    el.addEventListener("keydown", handleKeyDown);
+    return () => el.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
   if (update.error || create.error) {
     throw update.error || create.error;
   }
