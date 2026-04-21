@@ -31,7 +31,7 @@ type Props = {
 
 export function Memo({ bookId, memo, onEdit }: Props) {
   const queryClient = useQueryClient();
-  const { mutate } = useDeleteApiBooksIdMemosMemoId();
+  const { mutate, isPending } = useDeleteApiBooksIdMemosMemoId();
 
   const handleDelete = () => {
     mutate(
@@ -63,11 +63,16 @@ export function Memo({ bookId, memo, onEdit }: Props) {
       <CardContent className="h-full px-5">
         <p className="whitespace-pre-wrap">{memo.content}</p>
       </CardContent>
-      <div className="absolute top-3 right-3 invisible group-hover:visible bg-yellow-100/80 backdrop-blur-xs rounded-full">
+      <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity bg-yellow-100/80 backdrop-blur-xs rounded-full">
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <Button type="button" variant="ghost" className="px-1">
-              <Trash2 size={16} color="red" />
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              disabled={isPending}
+            >
+              <Trash2 size={16} className="text-destructive" />
             </Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
@@ -88,7 +93,7 @@ export function Memo({ bookId, memo, onEdit }: Props) {
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
-        <Button type="button" variant="ghost" className="px-1" onClick={onEdit}>
+        <Button type="button" variant="ghost" size="icon" onClick={onEdit}>
           <SquarePen size={16} className="text-primary" />
         </Button>
       </div>

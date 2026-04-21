@@ -120,7 +120,7 @@ export function MemoForm({ memo, onSuccess, onCancel }: Props) {
                 <Field>
                   <Textarea
                     value={field.state.value}
-                    className="form-textarea border-none resize-none p-0 focus:ring-0 focus-visible:ring-0 rounded-none min-h-[6.5rem] px-3"
+                    className="form-textarea border-none resize-none p-0 focus:ring-0 focus-visible:ring-0 rounded-none min-h-26 px-3"
                     onChange={(e) => field.handleChange(e.target.value)}
                     autoFocus
                   />
