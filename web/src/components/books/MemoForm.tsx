@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Field, FieldError, FieldGroup } from "@/components/ui/field";
 import { Textarea } from "@/components/ui/textarea";
-import { SendHorizontal } from "lucide-react";
+import { SendHorizontal, X } from "lucide-react";
 
 type Props = {
   memo?: {
@@ -131,9 +131,17 @@ export function MemoForm({ memo, onSuccess, onCancel }: Props) {
               )}
             </form.Field>
           </FieldGroup>
-          <div className="flex justify-end bg-yellow-100 border-none">
+          <div className="flex justify-between bg-yellow-100 border-none">
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              onClick={onCancel}
+            >
+              <X className="text-muted-foreground" />
+            </Button>
             <Button type="submit" variant="ghost" size="icon">
-              <SendHorizontal />
+              <SendHorizontal className="text-primary" />
             </Button>
           </div>
         </CardContent>

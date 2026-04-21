@@ -30,6 +30,7 @@ export function MemoList() {
         ) : (
           <Memo
             key={memo.id}
+            bookId={id}
             memo={memo}
             onEdit={() => setEditingMemoId(memo.id)}
           />
