@@ -18,7 +18,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 5. 実装を自分で書く
 6. レビュー依頼 — 「このテストと実装どう？」。`web/` のコンポーネントを含む場合は `tailwind-consistency-review` スキルを必ず使ってTailwindの整合性チェックも行う
 7. リファクタリング（必要なら相談しながら）
-8. PR作成 — bodyに必ず `Closes #<issue番号>` を含めてissueを紐づける
+8. PR作成 — bodyに必ず `Closes #<issue番号>` を含めてissueを紐づける。PRタイトルはissueタイトルと同じにする
 
 ## 概要
 
