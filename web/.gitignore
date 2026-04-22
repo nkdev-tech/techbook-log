@@ -10,6 +10,7 @@
 !.yarn/releases
 !.yarn/versions
 .open-next
+.wrangler
 
 # testing
 /coverage
