@@ -2,3 +2,6 @@
 
 # Claude Code
 .claude/settings.local.json
+
+# Design docs and plans (local only)
+docs/superpowers/

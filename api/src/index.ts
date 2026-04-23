@@ -34,4 +34,6 @@ const _route = app
 
 export type AppType = typeof _route
 
+app.on(["POST", "GET"], "/api/auth/**", (c) => auth.handler(c.req.raw));
+
 export default app
