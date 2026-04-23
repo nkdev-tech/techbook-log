@@ -23,8 +23,7 @@ describe('getBook', () => {
     vi.mocked(BookRepository.findById).mockResolvedValue(mockBook)
 
     const id = 1
-    const mockD1 = {} as D1Database
-    const result = await getBook(id, mockD1)
+    const result = await getBook(id)
 
     expect(result).toEqual(mockBook)
     expect(BookRepository.findById).toHaveBeenCalledTimes(1)
@@ -34,8 +33,7 @@ describe('getBook', () => {
     vi.mocked(BookRepository.findById).mockResolvedValue(null)
 
     const id = 1
-    const mockD1 = {} as D1Database
-    const result = await getBook(id, mockD1)
+    const result = await getBook(id)
 
     expect(result).toBeNull()
     expect(BookRepository.findById).toHaveBeenCalledTimes(1)

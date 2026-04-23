@@ -21,8 +21,7 @@ describe('deleteBook', () => {
     vi.mocked(BookRepository.delete).mockResolvedValue(mockBook)
 
     const id = 1
-    const mockD1 = {} as D1Database
-    const result = await deleteBook(id, mockD1)
+    const result = await deleteBook(id)
 
     expect(result).toEqual(mockBook)
     expect(BookRepository.delete).toHaveBeenCalledTimes(1)
@@ -32,8 +31,7 @@ describe('deleteBook', () => {
     vi.mocked(BookRepository.delete).mockResolvedValue(null)
 
     const id = 1
-    const mockD1 = {} as D1Database
-    const result = await deleteBook(id, mockD1)
+    const result = await deleteBook(id)
 
     expect(result).toBeNull()
     expect(BookRepository.delete).toHaveBeenCalledTimes(1)

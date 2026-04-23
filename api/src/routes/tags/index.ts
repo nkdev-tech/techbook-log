@@ -3,10 +3,6 @@ import { getTags } from '../../modules/tag/usecase/get-tags'
 import { getTagsSchema } from './schema'
 import { createRoute } from '@hono/zod-openapi'
 
-type Bindings = {
-  DB: D1Database
-}
-
 const getTagsRoute = createRoute({
   method: 'get',
   path: '/',
@@ -22,12 +18,9 @@ const getTagsRoute = createRoute({
   },
 })
 
-const app = new OpenAPIHono<{ Bindings: Bindings }>().openapi(
-  getTagsRoute,
-  async (c) => {
-    const result = await getTags(c.env.DB)
-    return c.json(result, 200)
-  },
-)
+const app = new OpenAPIHono().openapi(getTagsRoute, async (c) => {
+  const result = await getTags()
+  return c.json(result, 200)
+})
 
 export default app

@@ -1,12 +1,10 @@
 import { bookTable, taggingTable, tagTable } from '../../../db/schema'
-import { createDb } from '../../../db'
+import { db } from '../../../db'
 import { toBook, type Book, type InsertBook } from '../entity/book'
 import { eq, inArray, sql } from 'drizzle-orm'
 
 export const BookRepository = {
-  findAll: async (query: string[], d1: D1Database): Promise<Book[]> => {
-    const db = createDb(d1)
-
+  findAll: async (query: string[]): Promise<Book[]> => {
     if (query.length === 0) {
       const rows = await db.query.bookTable.findMany({
         with: {
@@ -44,13 +42,11 @@ export const BookRepository = {
 
     return rows.map(toBook)
   },
-  create: async (data: InsertBook, d1: D1Database): Promise<Book> => {
-    const db = createDb(d1)
+  create: async (data: InsertBook): Promise<Book> => {
     const result = await db.insert(bookTable).values(data).returning().get()
     return toBook(result)
   },
-  findById: async (id: number, d1: D1Database): Promise<Book | null> => {
-    const db = createDb(d1)
+  findById: async (id: number): Promise<Book | null> => {
     const result = await db.query.bookTable.findFirst({
       where: eq(bookTable.id, id),
       with: {
@@ -64,12 +60,7 @@ export const BookRepository = {
     })
     return result ? toBook(result) : null
   },
-  update: async (
-    id: number,
-    data: InsertBook,
-    d1: D1Database,
-  ): Promise<Book | null> => {
-    const db = createDb(d1)
+  update: async (id: number, data: InsertBook): Promise<Book | null> => {
     const result = await db
       .update(bookTable)
       .set(data)
@@ -77,8 +68,7 @@ export const BookRepository = {
       .returning()
     return result[0] ? toBook(result[0]) : null
   },
-  delete: async (id: number, d1: D1Database): Promise<Book | null> => {
-    const db = createDb(d1)
+  delete: async (id: number): Promise<Book | null> => {
     const result = await db
       .delete(bookTable)
       .where(eq(bookTable.id, id))

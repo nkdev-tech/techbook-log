@@ -20,6 +20,7 @@ describe('createMemo', () => {
       bookId: 1,
       content: 'メモ1',
       createdAt: '2026-01-01T00:00:00.000Z',
+      updatedAt: '2026-01-01T00:00:00.000Z',
     }
 
     vi.mocked(BookRepository.findById).mockResolvedValue({
@@ -35,8 +36,7 @@ describe('createMemo', () => {
     })
     vi.mocked(MemoRepository.create).mockResolvedValue(mockMemo)
 
-    const mockD1 = {} as D1Database
-    const result = await createMemo(data, mockD1)
+    const result = await createMemo(data)
 
     expect(result).toEqual(mockMemo)
     expect(MemoRepository.create).toHaveBeenCalledTimes(1)
@@ -50,9 +50,7 @@ describe('createMemo', () => {
 
     vi.mocked(BookRepository.findById).mockResolvedValue(null)
 
-    const mockD1 = {} as D1Database
-
-    const result = await createMemo(data, mockD1)
+    const result = await createMemo(data)
     expect(result).toBeNull()
     expect(MemoRepository.create).not.toHaveBeenCalled()
   })

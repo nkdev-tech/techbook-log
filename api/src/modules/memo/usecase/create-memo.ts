@@ -4,11 +4,10 @@ import { BookRepository } from '../../book/repository/book-repository'
 
 export const createMemo = async (
   data: InsertMemo,
-  d1: D1Database,
 ): Promise<SelectMemo | null> => {
-  const book = await BookRepository.findById(data.bookId, d1)
+  const book = await BookRepository.findById(data.bookId)
   if (!book) {
     return null
   }
-  return await MemoRepository.create(data, d1)
+  return await MemoRepository.create(data)
 }
