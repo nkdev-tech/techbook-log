@@ -12,9 +12,7 @@ vi.mock('../modules/tag/repository/tagging-repository')
 describe('books', () => {
   beforeEach(() => vi.clearAllMocks())
 
-  const client = testClient<AppType>(app, {
-    DB: {} as D1Database,
-  })
+  const client = testClient<AppType>(app)
 
   it('can get books', async () => {
     vi.mocked(BookRepository.findAll).mockResolvedValue([])

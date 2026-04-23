@@ -1,11 +1,10 @@
 import { taggingTable, tagTable } from '../../../db/schema'
-import { createDb } from '../../../db'
+import { db } from '../../../db'
 import { type InsertTag, type SelectTag } from '../entity/tag'
 import { eq } from 'drizzle-orm'
 
 export const TagRepository = {
-  findOrCreate: async (data: InsertTag, d1: D1Database): Promise<SelectTag> => {
-    const db = createDb(d1)
+  findOrCreate: async (data: InsertTag): Promise<SelectTag> => {
     return await db
       .insert(tagTable)
       .values(data)
@@ -13,11 +12,7 @@ export const TagRepository = {
       .returning()
       .get()
   },
-  findByBookId: async (
-    bookId: number,
-    d1: D1Database,
-  ): Promise<SelectTag[]> => {
-    const db = createDb(d1)
+  findByBookId: async (bookId: number): Promise<SelectTag[]> => {
     return await db
       .select({
         id: tagTable.id,
@@ -29,8 +24,7 @@ export const TagRepository = {
       .where(eq(taggingTable.bookId, bookId))
       .orderBy(taggingTable.order)
   },
-  findAll: async (d1: D1Database): Promise<SelectTag[]> => {
-    const db = createDb(d1)
+  findAll: async (): Promise<SelectTag[]> => {
     return await db.select().from(tagTable).orderBy(tagTable.name)
   },
 }

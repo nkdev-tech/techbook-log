@@ -26,8 +26,7 @@ describe('getTags', () => {
 
     vi.mocked(TagRepository.findAll).mockResolvedValue(mockTags)
 
-    const mockD1 = {} as D1Database
-    const result = await getTags(mockD1)
+    const result = await getTags()
 
     expect(result).toEqual(mockTags)
     expect(TagRepository.findAll).toHaveBeenCalledTimes(1)
