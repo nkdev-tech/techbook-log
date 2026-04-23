@@ -4,7 +4,6 @@ import books from './routes/books'
 import memos from './routes/memos'
 import tags from './routes/tags'
 import { cors } from 'hono/cors'
-import { auth } from './lib/auth'
 
 const app = new OpenAPIHono()
 

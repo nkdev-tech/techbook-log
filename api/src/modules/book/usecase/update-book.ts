@@ -8,13 +8,10 @@ export const updateBook = async (
   data: InsertBook,
 ): Promise<Book | null> => {
   const { tags, ...bookData } = data
-  const book = await BookRepository.update(
-    id,
-    {
-      ...bookData,
-      finishedAt: data.status === 'done' ? data.finishedAt : null,
-    },
-  )
+  const book = await BookRepository.update(id, {
+    ...bookData,
+    finishedAt: data.status === 'done' ? data.finishedAt : null,
+  })
 
   if (book === null) return null
 

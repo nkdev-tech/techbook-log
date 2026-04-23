@@ -18,12 +18,9 @@ const getTagsRoute = createRoute({
   },
 })
 
-const app = new OpenAPIHono().openapi(
-  getTagsRoute,
-  async (c) => {
-    const result = await getTags()
-    return c.json(result, 200)
-  },
-)
+const app = new OpenAPIHono().openapi(getTagsRoute, async (c) => {
+  const result = await getTags()
+  return c.json(result, 200)
+})
 
 export default app

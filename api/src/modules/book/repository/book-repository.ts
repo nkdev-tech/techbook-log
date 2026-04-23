@@ -60,10 +60,7 @@ export const BookRepository = {
     })
     return result ? toBook(result) : null
   },
-  update: async (
-    id: number,
-    data: InsertBook,
-  ): Promise<Book | null> => {
+  update: async (id: number, data: InsertBook): Promise<Book | null> => {
     const result = await db
       .update(bookTable)
       .set(data)

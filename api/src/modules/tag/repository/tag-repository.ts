@@ -12,9 +12,7 @@ export const TagRepository = {
       .returning()
       .get()
   },
-  findByBookId: async (
-    bookId: number,
-  ): Promise<SelectTag[]> => {
+  findByBookId: async (bookId: number): Promise<SelectTag[]> => {
     return await db
       .select({
         id: tagTable.id,
