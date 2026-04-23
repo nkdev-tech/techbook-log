@@ -4,6 +4,7 @@ import books from './routes/books'
 import memos from './routes/memos'
 import tags from './routes/tags'
 import { cors } from 'hono/cors'
+import { auth } from './lib/auth'
 
 const app = new OpenAPIHono()
 
@@ -30,6 +31,6 @@ const _route = app
 
 export type AppType = typeof _route
 
-app.on(["POST", "GET"], "/api/auth/**", (c) => auth.handler(c.req.raw));
+app.on(['POST', 'GET'], '/api/auth/**', (c) => auth.handler(c.req.raw))
 
 export default app
