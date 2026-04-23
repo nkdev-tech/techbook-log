@@ -44,11 +44,10 @@ describe('getBooks', () => {
 
     vi.mocked(BookRepository.findAll).mockResolvedValue(mockBooks)
 
-    const mockD1 = {} as D1Database
-    const result = await getBooks([], mockD1)
+    const result = await getBooks([])
 
     expect(result).toEqual(mockBooks)
-    expect(BookRepository.findAll).toHaveBeenCalledWith([], mockD1)
+    expect(BookRepository.findAll).toHaveBeenCalledWith([])
   })
 
   it('can get books filtered by tags', async () => {
@@ -68,10 +67,9 @@ describe('getBooks', () => {
 
     vi.mocked(BookRepository.findAll).mockResolvedValue(mockBooks)
 
-    const mockD1 = {} as D1Database
-    const result = await getBooks(['React'], mockD1)
+    const result = await getBooks(['React'])
 
     expect(result).toEqual(mockBooks)
-    expect(BookRepository.findAll).toHaveBeenCalledWith(['React'], mockD1)
+    expect(BookRepository.findAll).toHaveBeenCalledWith(['React'])
   })
 })

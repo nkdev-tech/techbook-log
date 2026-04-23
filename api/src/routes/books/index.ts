@@ -18,10 +18,6 @@ import {
   updateBookResSchema,
 } from './schema'
 
-type Bindings = {
-  DB: D1Database
-}
-
 const getBooksRoute = createRoute({
   method: 'get',
   path: '/',
@@ -165,21 +161,21 @@ const deleteBookRoute = createRoute({
   },
 })
 
-const app = new OpenAPIHono<{ Bindings: Bindings }>()
+const app = new OpenAPIHono()
   .openapi(getBooksRoute, async (c) => {
     const { tags } = c.req.valid('query')
     const tagArray = tags ? tags.split(',').filter(Boolean) : []
-    const result = await getBooks(tagArray, c.env.DB)
+    const result = await getBooks(tagArray)
     return c.json(result, 200)
   })
   .openapi(createBookRoute, async (c) => {
     const data = c.req.valid('json')
-    const result = await createBook(data, c.env.DB)
+    const result = await createBook(data)
     return c.json(result, 201)
   })
   .openapi(getBookRoute, async (c) => {
     const { id } = c.req.valid('param')
-    const result = await getBook(Number(id), c.env.DB)
+    const result = await getBook(Number(id))
     if (result === null) {
       return c.json(
         {
@@ -194,7 +190,7 @@ const app = new OpenAPIHono<{ Bindings: Bindings }>()
   .openapi(updateBookRoute, async (c) => {
     const { id } = c.req.valid('param')
     const data = c.req.valid('json')
-    const result = await updateBook(Number(id), data, c.env.DB)
+    const result = await updateBook(Number(id), data)
     if (result === null) {
       return c.json(
         {
@@ -208,7 +204,7 @@ const app = new OpenAPIHono<{ Bindings: Bindings }>()
   })
   .openapi(deleteBookRoute, async (c) => {
     const { id } = c.req.valid('param')
-    const result = await deleteBook(Number(id), c.env.DB)
+    const result = await deleteBook(Number(id))
     if (result === null) {
       return c.json(
         {

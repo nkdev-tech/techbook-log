@@ -4,11 +4,10 @@ import { type SelectMemo, type InsertMemo } from '../entity/memo'
 export const updateMemo = async (
   id: number,
   data: Pick<InsertMemo, 'content'>,
-  d1: D1Database,
 ): Promise<SelectMemo | null> => {
-  const memo = await MemoRepository.findById(id, d1)
+  const memo = await MemoRepository.findById(id)
   if (!memo) {
     return null
   }
-  return await MemoRepository.update(id, data, d1)
+  return await MemoRepository.update(id, data)
 }

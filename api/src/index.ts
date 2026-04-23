@@ -4,12 +4,9 @@ import books from './routes/books'
 import memos from './routes/memos'
 import tags from './routes/tags'
 import { cors } from 'hono/cors'
+import { auth } from './lib/auth'
 
-type Bindings = {
-  DB: D1Database
-}
-
-const app = new OpenAPIHono<{ Bindings: Bindings }>()
+const app = new OpenAPIHono()
 
 app.use('/*', cors())
 

@@ -1,26 +1,20 @@
 import { memoTable } from '../../../db/schema'
-import { createDb } from '../../../db'
+import { db } from '../../../db'
 import { type InsertMemo, type SelectMemo } from '../entity/memo'
 import { eq } from 'drizzle-orm'
 
 export const MemoRepository = {
-  findByBookId: async (
-    bookId: number,
-    d1: D1Database,
-  ): Promise<SelectMemo[]> => {
-    const db = createDb(d1)
+  findByBookId: async (bookId: number): Promise<SelectMemo[]> => {
     return await db.query.memoTable.findMany({
       where: eq(memoTable.bookId, bookId),
       orderBy: (memo, { asc }) => [asc(memo.createdAt)],
     })
   },
-  create: async (data: InsertMemo, d1: D1Database): Promise<SelectMemo> => {
-    const db = createDb(d1)
+  create: async (data: InsertMemo): Promise<SelectMemo> => {
     const result = await db.insert(memoTable).values(data).returning().get()
     return result
   },
-  findById: async (id: number, d1: D1Database): Promise<SelectMemo | null> => {
-    const db = createDb(d1)
+  findById: async (id: number): Promise<SelectMemo | null> => {
     const result = await db.query.memoTable.findFirst({
       where: eq(memoTable.id, id),
     })
@@ -29,9 +23,7 @@ export const MemoRepository = {
   update: async (
     id: number,
     data: Partial<InsertMemo>,
-    d1: D1Database,
   ): Promise<SelectMemo | null> => {
-    const db = createDb(d1)
     const result = await db
       .update(memoTable)
       .set({ ...data, updatedAt: new Date().toISOString() })
@@ -40,8 +32,7 @@ export const MemoRepository = {
       .get()
     return result ?? null
   },
-  delete: async (id: number, d1: D1Database): Promise<SelectMemo | null> => {
-    const db = createDb(d1)
+  delete: async (id: number): Promise<SelectMemo | null> => {
     const result = await db
       .delete(memoTable)
       .where(eq(memoTable.id, id))

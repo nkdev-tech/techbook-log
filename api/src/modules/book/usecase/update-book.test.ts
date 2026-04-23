@@ -41,14 +41,12 @@ describe('updateBook', () => {
     })
 
     const id = 1
-    const mockD1 = {} as D1Database
-    const result = await updateBook(id, data, mockD1)
+    const result = await updateBook(id, data)
 
     expect(result).toEqual(mockBook)
     expect(BookRepository.update).toHaveBeenCalledWith(
       id,
       expect.objectContaining({ finishedAt: '2026-01-01' }),
-      mockD1,
     )
   })
 
@@ -83,13 +81,11 @@ describe('updateBook', () => {
     })
 
     const id = 1
-    const mockD1 = {} as D1Database
-    await updateBook(id, data, mockD1)
+    await updateBook(id, data)
 
     expect(BookRepository.update).toHaveBeenCalledWith(
       id,
       expect.objectContaining({ finishedAt: null }),
-      mockD1,
     )
   })
 
@@ -106,8 +102,7 @@ describe('updateBook', () => {
     }
 
     const id = 1
-    const mockD1 = {} as D1Database
-    const result = await updateBook(id, data, mockD1)
+    const result = await updateBook(id, data)
 
     expect(result).toBeNull()
     expect(BookRepository.update).toHaveBeenCalledTimes(1)

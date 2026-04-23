@@ -40,13 +40,11 @@ describe('createBook', () => {
       createdAt: '2026-01-01T00:00:00.000Z',
     })
 
-    const mockD1 = {} as D1Database
-    const result = await createBook(data, mockD1)
+    const result = await createBook(data)
 
     expect(result).toEqual(mockBook)
     expect(BookRepository.create).toHaveBeenCalledWith(
       expect.objectContaining({ finishedAt: '2026-01-01' }),
-      mockD1,
     )
   })
 
@@ -80,12 +78,10 @@ describe('createBook', () => {
       createdAt: '2026-01-01T00:00:00.000Z',
     })
 
-    const mockD1 = {} as D1Database
-    await createBook(data, mockD1)
+    await createBook(data)
 
     expect(BookRepository.create).toHaveBeenCalledWith(
       expect.objectContaining({ finishedAt: null }),
-      mockD1,
     )
   })
 
@@ -100,8 +96,7 @@ describe('createBook', () => {
     }
     vi.mocked(BookRepository.create).mockRejectedValue(new Error('DB error'))
 
-    const mockD1 = {} as D1Database
-    await expect(createBook(data, mockD1)).rejects.toThrow('DB error')
+    await expect(createBook(data)).rejects.toThrow('DB error')
     expect(BookRepository.create).toHaveBeenCalledTimes(1)
   })
 })

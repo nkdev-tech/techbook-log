@@ -11,9 +11,7 @@ vi.mock('../modules/book/repository/book-repository')
 describe('memos', () => {
   beforeEach(() => vi.clearAllMocks())
 
-  const client = testClient<AppType>(app, {
-    DB: {} as D1Database,
-  })
+  const client = testClient<AppType>(app)
 
   it('can get memos', async () => {
     vi.mocked(MemoRepository.findByBookId).mockResolvedValue([])

@@ -15,10 +15,6 @@ import { createMemo } from '../../modules/memo/usecase/create-memo'
 import { updateMemo } from '../../modules/memo/usecase/update-memo'
 import { deleteMemo } from '../../modules/memo/usecase/delete-memo'
 
-type Bindings = {
-  DB: D1Database
-}
-
 const getMemosRoute = createRoute({
   method: 'get',
   path: '/{id}/memos',
@@ -145,16 +141,16 @@ const deleteMemoRoute = createRoute({
   },
 })
 
-const app = new OpenAPIHono<{ Bindings: Bindings }>()
+const app = new OpenAPIHono()
   .openapi(getMemosRoute, async (c) => {
     const { id } = c.req.valid('param')
-    const result = await getMemos(Number(id), c.env.DB)
+    const result = await getMemos(Number(id))
     return c.json(result, 200)
   })
   .openapi(createMemoRoute, async (c) => {
     const { id } = c.req.valid('param')
     const data = c.req.valid('json')
-    const result = await createMemo({ ...data, bookId: Number(id) }, c.env.DB)
+    const result = await createMemo({ ...data, bookId: Number(id) })
     if (result === null) {
       return c.json(
         {
@@ -172,7 +168,7 @@ const app = new OpenAPIHono<{ Bindings: Bindings }>()
   .openapi(updateMemoRoute, async (c) => {
     const { memoId } = c.req.valid('param')
     const data = c.req.valid('json')
-    const result = await updateMemo(Number(memoId), data, c.env.DB)
+    const result = await updateMemo(Number(memoId), data)
     if (result === null) {
       return c.json(
         {
@@ -189,7 +185,7 @@ const app = new OpenAPIHono<{ Bindings: Bindings }>()
   })
   .openapi(deleteMemoRoute, async (c) => {
     const { memoId } = c.req.valid('param')
-    const result = await deleteMemo(Number(memoId), c.env.DB)
+    const result = await deleteMemo(Number(memoId))
     if (result === null) {
       return c.json(
         {
