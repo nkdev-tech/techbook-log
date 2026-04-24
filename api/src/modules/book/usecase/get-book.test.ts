@@ -15,6 +15,7 @@ describe('getBook', () => {
       status: 'done' as const,
       rating: 3,
       finishedAt: '2026-01-01',
+      userId: '1',
       createdAt: '2026-01-01T00:00:00.000Z',
       updatedAt: '2026-01-01T00:00:00.000Z',
       tags: [{ id: 1, name: 'React', createdAt: '2026-01-01T00:00:00.000Z' }],
@@ -23,7 +24,8 @@ describe('getBook', () => {
     vi.mocked(BookRepository.findById).mockResolvedValue(mockBook)
 
     const id = 1
-    const result = await getBook(id)
+    const userId = '1'
+    const result = await getBook(id, userId)
 
     expect(result).toEqual(mockBook)
     expect(BookRepository.findById).toHaveBeenCalledTimes(1)
@@ -33,7 +35,8 @@ describe('getBook', () => {
     vi.mocked(BookRepository.findById).mockResolvedValue(null)
 
     const id = 1
-    const result = await getBook(id)
+    const userId = '1'
+    const result = await getBook(id, userId)
 
     expect(result).toBeNull()
     expect(BookRepository.findById).toHaveBeenCalledTimes(1)

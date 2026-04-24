@@ -5,6 +5,14 @@ import type { AppType } from '../../src'
 import { TagRepository } from '../modules/tag/repository/tag-repository'
 
 vi.mock('../modules/tag/repository/tag-repository')
+vi.mock('../lib/auth', () => ({
+  auth: {
+    api: {
+      getSession: vi.fn().mockResolvedValue({ user: { id: '1' } }),
+    },
+    handler: vi.fn(),
+  },
+}))
 
 describe('tags', () => {
   beforeEach(() => vi.clearAllMocks())

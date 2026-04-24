@@ -30,13 +30,15 @@ describe('createMemo', () => {
       status: 'unread' as const,
       rating: 3,
       finishedAt: '2026-01-01',
+      userId: '1',
       createdAt: '2026-01-01T00:00:00.000Z',
       updatedAt: '2026-01-01T00:00:00.000Z',
-      tags: [{ id: 1, name: 'React', createdAt: '2026-01-01T00:00:00.000Z' }],
+      tags: [{ id: 1, name: 'React' }],
     })
     vi.mocked(MemoRepository.create).mockResolvedValue(mockMemo)
 
-    const result = await createMemo(data)
+    const userId = '1'
+    const result = await createMemo(userId, data)
 
     expect(result).toEqual(mockMemo)
     expect(MemoRepository.create).toHaveBeenCalledTimes(1)
@@ -50,7 +52,8 @@ describe('createMemo', () => {
 
     vi.mocked(BookRepository.findById).mockResolvedValue(null)
 
-    const result = await createMemo(data)
+    const userId = '1'
+    const result = await createMemo(userId, data)
     expect(result).toBeNull()
     expect(MemoRepository.create).not.toHaveBeenCalled()
   })

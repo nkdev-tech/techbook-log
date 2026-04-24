@@ -27,9 +27,10 @@ describe('updateBook', () => {
       status: 'done' as const,
       rating: 5,
       finishedAt: '2026-01-01',
+      userId: '1',
       createdAt: '2026-01-01T00:00:00.000Z',
       updatedAt: '2026-01-01T00:00:00.000Z',
-      tags: [{ id: 1, name: 'React', createdAt: '2026-01-01T00:00:00.000Z' }],
+      tags: [{ id: 1, name: 'React' }],
     }
 
     vi.mocked(BookRepository.update).mockResolvedValue(mockBook)
@@ -37,11 +38,13 @@ describe('updateBook', () => {
     vi.mocked(TagRepository.findOrCreate).mockResolvedValue({
       id: 1,
       name: 'React',
+      userId: '1',
       createdAt: '2026-01-01T00:00:00.000Z',
     })
 
     const id = 1
-    const result = await updateBook(id, data)
+    const userId = '1'
+    const result = await updateBook(id, userId, data)
 
     expect(result).toEqual(mockBook)
     expect(BookRepository.update).toHaveBeenCalledWith(
@@ -67,9 +70,10 @@ describe('updateBook', () => {
       status: 'unread' as const,
       rating: 3,
       finishedAt: null,
+      userId: '1',
       createdAt: '2026-01-01T00:00:00.000Z',
       updatedAt: '2026-01-01T00:00:00.000Z',
-      tags: [{ id: 1, name: 'React', createdAt: '2026-01-01T00:00:00.000Z' }],
+      tags: [{ id: 1, name: 'React' }],
     }
 
     vi.mocked(BookRepository.update).mockResolvedValue(mockBook)
@@ -77,11 +81,13 @@ describe('updateBook', () => {
     vi.mocked(TagRepository.findOrCreate).mockResolvedValue({
       id: 1,
       name: 'React',
+      userId: '1',
       createdAt: '2026-01-01T00:00:00.000Z',
     })
 
     const id = 1
-    await updateBook(id, data)
+    const userId = '1'
+    await updateBook(id, userId, data)
 
     expect(BookRepository.update).toHaveBeenCalledWith(
       id,
@@ -102,7 +108,8 @@ describe('updateBook', () => {
     }
 
     const id = 1
-    const result = await updateBook(id, data)
+    const userId = '1'
+    const result = await updateBook(id, userId, data)
 
     expect(result).toBeNull()
     expect(BookRepository.update).toHaveBeenCalledTimes(1)

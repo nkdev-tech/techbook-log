@@ -23,7 +23,8 @@ describe('updateMemo', () => {
     vi.mocked(MemoRepository.update).mockResolvedValue({ ...mockMemo, ...data })
 
     const id = 1
-    const result = await updateMemo(id, data)
+    const userId = '1'
+    const result = await updateMemo(id, userId, data)
 
     expect(result).toEqual({ ...mockMemo, ...data })
     expect(MemoRepository.update).toHaveBeenCalledTimes(1)
@@ -36,7 +37,8 @@ describe('updateMemo', () => {
     vi.mocked(MemoRepository.findById).mockResolvedValue(null)
 
     const id = 1
-    const result = await updateMemo(id, data)
+    const userId = '1'
+    const result = await updateMemo(id, userId, data)
 
     expect(result).toBeNull()
     expect(MemoRepository.update).toHaveBeenCalledTimes(0)
