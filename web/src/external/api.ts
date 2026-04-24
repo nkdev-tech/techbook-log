@@ -40,7 +40,6 @@ export const GetApiBooks200ItemStatus = {
 export type GetApiBooks200ItemTagsItem = {
   id: number;
   name: string;
-  createdAt: string;
 };
 
 export type GetApiBooks200Item = {
@@ -60,6 +59,7 @@ export type GetApiBooks200Item = {
   rating: number | null;
   /** @nullable */
   finishedAt: string | null;
+  userId: string;
   createdAt: string;
   updatedAt: string;
   tags: GetApiBooks200ItemTagsItem[];
@@ -111,7 +111,6 @@ export const PostApiBooks201Status = {
 export type PostApiBooks201TagsItem = {
   id: number;
   name: string;
-  createdAt: string;
 };
 
 export type PostApiBooks201 = {
@@ -131,6 +130,7 @@ export type PostApiBooks201 = {
   rating: number | null;
   /** @nullable */
   finishedAt: string | null;
+  userId: string;
   createdAt: string;
   updatedAt: string;
   tags: PostApiBooks201TagsItem[];
@@ -158,7 +158,6 @@ export const GetApiBooksId200Status = {
 export type GetApiBooksId200TagsItem = {
   id: number;
   name: string;
-  createdAt: string;
 };
 
 export type GetApiBooksId200 = {
@@ -178,6 +177,7 @@ export type GetApiBooksId200 = {
   rating: number | null;
   /** @nullable */
   finishedAt: string | null;
+  userId: string;
   createdAt: string;
   updatedAt: string;
   tags: GetApiBooksId200TagsItem[];
@@ -239,7 +239,6 @@ export const PatchApiBooksId200Status = {
 export type PatchApiBooksId200TagsItem = {
   id: number;
   name: string;
-  createdAt: string;
 };
 
 export type PatchApiBooksId200 = {
@@ -259,6 +258,7 @@ export type PatchApiBooksId200 = {
   rating: number | null;
   /** @nullable */
   finishedAt: string | null;
+  userId: string;
   createdAt: string;
   updatedAt: string;
   tags: PatchApiBooksId200TagsItem[];
@@ -296,7 +296,6 @@ export const DeleteApiBooksId200Status = {
 export type DeleteApiBooksId200TagsItem = {
   id: number;
   name: string;
-  createdAt: string;
 };
 
 export type DeleteApiBooksId200 = {
@@ -316,6 +315,7 @@ export type DeleteApiBooksId200 = {
   rating: number | null;
   /** @nullable */
   finishedAt: string | null;
+  userId: string;
   createdAt: string;
   updatedAt: string;
   tags: DeleteApiBooksId200TagsItem[];
@@ -468,6 +468,7 @@ export type GetApiTags200Item = {
      */
   id: number;
   name: string;
+  userId: string;
   createdAt: string;
 };
 

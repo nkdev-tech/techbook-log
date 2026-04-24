@@ -11,8 +11,17 @@ import { env } from 'cloudflare:workers'
 
 const app = new OpenAPIHono()
 
-app.use('/*', cors())
-app.use('/*', except(['/api/auth/**', '/doc', '/ui'], authMiddleware))
+app.use(
+  '/*',
+  cors({
+    origin: env.ORIGIN_URL,
+    allowHeaders: ['Content-Type', 'Authorization'],
+    exposeHeaders: ['Content-Length'],
+    maxAge: 600,
+    credentials: true,
+  }),
+)
+app.use('/*', except(['/api/auth/*', '/doc', '/ui'], authMiddleware))
 
 app.get('/', (c) => {
   return c.text('Hello Hono!')

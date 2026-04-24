@@ -19,6 +19,7 @@
     "GOOGLE_CLIENT_SECRET": "",
     "BETTER_AUTH_SECRET": "",
     "BETTER_AUTH_URL": "",
+    "ORIGIN_URL": "",
   },
   "env": {
     "production": {
