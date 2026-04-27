@@ -7,6 +7,14 @@ import { BookRepository } from '../modules/book/repository/book-repository'
 
 vi.mock('../modules/memo/repository/memo-repository')
 vi.mock('../modules/book/repository/book-repository')
+vi.mock('../lib/auth', () => ({
+  auth: {
+    api: {
+      getSession: vi.fn().mockResolvedValue({ user: { id: '1' } }),
+    },
+    handler: vi.fn(),
+  },
+}))
 
 describe('memos', () => {
   beforeEach(() => vi.clearAllMocks())
@@ -34,9 +42,10 @@ describe('memos', () => {
       status: 'unread' as const,
       rating: null,
       finishedAt: null,
+      userId: '1',
       createdAt: '2026-01-01T00:00:00.000Z',
       updatedAt: '2026-01-01T00:00:00.000Z',
-      tags: [{ id: 1, name: 'React', createdAt: '2026-01-01T00:00:00.000Z' }],
+      tags: [{ id: 1, name: 'React' }],
     })
     vi.mocked(MemoRepository.create).mockResolvedValue(mockMemo)
     const res = await client.api.books[':id'].memos.$post({
@@ -56,9 +65,10 @@ describe('memos', () => {
       status: 'unread' as const,
       rating: null,
       finishedAt: null,
+      userId: '1',
       createdAt: '2026-01-01T00:00:00.000Z',
       updatedAt: '2026-01-01T00:00:00.000Z',
-      tags: [{ id: 1, name: 'React', createdAt: '2026-01-01T00:00:00.000Z' }],
+      tags: [{ id: 1, name: 'React' }],
     })
     const res = await client.api.books[':id'].memos.$post({
       param: { id: '1' },

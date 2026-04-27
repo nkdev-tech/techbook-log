@@ -18,7 +18,8 @@ describe('deleteMemo', () => {
     vi.mocked(MemoRepository.delete).mockResolvedValue(mockMemo)
 
     const id = 1
-    const result = await deleteMemo(id)
+    const userId = '1'
+    const result = await deleteMemo(id, userId)
 
     expect(result).toEqual(mockMemo)
     expect(MemoRepository.delete).toHaveBeenCalledTimes(1)
@@ -28,7 +29,8 @@ describe('deleteMemo', () => {
     vi.mocked(MemoRepository.delete).mockResolvedValue(null)
 
     const id = 1
-    const result = await deleteMemo(id)
+    const userId = '1'
+    const result = await deleteMemo(id, userId)
 
     expect(result).toBeNull()
     expect(MemoRepository.delete).toHaveBeenCalledTimes(1)

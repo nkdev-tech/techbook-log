@@ -8,6 +8,14 @@ import { TagRepository } from '../modules/tag/repository/tag-repository'
 vi.mock('../modules/book/repository/book-repository')
 vi.mock('../modules/tag/repository/tag-repository')
 vi.mock('../modules/tag/repository/tagging-repository')
+vi.mock('../lib/auth', () => ({
+  auth: {
+    api: {
+      getSession: vi.fn().mockResolvedValue({ user: { id: '1' } }),
+    },
+    handler: vi.fn(),
+  },
+}))
 
 describe('books', () => {
   beforeEach(() => vi.clearAllMocks())
@@ -30,15 +38,17 @@ describe('books', () => {
       status: 'unread' as const,
       rating: null,
       finishedAt: null,
+      userId: '1',
       createdAt: '2026-01-01T00:00:00.000Z',
       updatedAt: '2026-01-01T00:00:00.000Z',
-      tags: [{ id: 1, name: 'React', createdAt: '2026-01-01T00:00:00.000Z' }],
+      tags: [{ id: 1, name: 'React' }],
     }
     vi.mocked(BookRepository.create).mockResolvedValue(mockBook)
     vi.mocked(BookRepository.findById).mockResolvedValue(mockBook)
     vi.mocked(TagRepository.findOrCreate).mockResolvedValue({
       id: 1,
       name: 'React',
+      userId: '1',
       createdAt: '2026-01-01T00:00:00.000Z',
     })
     const res = await client.api.books.$post({
@@ -91,9 +101,10 @@ describe('books', () => {
       status: 'unread' as const,
       rating: null,
       finishedAt: null,
+      userId: '1',
       createdAt: '2026-01-01T00:00:00.000Z',
       updatedAt: '2026-01-01T00:00:00.000Z',
-      tags: [{ id: 1, name: 'React', createdAt: '2026-01-01T00:00:00.000Z' }],
+      tags: [{ id: 1, name: 'React' }],
     })
     const res = await client.api.books[':id'].$get({ param: { id: '1' } })
     expect(res.status).toBe(200)
@@ -113,15 +124,17 @@ describe('books', () => {
       status: 'unread' as const,
       rating: null,
       finishedAt: null,
+      userId: '1',
       createdAt: '2026-01-01T00:00:00.000Z',
       updatedAt: '2026-01-01T00:00:00.000Z',
-      tags: [{ id: 1, name: 'React', createdAt: '2026-01-01T00:00:00.000Z' }],
+      tags: [{ id: 1, name: 'React' }],
     }
     vi.mocked(BookRepository.update).mockResolvedValue(mockBook)
     vi.mocked(BookRepository.findById).mockResolvedValue(mockBook)
     vi.mocked(TagRepository.findOrCreate).mockResolvedValue({
       id: 1,
       name: 'React',
+      userId: '1',
       createdAt: '2026-01-01T00:00:00.000Z',
     })
     const res = await client.api.books[':id'].$patch({
@@ -177,6 +190,7 @@ describe('books', () => {
       status: 'unread' as const,
       rating: null,
       finishedAt: null,
+      userId: '1',
       createdAt: '2026-01-01T00:00:00.000Z',
       updatedAt: '2026-01-01T00:00:00.000Z',
       tags: [],

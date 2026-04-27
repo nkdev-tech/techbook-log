@@ -13,4 +13,27 @@
       "migrations_dir": "drizzle",
     },
   ],
+  "vars": {
+    "ENV": "development",
+    "GOOGLE_CLIENT_ID": "",
+    "GOOGLE_CLIENT_SECRET": "",
+    "BETTER_AUTH_SECRET": "",
+    "BETTER_AUTH_URL": "",
+    "ORIGIN_URL": "",
+  },
+  "env": {
+    "production": {
+      "vars": {
+        "ENV": "production",
+      },
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "techbook-log",
+          "database_id": "7bdbf251-ca07-48bb-8b89-ace6744c780a",
+          "migrations_dir": "drizzle",
+        },
+      ],
+    },
+  },
 }

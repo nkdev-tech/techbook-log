@@ -13,6 +13,7 @@ const booksSchema = createSelectSchema(bookTable, {
   status: (schema) => schema.openapi({ example: 'unread' }),
   rating: (schema) => schema.openapi({ example: 3 }),
   finishedAt: (schema) => schema.openapi({ example: '2026-01-01' }),
+  userId: (schema) => schema.openapi({ example: '1' }),
   createdAt: (schema) =>
     schema.openapi({ example: '2026-01-01T00:00:00.000Z' }),
   updatedAt: (schema) =>
@@ -22,7 +23,6 @@ const booksSchema = createSelectSchema(bookTable, {
     z.object({
       id: z.number().openapi({ example: 1 }),
       name: z.string().openapi({ example: 'React' }),
-      createdAt: z.string().openapi({ example: '2026-01-01T00:00:00.000Z' }),
     }),
   ),
 })
@@ -55,6 +55,7 @@ const inputBookSchema = createInsertSchema(bookTable, {
   })
   .omit({
     id: true,
+    userId: true,
     createdAt: true,
     updatedAt: true,
   })

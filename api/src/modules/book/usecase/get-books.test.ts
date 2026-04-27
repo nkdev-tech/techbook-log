@@ -14,9 +14,10 @@ describe('getBooks', () => {
         status: 'unread' as const,
         rating: 3,
         finishedAt: '2026-01-01',
+        userId: '1',
         createdAt: '2026-01-01T00:00:00.000Z',
         updatedAt: '2026-01-01T00:00:00.000Z',
-        tags: [{ id: 1, name: 'React', createdAt: '2026-01-01T00:00:00.000Z' }],
+        tags: [{ id: 1, name: 'React' }],
       },
       {
         id: 2,
@@ -25,6 +26,7 @@ describe('getBooks', () => {
         status: 'reading' as const,
         rating: 4,
         finishedAt: '2026-01-02',
+        userId: '1',
         createdAt: '2026-01-01T00:00:00.000Z',
         updatedAt: '2026-01-01T00:00:00.000Z',
         tags: [],
@@ -36,6 +38,7 @@ describe('getBooks', () => {
         status: 'done' as const,
         rating: 5,
         finishedAt: '2026-01-03',
+        userId: '1',
         createdAt: '2026-01-01T00:00:00.000Z',
         updatedAt: '2026-01-01T00:00:00.000Z',
         tags: [],
@@ -44,10 +47,11 @@ describe('getBooks', () => {
 
     vi.mocked(BookRepository.findAll).mockResolvedValue(mockBooks)
 
-    const result = await getBooks([])
+    const userId = '1'
+    const result = await getBooks(userId, [])
 
     expect(result).toEqual(mockBooks)
-    expect(BookRepository.findAll).toHaveBeenCalledWith([])
+    expect(BookRepository.findAll).toHaveBeenCalledWith(userId, [])
   })
 
   it('can get books filtered by tags', async () => {
@@ -59,17 +63,19 @@ describe('getBooks', () => {
         status: 'unread' as const,
         rating: 3,
         finishedAt: '2026-01-01',
+        userId: '1',
         createdAt: '2026-01-01T00:00:00.000Z',
         updatedAt: '2026-01-01T00:00:00.000Z',
-        tags: [{ id: 1, name: 'React', createdAt: '2026-01-01T00:00:00.000Z' }],
+        tags: [{ id: 1, name: 'React' }],
       },
     ]
 
     vi.mocked(BookRepository.findAll).mockResolvedValue(mockBooks)
 
-    const result = await getBooks(['React'])
+    const userId = '1'
+    const result = await getBooks(userId, ['React'])
 
     expect(result).toEqual(mockBooks)
-    expect(BookRepository.findAll).toHaveBeenCalledWith(['React'])
+    expect(BookRepository.findAll).toHaveBeenCalledWith(userId, ['React'])
   })
 })

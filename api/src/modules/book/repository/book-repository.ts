@@ -1,12 +1,13 @@
 import { bookTable, taggingTable, tagTable } from '../../../db/schema'
 import { db } from '../../../db'
 import { toBook, type Book, type InsertBook } from '../entity/book'
-import { eq, inArray, sql } from 'drizzle-orm'
+import { and, eq, inArray, sql } from 'drizzle-orm'
 
 export const BookRepository = {
-  findAll: async (query: string[]): Promise<Book[]> => {
+  findAll: async (userId: string, query: string[]): Promise<Book[]> => {
     if (query.length === 0) {
       const rows = await db.query.bookTable.findMany({
+        where: inArray(bookTable.userId, [userId]),
         with: {
           taggings: {
             orderBy: (taggings, { asc }) => [asc(taggings.order)],
@@ -21,7 +22,7 @@ export const BookRepository = {
       .select({ bookId: taggingTable.bookId })
       .from(taggingTable)
       .innerJoin(tagTable, eq(taggingTable.tagId, tagTable.id))
-      .where(inArray(tagTable.name, query))
+      .where(and(inArray(tagTable.name, query), eq(tagTable.userId, userId)))
       .groupBy(taggingTable.bookId)
       .having(sql`COUNT(DISTINCT ${tagTable.name}) = ${query.length}`)
 
@@ -46,9 +47,9 @@ export const BookRepository = {
     const result = await db.insert(bookTable).values(data).returning().get()
     return toBook(result)
   },
-  findById: async (id: number): Promise<Book | null> => {
+  findById: async (id: number, userId: string): Promise<Book | null> => {
     const result = await db.query.bookTable.findFirst({
-      where: eq(bookTable.id, id),
+      where: and(eq(bookTable.id, id), eq(bookTable.userId, userId)),
       with: {
         taggings: {
           orderBy: (taggings, { asc }) => [asc(taggings.order)],
@@ -64,14 +65,14 @@ export const BookRepository = {
     const result = await db
       .update(bookTable)
       .set(data)
-      .where(eq(bookTable.id, id))
+      .where(and(eq(bookTable.id, id), eq(bookTable.userId, data.userId)))
       .returning()
     return result[0] ? toBook(result[0]) : null
   },
-  delete: async (id: number): Promise<Book | null> => {
+  delete: async (id: number, userId: string): Promise<Book | null> => {
     const result = await db
       .delete(bookTable)
-      .where(eq(bookTable.id, id))
+      .where(and(eq(bookTable.id, id), eq(bookTable.userId, userId)))
       .returning()
       .get()
     return result ? toBook(result) : null

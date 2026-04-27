@@ -5,11 +5,13 @@ import { TaggingRepository } from '../../tag/repository/tagging-repository'
 
 export const updateBook = async (
   id: number,
-  data: InsertBook,
+  userId: string,
+  data: Omit<InsertBook, 'userId'>,
 ): Promise<Book | null> => {
   const { tags, ...bookData } = data
   const book = await BookRepository.update(id, {
     ...bookData,
+    userId,
     finishedAt: data.status === 'done' ? data.finishedAt : null,
   })
 
@@ -19,10 +21,10 @@ export const updateBook = async (
 
   if (tags && tags.length > 0) {
     for (const [index, tagData] of tags.entries()) {
-      const tag = await TagRepository.findOrCreate(tagData)
+      const tag = await TagRepository.findOrCreate({ ...tagData, userId })
       await TaggingRepository.create(book.id, tag.id, index)
     }
   }
 
-  return await BookRepository.findById(book.id)
+  return await BookRepository.findById(book.id, userId)
 }

@@ -14,6 +14,7 @@ describe('deleteBook', () => {
       status: 'done' as const,
       rating: 5,
       finishedAt: '2026-01-01',
+      userId: '1',
       createdAt: '2026-01-01T00:00:00.000Z',
       updatedAt: '2026-01-01T00:00:00.000Z',
       tags: [{ id: 1, name: 'React', createdAt: '2026-01-01T00:00:00.000Z' }],
@@ -21,7 +22,8 @@ describe('deleteBook', () => {
     vi.mocked(BookRepository.delete).mockResolvedValue(mockBook)
 
     const id = 1
-    const result = await deleteBook(id)
+    const userId = '1'
+    const result = await deleteBook(id, userId)
 
     expect(result).toEqual(mockBook)
     expect(BookRepository.delete).toHaveBeenCalledTimes(1)
@@ -31,7 +33,8 @@ describe('deleteBook', () => {
     vi.mocked(BookRepository.delete).mockResolvedValue(null)
 
     const id = 1
-    const result = await deleteBook(id)
+    const userId = '1'
+    const result = await deleteBook(id, userId)
 
     expect(result).toBeNull()
     expect(BookRepository.delete).toHaveBeenCalledTimes(1)

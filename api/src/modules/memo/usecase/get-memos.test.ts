@@ -33,9 +33,10 @@ describe('getMemos', () => {
     vi.mocked(MemoRepository.findByBookId).mockResolvedValue(mockMemos)
 
     const bookId = 1
-    const result = await getMemos(bookId)
+    const userId = '1'
+    const result = await getMemos(bookId, userId)
 
     expect(result).toEqual(mockMemos)
-    expect(MemoRepository.findByBookId).toHaveBeenCalledWith(bookId)
+    expect(MemoRepository.findByBookId).toHaveBeenCalledWith(bookId, userId)
   })
 })

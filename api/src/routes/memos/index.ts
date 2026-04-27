@@ -14,6 +14,7 @@ import { getMemos } from '../../modules/memo/usecase/get-memos'
 import { createMemo } from '../../modules/memo/usecase/create-memo'
 import { updateMemo } from '../../modules/memo/usecase/update-memo'
 import { deleteMemo } from '../../modules/memo/usecase/delete-memo'
+import { AuthVariables } from '../../middleware/auth'
 
 const getMemosRoute = createRoute({
   method: 'get',
@@ -141,16 +142,18 @@ const deleteMemoRoute = createRoute({
   },
 })
 
-const app = new OpenAPIHono()
+const app = new OpenAPIHono<AuthVariables>()
   .openapi(getMemosRoute, async (c) => {
     const { id } = c.req.valid('param')
-    const result = await getMemos(Number(id))
+    const userId = c.get('user').id
+    const result = await getMemos(Number(id), userId)
     return c.json(result, 200)
   })
   .openapi(createMemoRoute, async (c) => {
     const { id } = c.req.valid('param')
     const data = c.req.valid('json')
-    const result = await createMemo({ ...data, bookId: Number(id) })
+    const userId = c.get('user').id
+    const result = await createMemo(userId, { ...data, bookId: Number(id) })
     if (result === null) {
       return c.json(
         {
@@ -167,8 +170,9 @@ const app = new OpenAPIHono()
   })
   .openapi(updateMemoRoute, async (c) => {
     const { memoId } = c.req.valid('param')
+    const userId = c.get('user').id
     const data = c.req.valid('json')
-    const result = await updateMemo(Number(memoId), data)
+    const result = await updateMemo(Number(memoId), userId, data)
     if (result === null) {
       return c.json(
         {
@@ -185,7 +189,8 @@ const app = new OpenAPIHono()
   })
   .openapi(deleteMemoRoute, async (c) => {
     const { memoId } = c.req.valid('param')
-    const result = await deleteMemo(Number(memoId))
+    const userId = c.get('user').id
+    const result = await deleteMemo(Number(memoId), userId)
     if (result === null) {
       return c.json(
         {

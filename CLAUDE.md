@@ -10,10 +10,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **スキル実行前の確認:** スキルを呼び出す前に必ずこのファイルの開発フローを確認し、そのステップに応じた追加指示を漏らさないこと。
 
+**テストを書く対象:** `api/` の usecase（`api/src/modules/*/usecase/`）とリクエストテスト（`api/src/test/`）のみ。`web/` のコンポーネント・ページ・proxy.ts にはテストを書かない。
+
 **開発フロー（TDD）:**
 1. 設計相談 — 何を作るか・どんなテストが必要か整理。IssueごとにAC（完了条件）を定義する。ACはUI/フロントエンドの振る舞いのみ記載し、APIやrepositoryの実装詳細は含めない。定義したACは必ずGitHub Issueのbodyに書き込む。曖昧な点・不明点は必ずユーザーに質問する
 2. issueに紐づくブランチを作成する
-3. テストを自分で書く
+3. テストを自分で書く（対象は api/ の usecase と api/src/test/ のリクエストテストのみ）
 4. テストが失敗することを確認（red）— 実装前に必ず `npm test` を実行してredを確認するよう促す
 5. 実装を自分で書く
 6. レビュー依頼 — 「このテストと実装どう？」。`web/` のコンポーネントを含む場合は `tailwind-consistency-review` スキルを必ず使ってTailwindの整合性チェックも行う

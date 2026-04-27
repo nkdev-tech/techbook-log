@@ -23,7 +23,7 @@ export const customFetch = async <T>(
   url: string,
   options: RequestInit,
 ): Promise<T> => {
-  const request = new Request(getUrl(url), options);
+  const request = new Request(getUrl(url), { ...options, credentials: 'include' });
   let response: Response;
   try {
     response = await fetch(request);

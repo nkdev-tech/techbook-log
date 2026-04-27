@@ -17,6 +17,7 @@ import {
   updateBookReqSchema,
   updateBookResSchema,
 } from './schema'
+import { AuthVariables } from '../../middleware/auth'
 
 const getBooksRoute = createRoute({
   method: 'get',
@@ -161,21 +162,24 @@ const deleteBookRoute = createRoute({
   },
 })
 
-const app = new OpenAPIHono()
+const app = new OpenAPIHono<AuthVariables>()
   .openapi(getBooksRoute, async (c) => {
     const { tags } = c.req.valid('query')
     const tagArray = tags ? tags.split(',').filter(Boolean) : []
-    const result = await getBooks(tagArray)
+    const userId = c.get('user').id
+    const result = await getBooks(userId, tagArray)
     return c.json(result, 200)
   })
   .openapi(createBookRoute, async (c) => {
     const data = c.req.valid('json')
-    const result = await createBook(data)
+    const userId = c.get('user').id
+    const result = await createBook(userId, data)
     return c.json(result, 201)
   })
   .openapi(getBookRoute, async (c) => {
     const { id } = c.req.valid('param')
-    const result = await getBook(Number(id))
+    const userId = c.get('user').id
+    const result = await getBook(Number(id), userId)
     if (result === null) {
       return c.json(
         {
@@ -190,7 +194,8 @@ const app = new OpenAPIHono()
   .openapi(updateBookRoute, async (c) => {
     const { id } = c.req.valid('param')
     const data = c.req.valid('json')
-    const result = await updateBook(Number(id), data)
+    const userId = c.get('user').id
+    const result = await updateBook(Number(id), userId, data)
     if (result === null) {
       return c.json(
         {
@@ -204,7 +209,8 @@ const app = new OpenAPIHono()
   })
   .openapi(deleteBookRoute, async (c) => {
     const { id } = c.req.valid('param')
-    const result = await deleteBook(Number(id))
+    const userId = c.get('user').id
+    const result = await deleteBook(Number(id), userId)
     if (result === null) {
       return c.json(
         {

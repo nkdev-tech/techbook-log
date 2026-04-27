@@ -11,6 +11,7 @@ describe('createBook', () => {
   beforeEach(() => vi.clearAllMocks())
 
   it('can create book', async () => {
+    const userId = '1'
     const data = {
       title: 'タイトル1',
       author: '著者1',
@@ -27,6 +28,7 @@ describe('createBook', () => {
       status: 'done' as const,
       rating: 5,
       finishedAt: '2026-01-01',
+      userId: '1',
       createdAt: '2026-01-01T00:00:00.000Z',
       updatedAt: '2026-01-01T00:00:00.000Z',
       tags: [{ id: 1, name: 'React', createdAt: '2026-01-01T00:00:00.000Z' }],
@@ -37,10 +39,11 @@ describe('createBook', () => {
     vi.mocked(TagRepository.findOrCreate).mockResolvedValue({
       id: 1,
       name: 'React',
+      userId: '1',
       createdAt: '2026-01-01T00:00:00.000Z',
     })
 
-    const result = await createBook(data)
+    const result = await createBook(userId, data)
 
     expect(result).toEqual(mockBook)
     expect(BookRepository.create).toHaveBeenCalledWith(
@@ -49,6 +52,7 @@ describe('createBook', () => {
   })
 
   it('finishedAt is null when status is not done', async () => {
+    const userId = '1'
     const data = {
       title: 'タイトル1',
       author: '著者1',
@@ -65,6 +69,7 @@ describe('createBook', () => {
       status: 'unread' as const,
       rating: 3,
       finishedAt: null,
+      userId: '1',
       createdAt: '2026-01-01T00:00:00.000Z',
       updatedAt: '2026-01-01T00:00:00.000Z',
       tags: [{ id: 1, name: 'React', createdAt: '2026-01-01T00:00:00.000Z' }],
@@ -75,10 +80,11 @@ describe('createBook', () => {
     vi.mocked(TagRepository.findOrCreate).mockResolvedValue({
       id: 1,
       name: 'React',
+      userId: '1',
       createdAt: '2026-01-01T00:00:00.000Z',
     })
 
-    await createBook(data)
+    await createBook(userId, data)
 
     expect(BookRepository.create).toHaveBeenCalledWith(
       expect.objectContaining({ finishedAt: null }),
@@ -86,6 +92,7 @@ describe('createBook', () => {
   })
 
   it('cannot create book with DB error', async () => {
+    const userId = '1'
     const data = {
       title: 'タイトル1',
       author: '著者1',
@@ -96,7 +103,7 @@ describe('createBook', () => {
     }
     vi.mocked(BookRepository.create).mockRejectedValue(new Error('DB error'))
 
-    await expect(createBook(data)).rejects.toThrow('DB error')
+    await expect(createBook(userId, data)).rejects.toThrow('DB error')
     expect(BookRepository.create).toHaveBeenCalledTimes(1)
   })
 })
