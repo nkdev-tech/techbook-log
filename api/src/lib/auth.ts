@@ -16,10 +16,23 @@ export const auth = betterAuth({
   secret: env.BETTER_AUTH_SECRET as string,
   trustedOrigins: [env.ORIGIN_URL as string],
   baseURL: env.BETTER_AUTH_URL as string,
+  session: {
+    expiresIn: 60 * 60 * 24 * 30,
+    updateAge: 60 * 60 * 24,
+    cookieCache: {
+      enabled: true,
+      maxAge: 60 * 5,
+    },
+  },
+  rateLimit: {
+    enabled: true,
+    window: 60,
+    max: 10,
+  },
   advanced: {
     crossSubDomainCookies: {
-      enabled: true,
-      domain: "techbook-log.workers.dev"
-    }
-  }
+      enabled: env.ENV === 'production',
+      domain: 'techbook-log.workers.dev',
+    },
+  },
 })
