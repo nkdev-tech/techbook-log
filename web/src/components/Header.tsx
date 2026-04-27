@@ -1,14 +1,18 @@
 "use client";
 
+import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Button } from "./ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
 import { toast } from "sonner";
 
 export default function Header() {
+  const [isLoading, setIsLoading] = useState(false)
   const { data: session } = authClient.useSession();
 
   const handleLogout = async () => {
+    setIsLoading(true)
     await authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
@@ -16,6 +20,7 @@ export default function Header() {
         },
         onError: () => {
           toast.error("ログアウトに失敗しました");
+          setIsLoading(false)
         },
       },
     });
@@ -36,7 +41,8 @@ export default function Header() {
                 <AvatarFallback>{session.user.name?.charAt(0)}</AvatarFallback>
               </Avatar>
             </div>
-            <Button type="button" variant="secondary" onClick={handleLogout}>
+            <Button type="button" variant="secondary" onClick={handleLogout} disabled={isLoading}>
+              {isLoading && <Spinner data-icon="inline-start" />}
               ログアウト
             </Button>
           </div>

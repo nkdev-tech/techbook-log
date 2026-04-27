@@ -12,6 +12,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
 import { Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { ApiError } from "@/shared/types/api";
@@ -22,7 +23,7 @@ type Props = {
 
 export function DeleteButton({ id }: Props) {
   const router = useRouter();
-  const { mutate } = useDeleteApiBooksId();
+  const { mutate, isPending } = useDeleteApiBooksId();
 
   const handleDelete = () => {
     mutate(
@@ -48,8 +49,11 @@ export function DeleteButton({ id }: Props) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button type="button" variant="ghost" size="icon-lg" aria-label="削除">
-          <Trash2 color="red" className="size-6" />
+        <Button type="button" variant="ghost" size="icon-lg" aria-label="削除" disabled={isPending}>
+          {isPending
+            ? <Spinner data-icon="inline-start" />
+            : <Trash2 color="red" className="size-6" />
+          }
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
