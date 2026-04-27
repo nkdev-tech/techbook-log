@@ -5,12 +5,13 @@ import { usePostApiBooks } from "@/external/api";
 import { BookForm, BookFormValues } from "@/components/books/BookForm";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Spinner } from "@/components/ui/spinner";
 import { toast } from "sonner";
 import { ApiError } from "@/shared/types/api";
 
 export default function BookNewPage() {
   const router = useRouter();
-  const { mutate } = usePostApiBooks({});
+  const { mutate, isPending } = usePostApiBooks({});
 
   const defaultValues: BookFormValues = {
     title: "",
@@ -52,7 +53,8 @@ export default function BookNewPage() {
           >
             キャンセル
           </Button>
-          <Button type="submit" form="book-form">
+          <Button type="submit" form="book-form" disabled={isPending}>
+            {isPending && <Spinner data-icon="inline-start" />}
             登録
           </Button>
         </div>

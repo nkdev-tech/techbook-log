@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Field, FieldError, FieldGroup } from "@/components/ui/field";
+import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
 import { SendHorizontal, X } from "lucide-react";
 
@@ -172,8 +173,11 @@ export function MemoForm({ memo, onSuccess, onCancel }: Props) {
             >
               <X className="text-muted-foreground" />
             </Button>
-            <Button type="submit" variant="ghost" size="icon">
-              <SendHorizontal className="text-primary" />
+            <Button type="submit" variant="ghost" size="icon" disabled={create.isPending || update.isPending}>
+              {(create.isPending || update.isPending)
+                ? <Spinner data-icon="inline-start" />
+                : <SendHorizontal className="text-primary" />
+              }
             </Button>
           </div>
         </CardContent>
