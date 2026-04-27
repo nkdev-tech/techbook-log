@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -9,7 +9,13 @@ import { toast } from "sonner";
 
 export default function Header() {
   const [isLoading, setIsLoading] = useState(false)
-  const { data: session } = authClient.useSession();
+  const { data: session, isPending } = authClient.useSession();
+
+  useEffect(() => {
+    if (!isPending && !session) {
+      window.location.href = "/login";
+    }
+  }, [session, isPending]);
 
   const handleLogout = async () => {
     setIsLoading(true)
