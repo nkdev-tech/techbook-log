@@ -10,7 +10,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **スキル実行前の確認:** スキルを呼び出す前に必ずこのファイルの開発フローを確認し、そのステップに応じた追加指示を漏らさないこと。
 
-**テストを書く対象:** `api/` の usecase（`api/src/modules/*/usecase/`）とリクエストテスト（`api/src/test/`）のみ。`web/` のコンポーネント・ページ・proxy.ts にはテストを書かない。
+**テストを書く対象:** `api/` の usecase（`api/src/modules/*/usecase/`）とリクエストテスト（`api/src/test/`）のみ。`web/` のコンポーネント・ページ・middleware.ts にはテストを書かない。
 
 **開発フロー（TDD）:**
 1. 設計相談 — 何を作るか・どんなテストが必要か整理。IssueごとにAC（完了条件）を定義する。ACはUI/フロントエンドの振る舞いのみ記載し、APIやrepositoryの実装詳細は含めない。定義したACは必ずGitHub Issueのbodyに書き込む。曖昧な点・不明点は必ずユーザーに質問する

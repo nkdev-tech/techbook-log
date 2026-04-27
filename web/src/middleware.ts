@@ -1,6 +1,6 @@
 import { NextResponse, NextRequest } from "next/server";
 
-export function proxy(request: NextRequest) {
+export function middleware(request: NextRequest) {
   // Cookie name is BetterAuth's default. If changed, update advanced.cookies.sessionToken in api/src/lib/auth.ts together.
   const session = request.cookies.get("better-auth.session_token")?.value;
   if (!session) {
