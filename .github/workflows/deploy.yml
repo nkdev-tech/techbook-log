@@ -29,13 +29,14 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: "api"
-          command: d1 migrations apply techbook-log --remote
+          command: d1 migrations apply techbook-log --remote --env production
       - name: Deploy api
         uses: cloudflare/wrangler-action@9acf94ace14e7dc412b076f2c5c20b8ce93c79cd # v3.15.0
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: "api"
+          environment: production
       - name: Deploy web
         run: npm run deploy
         working-directory: web
