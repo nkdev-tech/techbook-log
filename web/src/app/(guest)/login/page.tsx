@@ -6,14 +6,18 @@ import { toast } from "sonner";
 
 export default function LoginPage() {
   const handleLogin = async () => {
-    try {
-      await authClient.signIn.social({
+    await authClient.signIn.social(
+      {
         provider: "google",
         callbackURL: `${window.location.origin}/books`,
-      });
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : String(error));
-    }
+        errorCallbackURL: `${window.location.origin}/login`,
+      },
+      {
+        onError: (ctx) => {
+          toast.error(ctx.error.message);
+        },
+      }
+    );
   };
   return (
     <div className="flex flex-col items-center justify-center py-20 gap-4">

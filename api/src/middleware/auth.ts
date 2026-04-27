@@ -19,7 +19,8 @@ export const authMiddleware = createMiddleware<AuthVariables>(
       c.set('session', session.session)
       c.set('user', session.user)
       await next()
-    } catch {
+    } catch (e) {
+      console.error('Auth middleware error:', e)
       return c.json({}, 500)
     }
   },
