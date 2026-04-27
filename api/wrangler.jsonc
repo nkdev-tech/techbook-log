@@ -15,16 +15,16 @@
   ],
   "vars": {
     "ENV": "development",
-    "GOOGLE_CLIENT_ID": "",
-    "GOOGLE_CLIENT_SECRET": "",
-    "BETTER_AUTH_SECRET": "",
-    "BETTER_AUTH_URL": "",
-    "ORIGIN_URL": "",
+    "BETTER_AUTH_URL": "http://localhost:8787",
+    "ORIGIN_URL": "http://localhost:3000",
   },
   "env": {
     "production": {
+      "name": "api",
       "vars": {
         "ENV": "production",
+        "ORIGIN_URL": "https://web.techbook-log.workers.dev",
+        "BETTER_AUTH_URL": "https://api.techbook-log.workers.dev",
       },
       "d1_databases": [
         {
