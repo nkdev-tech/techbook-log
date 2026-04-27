@@ -1,6 +1,5 @@
 import Header from "@/components/Header";
 import Navigation from "@/components/Navigation";
-import { Toaster } from "@/components/ui/sonner";
 
 export default function AuthenticatedLayout({
   children,
@@ -14,7 +13,6 @@ export default function AuthenticatedLayout({
         <Navigation />
         {children}
       </main>
-      <Toaster />
     </>
   );
 }

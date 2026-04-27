@@ -2,6 +2,7 @@
 
 import { authClient } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 export default function LoginPage() {
   const handleLogin = async () => {
@@ -11,7 +12,7 @@ export default function LoginPage() {
         callbackURL: `${window.location.origin}/books`,
       });
     } catch (error) {
-      console.error("Login error:", error);
+      toast.error(`Login error: ${error}`);
     }
   };
   return (
