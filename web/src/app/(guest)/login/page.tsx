@@ -12,7 +12,7 @@ export default function LoginPage() {
         callbackURL: `${window.location.origin}/books`,
       });
     } catch (error) {
-      toast.error(`Login error: ${error}`);
+      toast.error(error instanceof Error ? error.message : String(error));
     }
   };
   return (
