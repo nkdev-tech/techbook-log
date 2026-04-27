@@ -16,7 +16,6 @@ export default function Header() {
     await authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
-          setIsLoading(false)
           window.location.href = "/login";
         },
         onError: () => {

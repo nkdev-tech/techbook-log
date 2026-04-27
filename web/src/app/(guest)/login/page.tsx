@@ -17,9 +17,6 @@ export default function LoginPage() {
         errorCallbackURL: `${window.location.origin}/login`,
       },
       {
-        onSuccess: () => {
-          setIsLoading(false)
-        },
         onError: (ctx) => {
           toast.error(ctx.error.message);
           setIsLoading(false)
