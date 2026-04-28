@@ -33,8 +33,10 @@ describe('books', () => {
   it('can create book', async () => {
     const mockBook = {
       id: 1,
+      isbn: '1234567890123',
       title: 'タイトル',
       author: '著者名',
+      publisher: '出版社名',
       status: 'unread' as const,
       rating: null,
       finishedAt: null,
@@ -53,8 +55,10 @@ describe('books', () => {
     })
     const res = await client.api.books.$post({
       json: {
+        isbn: '1234567890123',
         title: 'タイトル',
         author: '著者名',
+        publisher: '出版社名',
         status: 'unread' as const,
         rating: null,
         finishedAt: null,
@@ -67,8 +71,10 @@ describe('books', () => {
   it('cannot create book with invalid value', async () => {
     const res = await client.api.books.$post({
       json: {
+        isbn: '1234567890123',
         title: '',
         author: '著者名',
+        publisher: '出版社名',
         status: 'unread' as const,
         rating: null,
         finishedAt: null,
@@ -82,8 +88,10 @@ describe('books', () => {
     vi.mocked(BookRepository.create).mockRejectedValue(new Error('DB error'))
     const res = await client.api.books.$post({
       json: {
+        isbn: '1234567890123',
         title: 'タイトル',
         author: '著者名',
+        publisher: '出版社名',
         status: 'unread' as const,
         rating: null,
         finishedAt: null,
@@ -96,8 +104,10 @@ describe('books', () => {
   it('can get book', async () => {
     vi.mocked(BookRepository.findById).mockResolvedValue({
       id: 1,
+      isbn: '1234567890123',
       title: 'タイトル',
       author: '著者名',
+      publisher: '出版社名',
       status: 'unread' as const,
       rating: null,
       finishedAt: null,
@@ -119,8 +129,10 @@ describe('books', () => {
   it('can update book', async () => {
     const mockBook = {
       id: 1,
+      isbn: '1234567890123',
       title: 'タイトル',
       author: '著者名',
+      publisher: '出版社名',
       status: 'unread' as const,
       rating: null,
       finishedAt: null,
@@ -140,8 +152,10 @@ describe('books', () => {
     const res = await client.api.books[':id'].$patch({
       param: { id: '1' },
       json: {
+        isbn: '1234567890123',
         title: 'タイトル',
         author: '著者名',
+        publisher: '出版社名',
         status: 'unread' as const,
         rating: null,
         finishedAt: null,
@@ -155,8 +169,10 @@ describe('books', () => {
     const res = await client.api.books[':id'].$patch({
       param: { id: '1' },
       json: {
+        isbn: '1234567890123',
         title: '',
         author: '著者名',
+        publisher: '出版社名',
         status: 'unread' as const,
         rating: null,
         finishedAt: null,
@@ -171,8 +187,10 @@ describe('books', () => {
     const res = await client.api.books[':id'].$patch({
       param: { id: '1' },
       json: {
+        isbn: '1234567890123',
         title: 'タイトル',
         author: '著者名',
+        publisher: '出版社名',
         status: 'unread' as const,
         rating: null,
         finishedAt: null,
@@ -185,8 +203,10 @@ describe('books', () => {
   it('can delete book', async () => {
     vi.mocked(BookRepository.delete).mockResolvedValue({
       id: 1,
+      isbn: '1234567890123',
       title: 'タイトル',
       author: '著者名',
+      publisher: '出版社名',
       status: 'unread' as const,
       rating: null,
       finishedAt: null,
