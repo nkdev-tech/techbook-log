@@ -62,7 +62,7 @@ export function BookSearchDialog({ onSelect }: Props) {
           {data.data.map((book, i) => (
             <div
               key={i}
-              className="flex gap-3 items-start p-2 rounded-md hover:bg-accent cursor-pointer"
+              className="flex gap-3 items-start p-2 rounded-md hover:bg-accent transition-colors cursor-pointer"
               onClick={() => {
                 setOpen(false);
                 onSelect(book);
