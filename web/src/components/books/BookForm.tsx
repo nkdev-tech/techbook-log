@@ -134,7 +134,9 @@ export function BookForm({ defaultValues, onSubmit }: Props) {
         form.handleSubmit();
       }}
     >
-      <BookSearchDialog onSelect={handleSelect} />
+      <div className="mt-2 mb-4">
+        <BookSearchDialog onSelect={handleSelect} />
+      </div>
       <FieldGroup>
         <form.Field name="title">
           {(field) => (
