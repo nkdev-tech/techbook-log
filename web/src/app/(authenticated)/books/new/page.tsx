@@ -14,8 +14,10 @@ export default function BookNewPage() {
   const { mutate, isPending } = usePostApiBooks({});
 
   const defaultValues: BookFormValues = {
+    isbn: null,
     title: "",
     author: "",
+    publisher: "",
     status: "unread",
     rating: null,
     finishedAt: null,

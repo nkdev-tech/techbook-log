@@ -173,11 +173,17 @@ export function MemoForm({ memo, onSuccess, onCancel }: Props) {
             >
               <X className="text-muted-foreground" />
             </Button>
-            <Button type="submit" variant="ghost" size="icon" disabled={create.isPending || update.isPending}>
-              {(create.isPending || update.isPending)
-                ? <Spinner data-icon="inline-start" />
-                : <SendHorizontal className="text-primary" />
-              }
+            <Button
+              type="submit"
+              variant="ghost"
+              size="icon"
+              disabled={create.isPending || update.isPending}
+            >
+              {create.isPending || update.isPending ? (
+                <Spinner data-icon="inline-start" />
+              ) : (
+                <SendHorizontal className="text-primary" />
+              )}
             </Button>
           </div>
         </CardContent>

@@ -7,9 +7,9 @@ import { Spinner } from "@/components/ui/spinner";
 import { toast } from "sonner";
 
 export default function LoginPage() {
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const handleLogin = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     await authClient.signIn.social(
       {
         provider: "google",
@@ -19,7 +19,7 @@ export default function LoginPage() {
       {
         onError: (ctx) => {
           toast.error(ctx.error.message);
-          setIsLoading(false)
+          setIsLoading(false);
         },
       }
     );

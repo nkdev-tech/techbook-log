@@ -6,6 +6,7 @@ import {
   querySchema,
 } from './schema'
 import { AuthVariables } from '../../middleware/auth'
+import { env } from 'cloudflare:workers'
 
 type GoogleBooksItem = {
   volumeInfo: {
@@ -61,7 +62,7 @@ const app = new OpenAPIHono<AuthVariables>().openapi(
     const { q } = c.req.valid('query')
     try {
       const result = await fetch(
-        `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(q)}`,
+        `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(q)}&key=${env.GOOGLE_BOOKS_API_KEY}`,
       )
       if (result.status !== 200) {
         return c.json(

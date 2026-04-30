@@ -49,11 +49,18 @@ export function DeleteButton({ id }: Props) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button type="button" variant="ghost" size="icon-lg" aria-label="削除" disabled={isPending}>
-          {isPending
-            ? <Spinner data-icon="inline-start" />
-            : <Trash2 color="red" className="size-6" />
-          }
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon-lg"
+          aria-label="削除"
+          disabled={isPending}
+        >
+          {isPending ? (
+            <Spinner data-icon="inline-start" />
+          ) : (
+            <Trash2 color="red" className="size-6" />
+          )}
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>

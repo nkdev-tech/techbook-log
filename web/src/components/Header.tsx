@@ -8,7 +8,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { toast } from "sonner";
 
 export default function Header() {
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const { data: session, isPending } = authClient.useSession();
 
   useEffect(() => {
@@ -18,7 +18,7 @@ export default function Header() {
   }, [session, isPending]);
 
   const handleLogout = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     await authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
@@ -26,7 +26,7 @@ export default function Header() {
         },
         onError: () => {
           toast.error("ログアウトに失敗しました");
-          setIsLoading(false)
+          setIsLoading(false);
         },
       },
     });
@@ -47,7 +47,12 @@ export default function Header() {
                 <AvatarFallback>{session.user.name?.charAt(0)}</AvatarFallback>
               </Avatar>
             </div>
-            <Button type="button" variant="secondary" onClick={handleLogout} disabled={isLoading}>
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={handleLogout}
+              disabled={isLoading}
+            >
               {isLoading && <Spinner data-icon="inline-start" />}
               ログアウト
             </Button>
