@@ -87,7 +87,8 @@ const app = new OpenAPIHono<AuthVariables>().openapi(
         thumbnailUrl: item.volumeInfo.imageLinks?.thumbnail ?? null,
       }))
       return c.json(books, 200)
-    } catch {
+    } catch (e) {
+      console.error(e)
       return c.json(
         {
           success: false,
