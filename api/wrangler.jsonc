@@ -13,6 +13,15 @@
       "migrations_dir": "drizzle",
     },
   ],
+  "observability": {
+    "logs": {
+      "enabled": true,
+      "invocation_logs": true
+    },
+    "traces": {
+      "enabled": false
+    }
+  },
   "vars": {
     "ENV": "development",
     "BETTER_AUTH_URL": "http://localhost:8787",
