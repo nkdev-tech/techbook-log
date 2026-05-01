@@ -25,7 +25,7 @@ describe('book-search', () => {
           volumeInfo: {
             title:
               '改訂新版 これからはじめるReact実践入門　コンポーネントの基本からNext.jsによるアプリ開発まで',
-            author: ['山田祥寛'],
+            authors: ['山田祥寛'],
             publisher: 'SBクリエイティブ',
             industryIdentifiers: [
               {
@@ -42,7 +42,7 @@ describe('book-search', () => {
           id: 'zyTCAlFPjgYC',
           volumeInfo: {
             title: '実践Next.js —— App Routerで進化するWebアプリ開発',
-            author: ['吉井健文'],
+            authors: ['吉井健文'],
             publisher: '技術評論社',
             industryIdentifiers: [
               {
@@ -60,7 +60,7 @@ describe('book-search', () => {
           volumeInfo: {
             title:
               'TypeScriptとReact/Next.jsでつくる実践Webアプリケーション開発',
-            author: ['手島 拓也', '吉田健人', '高林佳稀'],
+            authors: ['手島 拓也', '吉田健人', '高林佳稀'],
             publisher: '技術評論社',
             industryIdentifiers: [
               {

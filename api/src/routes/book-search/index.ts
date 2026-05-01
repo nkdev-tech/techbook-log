@@ -11,7 +11,7 @@ import { env } from 'cloudflare:workers'
 type GoogleBooksItem = {
   volumeInfo: {
     title: string
-    author?: string[]
+    authors?: string[]
     publisher?: string
     industryIdentifiers?: { type: string; identifier: string }[]
     imageLinks?: { thumbnail?: string }
@@ -79,7 +79,7 @@ const app = new OpenAPIHono<AuthVariables>().openapi(
       const data = (await result.json()) as GoogleBooksResponse
       const books = (data.items ?? []).map((item) => ({
         title: item.volumeInfo.title,
-        author: item.volumeInfo.author?.join(', ') ?? '',
+        author: item.volumeInfo.authors?.join(', ') ?? '',
         publisher: item.volumeInfo.publisher ?? null,
         isbn:
           item.volumeInfo.industryIdentifiers?.find((i) => i.type === 'ISBN_13')
