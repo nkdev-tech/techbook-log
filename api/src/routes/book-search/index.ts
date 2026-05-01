@@ -11,14 +11,14 @@ import { env } from 'cloudflare:workers'
 type GoogleBooksItem = {
   volumeInfo: {
     title: string
-    authors?: string[]
+    author?: string[]
     publisher?: string
     industryIdentifiers?: { type: string; identifier: string }[]
     imageLinks?: { thumbnail?: string }
   }
 }
 
-type GoogleBooksResponse = {
+export type GoogleBooksResponse = {
   items?: GoogleBooksItem[]
 }
 
@@ -79,7 +79,7 @@ const app = new OpenAPIHono<AuthVariables>().openapi(
       const data = (await result.json()) as GoogleBooksResponse
       const books = (data.items ?? []).map((item) => ({
         title: item.volumeInfo.title,
-        author: item.volumeInfo.authors?.join(', ') ?? '',
+        author: item.volumeInfo.author?.join(', ') ?? '',
         publisher: item.volumeInfo.publisher ?? null,
         isbn:
           item.volumeInfo.industryIdentifiers?.find((i) => i.type === 'ISBN_13')

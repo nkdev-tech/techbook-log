@@ -67,7 +67,10 @@ const bookSchema = z.object({
     .min(1, "タイトルを入力してください")
     .max(100, "タイトルは100文字以内で入力してください"),
   author: z.string().max(100, "著者名は100文字以内で入力してください"),
-  publisher: z.string().max(100, "出版社名は100文字以内で入力してください"),
+  publisher: z
+    .string()
+    .max(100, "出版社名は100文字以内で入力してください")
+    .nullable(),
   status: z.enum(["unread", "reading", "done"]),
   rating: z.number().min(1).max(5).nullable(),
   finishedAt: z.date().nullable(),
@@ -82,7 +85,7 @@ export function BookForm({ defaultValues, onSubmit }: Props) {
       isbn: defaultValues.isbn ?? null,
       title: defaultValues.title ?? "",
       author: defaultValues.author ?? "",
-      publisher: defaultValues.publisher ?? "",
+      publisher: defaultValues.publisher ?? null,
       status: defaultValues.status ?? "unread",
       rating: defaultValues.rating ?? null,
       finishedAt: defaultValues.finishedAt
@@ -123,7 +126,7 @@ export function BookForm({ defaultValues, onSubmit }: Props) {
     form.setFieldValue("isbn", book.isbn);
     form.setFieldValue("title", book.title);
     form.setFieldValue("author", book.author);
-    form.setFieldValue("publisher", book.publisher ?? "");
+    form.setFieldValue("publisher", book.publisher);
   };
 
   return (
@@ -185,8 +188,12 @@ export function BookForm({ defaultValues, onSubmit }: Props) {
                 出版社名
               </FieldLabel>
               <Input
-                value={field.state.value}
-                onChange={(e) => field.handleChange(e.target.value)}
+                value={field.state.value ?? ""}
+                onChange={(e) =>
+                  field.handleChange(
+                    e.target.value === "" ? null : e.target.value
+                  )
+                }
               />
               {!field.state.meta.isValid && (
                 <FieldError>

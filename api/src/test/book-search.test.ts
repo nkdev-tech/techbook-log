@@ -2,6 +2,8 @@ import { testClient } from 'hono/testing'
 import { describe, it, expect, vi } from 'vitest'
 import app from '../../src'
 import type { AppType } from '../../src'
+import { bookSearchResponseSchema } from '../routes/book-search/schema'
+import { z } from 'zod'
 
 vi.mock('../lib/auth', () => ({
   auth: {
@@ -28,7 +30,7 @@ describe('book-search', () => {
             industryIdentifiers: [
               {
                 type: 'ISBN_13',
-                identifier: '9780553804577',
+                identifier: '12345667890123',
               },
             ],
             imageLinks: {
@@ -45,7 +47,7 @@ describe('book-search', () => {
             industryIdentifiers: [
               {
                 type: 'ISBN_13',
-                identifier: '9780553804577',
+                identifier: '2345678901234',
               },
             ],
             imageLinks: {
@@ -63,7 +65,7 @@ describe('book-search', () => {
             industryIdentifiers: [
               {
                 type: 'ISBN_13',
-                identifier: '9780553804577',
+                identifier: '3456789012345',
               },
             ],
             imageLinks: {
@@ -81,6 +83,11 @@ describe('book-search', () => {
       query: { q: 'Next.js' },
     })
     expect(res.status).toBe(200)
+
+    const data = (await res.json()) as z.infer<typeof bookSearchResponseSchema>
+    expect(data[2].isbn).toBe('3456789012345')
+    expect(data[2].author).toBe('手島 拓也, 吉田健人, 高林佳稀')
+    expect(data[2].thumbnailUrl).toBe('thumbnail-url')
 
     spy.mockRestore()
   })
