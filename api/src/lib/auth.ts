@@ -23,9 +23,6 @@ export const auth = betterAuth({
       enabled: true,
       maxAge: 60 * 5,
       strategy: 'jwt',
-      refreshCache: {
-        updateAge: 60,
-      },
     },
   },
   rateLimit: {
