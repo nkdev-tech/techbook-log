@@ -19,6 +19,14 @@ export const auth = betterAuth({
   session: {
     expiresIn: 60 * 60 * 24 * 30,
     updateAge: 60 * 60 * 24,
+    cookieCache: {
+      enabled: true,
+      maxAge: 60 * 5,
+      strategy: 'jwt',
+      refreshCache: {
+        updateAge: 60,
+      },
+    },
   },
   rateLimit: {
     enabled: true,
