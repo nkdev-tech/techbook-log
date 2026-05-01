@@ -10,8 +10,10 @@ describe('getBook', () => {
   it('can get book', async () => {
     const mockBook = {
       id: 1,
+      isbn: '1234567890123',
       title: 'タイトル1',
       author: '著者1',
+      publisher: '出版社名',
       status: 'done' as const,
       rating: 3,
       finishedAt: '2026-01-01',

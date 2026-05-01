@@ -119,8 +119,10 @@ export const accountRelations = relations(account, ({ one }) => ({
 
 export const bookTable = sqliteTable('books', {
   id: integer('id').primaryKey(),
+  isbn: text('isbn'),
   title: text('title').notNull(),
   author: text('author').notNull(),
+  publisher: text('publisher'),
   status: text('status', { enum: ['unread', 'reading', 'done'] })
     .notNull()
     .default('unread'),

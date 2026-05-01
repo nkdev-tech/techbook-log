@@ -37,8 +37,10 @@ describe('memos', () => {
     }
     vi.mocked(BookRepository.findById).mockResolvedValue({
       id: 1,
+      isbn: '1234567890123',
       title: 'タイトル',
       author: '著者名',
+      publisher: '出版社名',
       status: 'unread' as const,
       rating: null,
       finishedAt: null,
@@ -60,8 +62,10 @@ describe('memos', () => {
   it('cannot create memo with invalid value', async () => {
     vi.mocked(BookRepository.findById).mockResolvedValue({
       id: 1,
+      isbn: '1234567890123',
       title: 'タイトル',
       author: '著者名',
+      publisher: '出版社名',
       status: 'unread' as const,
       rating: null,
       finishedAt: null,

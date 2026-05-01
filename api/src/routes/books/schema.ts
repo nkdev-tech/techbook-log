@@ -8,8 +8,10 @@ const { createInsertSchema, createSelectSchema } = createSchemaFactory({
 
 const booksSchema = createSelectSchema(bookTable, {
   id: (schema) => schema.openapi({ example: 1 }),
+  isbn: (schema) => schema.openapi({ example: '1234567890123' }),
   title: (schema) => schema.openapi({ example: 'タイトル' }),
   author: (schema) => schema.openapi({ example: '著者名' }),
+  publisher: (schema) => schema.openapi({ example: '出版社名' }),
   status: (schema) => schema.openapi({ example: 'unread' }),
   rating: (schema) => schema.openapi({ example: 3 }),
   finishedAt: (schema) => schema.openapi({ example: '2026-01-01' }),
@@ -28,6 +30,7 @@ const booksSchema = createSelectSchema(bookTable, {
 })
 
 const inputBookSchema = createInsertSchema(bookTable, {
+  isbn: (schema) => schema.openapi({ example: '1234567890123' }),
   title: (schema) =>
     schema
       .min(1, 'タイトルを入力してください')
@@ -37,6 +40,10 @@ const inputBookSchema = createInsertSchema(bookTable, {
     schema
       .max(100, '著者名は100文字以内で入力してください')
       .openapi({ example: '著者名' }),
+  publisher: (schema) =>
+    schema
+      .max(100, '出版社名は100文字以内で入力してください')
+      .openapi({ example: '出版社名' }),
   status: (schema) => schema.openapi({ example: 'unread' }),
   rating: (schema) => schema.min(1).max(5).openapi({ example: 3 }),
   finishedAt: (schema) => schema.openapi({ example: '2026-01-01' }),

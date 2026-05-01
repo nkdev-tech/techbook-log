@@ -3,6 +3,7 @@ import { swaggerUI } from '@hono/swagger-ui'
 import books from './routes/books'
 import memos from './routes/memos'
 import tags from './routes/tags'
+import bookSearch from './routes/book-search'
 import { cors } from 'hono/cors'
 import { auth } from './lib/auth'
 import { authMiddleware } from './middleware/auth'
@@ -43,6 +44,7 @@ const _route = app
   .route('/api/books', books)
   .route('/api/books', memos)
   .route('/api/tags', tags)
+  .route('/api/book-search', bookSearch)
 
 export type AppType = typeof _route
 

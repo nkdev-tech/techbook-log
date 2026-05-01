@@ -13,8 +13,10 @@ describe('createBook', () => {
   it('can create book', async () => {
     const userId = '1'
     const data = {
+      isbn: '1234567890123',
       title: 'タイトル1',
       author: '著者1',
+      publisher: '出版社名',
       status: 'done' as const,
       rating: 5,
       finishedAt: '2026-01-01',
@@ -23,8 +25,10 @@ describe('createBook', () => {
 
     const mockBook = {
       id: 1,
+      isbn: '1234567890123',
       title: 'タイトル1',
       author: '著者1',
+      publisher: '出版社名',
       status: 'done' as const,
       rating: 5,
       finishedAt: '2026-01-01',
@@ -54,8 +58,10 @@ describe('createBook', () => {
   it('finishedAt is null when status is not done', async () => {
     const userId = '1'
     const data = {
+      isbn: '1234567890123',
       title: 'タイトル1',
       author: '著者1',
+      publisher: '出版社名',
       status: 'unread' as const,
       rating: 3,
       finishedAt: '2026-01-01',
@@ -64,8 +70,10 @@ describe('createBook', () => {
 
     const mockBook = {
       id: 1,
+      isbn: '1234567890123',
       title: 'タイトル1',
       author: '著者1',
+      publisher: '出版社名',
       status: 'unread' as const,
       rating: 3,
       finishedAt: null,
@@ -94,8 +102,10 @@ describe('createBook', () => {
   it('cannot create book with DB error', async () => {
     const userId = '1'
     const data = {
+      isbn: '1234567890123',
       title: 'タイトル1',
       author: '著者1',
+      publisher: '出版社名',
       status: 'unread' as const,
       rating: 3,
       finishedAt: '2026-01-01',

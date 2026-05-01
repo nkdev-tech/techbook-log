@@ -48,8 +48,12 @@ export type GetApiBooks200Item = {
      * @maximum 9007199254740991
      */
   id: number;
+  /** @nullable */
+  isbn: string | null;
   title: string;
   author: string;
+  /** @nullable */
+  publisher: string | null;
   status: GetApiBooks200ItemStatus;
   /**
      * @minimum -9007199254740991
@@ -80,6 +84,8 @@ export type PostApiBooksBodyTagsItem = {
 };
 
 export type PostApiBooksBody = {
+  /** @nullable */
+  isbn?: string | null;
   /**
      * @minLength 1
      * @maxLength 100
@@ -87,6 +93,11 @@ export type PostApiBooksBody = {
   title: string;
   /** @maxLength 100 */
   author: string;
+  /**
+     * @maxLength 100
+     * @nullable
+     */
+  publisher?: string | null;
   status?: PostApiBooksBodyStatus;
   /**
      * @minimum 1
@@ -119,8 +130,12 @@ export type PostApiBooks201 = {
      * @maximum 9007199254740991
      */
   id: number;
+  /** @nullable */
+  isbn: string | null;
   title: string;
   author: string;
+  /** @nullable */
+  publisher: string | null;
   status: PostApiBooks201Status;
   /**
      * @minimum -9007199254740991
@@ -166,8 +181,12 @@ export type GetApiBooksId200 = {
      * @maximum 9007199254740991
      */
   id: number;
+  /** @nullable */
+  isbn: string | null;
   title: string;
   author: string;
+  /** @nullable */
+  publisher: string | null;
   status: GetApiBooksId200Status;
   /**
      * @minimum -9007199254740991
@@ -208,6 +227,8 @@ export type PatchApiBooksIdBodyTagsItem = {
 };
 
 export type PatchApiBooksIdBody = {
+  /** @nullable */
+  isbn?: string | null;
   /**
      * @minLength 1
      * @maxLength 100
@@ -215,6 +236,11 @@ export type PatchApiBooksIdBody = {
   title: string;
   /** @maxLength 100 */
   author: string;
+  /**
+     * @maxLength 100
+     * @nullable
+     */
+  publisher?: string | null;
   status?: PatchApiBooksIdBodyStatus;
   /**
      * @minimum 1
@@ -247,8 +273,12 @@ export type PatchApiBooksId200 = {
      * @maximum 9007199254740991
      */
   id: number;
+  /** @nullable */
+  isbn: string | null;
   title: string;
   author: string;
+  /** @nullable */
+  publisher: string | null;
   status: PatchApiBooksId200Status;
   /**
      * @minimum -9007199254740991
@@ -304,8 +334,12 @@ export type DeleteApiBooksId200 = {
      * @maximum 9007199254740991
      */
   id: number;
+  /** @nullable */
+  isbn: string | null;
   title: string;
   author: string;
+  /** @nullable */
+  publisher: string | null;
   status: DeleteApiBooksId200Status;
   /**
      * @minimum -9007199254740991
@@ -470,6 +504,44 @@ export type GetApiTags200Item = {
   name: string;
   userId: string;
   createdAt: string;
+};
+
+export type GetApiBookSearchParams = {
+/**
+ * @minLength 1
+ */
+q: string;
+};
+
+export type GetApiBookSearch200Item = {
+  /** @nullable */
+  isbn: string | null;
+  title: string;
+  author: string;
+  /** @nullable */
+  publisher: string | null;
+  /** @nullable */
+  thumbnailUrl: string | null;
+};
+
+export type GetApiBookSearch400Error = {
+  name: string;
+  message: string;
+};
+
+export type GetApiBookSearch400 = {
+  success: boolean;
+  error: GetApiBookSearch400Error;
+};
+
+export type GetApiBookSearch500Error = {
+  name: string;
+  message: string;
+};
+
+export type GetApiBookSearch500 = {
+  success: boolean;
+  error: GetApiBookSearch500Error;
 };
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
@@ -1424,6 +1496,130 @@ export function useGetApiTags<TData = Awaited<ReturnType<typeof getApiTags>>, TE
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetApiTagsQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+export type getApiBookSearchResponse200 = {
+  data: GetApiBookSearch200Item[]
+  status: 200
+}
+
+export type getApiBookSearchResponse400 = {
+  data: GetApiBookSearch400
+  status: 400
+}
+
+export type getApiBookSearchResponse500 = {
+  data: GetApiBookSearch500
+  status: 500
+}
+
+export type getApiBookSearchResponseSuccess = (getApiBookSearchResponse200) & {
+  headers: Headers;
+};
+export type getApiBookSearchResponseError = (getApiBookSearchResponse400 | getApiBookSearchResponse500) & {
+  headers: Headers;
+};
+
+export type getApiBookSearchResponse = (getApiBookSearchResponseSuccess | getApiBookSearchResponseError)
+
+export const getGetApiBookSearchUrl = (params: GetApiBookSearchParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `http://localhost:8787/api/book-search?${stringifiedParams}` : `http://localhost:8787/api/book-search`
+}
+
+export const getApiBookSearch = async (params: GetApiBookSearchParams, options?: RequestInit): Promise<getApiBookSearchResponse> => {
+
+  return customFetch<getApiBookSearchResponse>(getGetApiBookSearchUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiBookSearchQueryKey = (params?: GetApiBookSearchParams,) => {
+    return [
+    `http://localhost:8787/api/book-search`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetApiBookSearchQueryOptions = <TData = Awaited<ReturnType<typeof getApiBookSearch>>, TError = GetApiBookSearch400 | GetApiBookSearch500>(params: GetApiBookSearchParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBookSearch>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiBookSearchQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiBookSearch>>> = ({ signal }) => getApiBookSearch(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiBookSearch>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetApiBookSearchQueryResult = NonNullable<Awaited<ReturnType<typeof getApiBookSearch>>>
+export type GetApiBookSearchQueryError = GetApiBookSearch400 | GetApiBookSearch500
+
+
+export function useGetApiBookSearch<TData = Awaited<ReturnType<typeof getApiBookSearch>>, TError = GetApiBookSearch400 | GetApiBookSearch500>(
+ params: GetApiBookSearchParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBookSearch>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiBookSearch>>,
+          TError,
+          Awaited<ReturnType<typeof getApiBookSearch>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiBookSearch<TData = Awaited<ReturnType<typeof getApiBookSearch>>, TError = GetApiBookSearch400 | GetApiBookSearch500>(
+ params: GetApiBookSearchParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBookSearch>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiBookSearch>>,
+          TError,
+          Awaited<ReturnType<typeof getApiBookSearch>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiBookSearch<TData = Awaited<ReturnType<typeof getApiBookSearch>>, TError = GetApiBookSearch400 | GetApiBookSearch500>(
+ params: GetApiBookSearchParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBookSearch>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetApiBookSearch<TData = Awaited<ReturnType<typeof getApiBookSearch>>, TError = GetApiBookSearch400 | GetApiBookSearch500>(
+ params: GetApiBookSearchParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBookSearch>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetApiBookSearchQueryOptions(params,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

@@ -22,10 +22,10 @@ export const auth = betterAuth({
     cookieCache: {
       enabled: true,
       maxAge: 60 * 5,
-      strategy: "jwt",
+      strategy: 'jwt',
       refreshCache: {
-        updateAge: 60
-      }
+        updateAge: 60,
+      },
     },
   },
   rateLimit: {

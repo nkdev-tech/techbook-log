@@ -37,15 +37,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { BookSearchDialog } from "@/components/books/BookSearchDialog";
 import { StarRating } from "@/components/books/StarRating";
 import { STATUS_LABEL } from "@/shared/utils/book";
-import { useGetApiTags } from "@/external/api";
+import { GetApiBookSearch200Item, useGetApiTags } from "@/external/api";
 import { getTagColor } from "./Tag";
 import { cn } from "@/lib/utils";
 
 export type BookFormValues = {
+  isbn: string | null;
   title: string;
   author: string;
+  publisher: string | null;
   status: "unread" | "reading" | "done";
   rating: number | null;
   finishedAt: string | null;
@@ -58,11 +61,16 @@ type Props = {
 };
 
 const bookSchema = z.object({
+  isbn: z.string().nullable(),
   title: z
     .string()
     .min(1, "タイトルを入力してください")
     .max(100, "タイトルは100文字以内で入力してください"),
   author: z.string().max(100, "著者名は100文字以内で入力してください"),
+  publisher: z
+    .string()
+    .max(100, "出版社名は100文字以内で入力してください")
+    .nullable(),
   status: z.enum(["unread", "reading", "done"]),
   rating: z.number().min(1).max(5).nullable(),
   finishedAt: z.date().nullable(),
@@ -74,8 +82,10 @@ export function BookForm({ defaultValues, onSubmit }: Props) {
   const anchor = useComboboxAnchor();
   const form = useForm({
     defaultValues: {
+      isbn: defaultValues.isbn ?? null,
       title: defaultValues.title ?? "",
       author: defaultValues.author ?? "",
+      publisher: defaultValues.publisher ?? null,
       status: defaultValues.status ?? "unread",
       rating: defaultValues.rating ?? null,
       finishedAt: defaultValues.finishedAt
@@ -112,6 +122,13 @@ export function BookForm({ defaultValues, onSubmit }: Props) {
 
   const tags = data?.data.map((item) => item.name) ?? [];
 
+  const handleSelect = (book: GetApiBookSearch200Item) => {
+    form.setFieldValue("isbn", book.isbn);
+    form.setFieldValue("title", book.title);
+    form.setFieldValue("author", book.author);
+    form.setFieldValue("publisher", book.publisher);
+  };
+
   return (
     <form
       id="book-form"
@@ -120,6 +137,9 @@ export function BookForm({ defaultValues, onSubmit }: Props) {
         form.handleSubmit();
       }}
     >
+      <div className="mt-2 mb-4">
+        <BookSearchDialog onSelect={handleSelect} />
+      </div>
       <FieldGroup>
         <form.Field name="title">
           {(field) => (
@@ -150,6 +170,30 @@ export function BookForm({ defaultValues, onSubmit }: Props) {
               <Input
                 value={field.state.value}
                 onChange={(e) => field.handleChange(e.target.value)}
+              />
+              {!field.state.meta.isValid && (
+                <FieldError>
+                  {field.state.meta.errors
+                    .map((e) => (typeof e === "string" ? e : e?.message))
+                    .join(",")}
+                </FieldError>
+              )}
+            </Field>
+          )}
+        </form.Field>
+        <form.Field name="publisher">
+          {(field) => (
+            <Field>
+              <FieldLabel className="font-semibold text-muted-foreground">
+                出版社名
+              </FieldLabel>
+              <Input
+                value={field.state.value ?? ""}
+                onChange={(e) =>
+                  field.handleChange(
+                    e.target.value === "" ? null : e.target.value
+                  )
+                }
               />
               {!field.state.meta.isValid && (
                 <FieldError>
