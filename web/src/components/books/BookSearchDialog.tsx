@@ -60,26 +60,29 @@ export function BookSearchDialog({ onSelect }: Props) {
       <ScrollArea className="h-full">
         <div className="space-y-1 pr-3">
           {data.data.map((book, i) => (
-            <div
+            <button
               key={i}
-              className="flex gap-3 items-start p-2 rounded-md hover:bg-accent transition-colors cursor-pointer"
+              type="button"
+              className="flex w-full text-left gap-3 items-start p-2 rounded-md hover:bg-accent transition-colors"
               onClick={() => {
                 setOpen(false);
                 onSelect(book);
               }}
             >
-              {book.thumbnailUrl ? (
-                <Image
-                  src={book.thumbnailUrl}
-                  alt={book.title}
-                  height={68}
-                  width={46}
-                  style={{ width: "auto" }}
-                  className="rounded-sm shrink-0"
-                />
-              ) : (
-                <div className="w-[46px] h-[68px] rounded-sm bg-muted shrink-0" />
-              )}
+              <div className="flex w-[80px] h-[100px] shrink-0 justify-center items-center">
+                {book.thumbnailUrl ? (
+                  <Image
+                    src={book.thumbnailUrl}
+                    alt={book.title}
+                    unoptimized
+                    width={0}
+                    height={0}
+                    className="rounded-sm shrink-0 max-h-[100px] max-w-full w-auto h-auto object-contain"
+                  />
+                ) : (
+                  <div className="w-full h-full rounded-sm bg-muted shrink-0" />
+                )}
+              </div>
               <div className="flex flex-col gap-0.5 min-w-0">
                 <p className="text-sm font-medium leading-snug line-clamp-2">
                   {book.title}
@@ -91,7 +94,7 @@ export function BookSearchDialog({ onSelect }: Props) {
                   </p>
                 )}
               </div>
-            </div>
+            </button>
           ))}
         </div>
       </ScrollArea>

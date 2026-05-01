@@ -16,11 +16,11 @@
   "observability": {
     "logs": {
       "enabled": true,
-      "invocation_logs": true
+      "invocation_logs": true,
     },
     "traces": {
-      "enabled": false
-    }
+      "enabled": false,
+    },
   },
   "vars": {
     "ENV": "development",
