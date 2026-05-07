@@ -64,9 +64,7 @@ export default function BookDetailPage() {
             />
           ) : (
             <div className="flex flex-col items-center justify-center w-[128px] h-[160px] rounded-sm bg-muted/50 shrink-0 gap-1">
-              <span className="text-xs text-muted-foreground">
-                No Image
-              </span>
+              <span className="text-xs text-muted-foreground">No Image</span>
             </div>
           )}
         </div>
