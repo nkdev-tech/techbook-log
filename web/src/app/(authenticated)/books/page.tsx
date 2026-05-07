@@ -3,6 +3,7 @@
 import { Suspense } from "react";
 import { useGetApiBooks } from "@/external/api";
 import { keepPreviousData } from "@tanstack/react-query";
+import Image from "next/image";
 import {
   Card,
   CardContent,
@@ -79,30 +80,50 @@ function BooksContent() {
                 href={`/books/${book.id}`}
                 className="block h-full rounded-lg"
               >
-                <Card className="gap-1 cursor-pointer h-full">
-                  <CardHeader>
-                    <CardTitle className="text-lg font-bold truncate">
-                      {book.title}
-                    </CardTitle>
-                    <CardDescription className="text-xs truncate">
-                      {book.author}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-1">
-                    <div className="overflow-hidden max-h-[2.1rem]">
-                      <Tag
-                        tags={book.tags ?? []}
-                        iconSize={12}
-                        textSize="text-xs"
+                <Card className="flex flex-row cursor-pointer h-full gap-0">
+                  <div className="flex items-center pl-4 shrink-0">
+                    {book.thumbnailUrl ? (
+                      <Image
+                        src={book.thumbnailUrl}
+                        alt={book.title}
+                        unoptimized
+                        width={0}
+                        height={0}
+                        className="rounded-sm shrink-0 max-w-[96px] max-h-[120px] w-auto h-auto object-contain"
                       />
-                    </div>
-                    <div>{STATUS_LABEL[book.status] ?? book.status}</div>
-                    <StarRating
-                      rating={book.rating}
-                      size="sm"
-                      disabled={true}
-                    />
-                  </CardContent>
+                    ) : (
+                      <div className="flex flex-col items-center justify-center w-[96px] h-[120px] rounded-sm bg-muted/50 shrink-0 gap-1">
+                        <span className="text-xs text-muted-foreground">
+                          No Image
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="w-full gap-1">
+                    <CardHeader>
+                      <CardTitle className="text-lg font-bold truncate">
+                        {book.title}
+                      </CardTitle>
+                      <CardDescription className="text-xs truncate">
+                        {book.author}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-1">
+                      <div className="overflow-hidden max-h-[2.1rem]">
+                        <Tag
+                          tags={book.tags ?? []}
+                          iconSize={12}
+                          textSize="text-xs"
+                        />
+                      </div>
+                      <div>{STATUS_LABEL[book.status] ?? book.status}</div>
+                      <StarRating
+                        rating={book.rating}
+                        size="sm"
+                        disabled={true}
+                      />
+                    </CardContent>
+                  </div>
                 </Card>
               </Link>
             );

@@ -1,6 +1,7 @@
 "use client";
 
 import { useParams, useRouter, notFound } from "next/navigation";
+import Image from "next/image";
 import { useGetApiBooksId } from "@/external/api";
 import {
   Card,
@@ -50,32 +51,52 @@ export default function BookDetailPage() {
 
   return (
     <div className="w-full max-w-3xl mx-auto">
-      <Card className="w-full mx-auto">
-        <CardHeader>
-          <CardTitle className="text-2xl font-bold">{book.title}</CardTitle>
-          <CardDescription className="">{book.author}</CardDescription>
-          <CardAction className="flex px-2 gap-1">
-            <DeleteButton id={id} />
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon-lg"
-              onClick={() => router.push(`/books/${id}/edit`)}
-            >
-              <SquarePen className="text-primary size-6" />
-            </Button>
-          </CardAction>
-        </CardHeader>
-        <CardContent className="space-y-2 text-base">
-          <Tag tags={book.tags ?? []} iconSize={14} textSize="text-sm" />
-          <div className="flex gap-1">
-            <span>{STATUS_LABEL[book.status] ?? book.status}</span>
-            {book.finishedAt && (
-              <span className="text-xs self-end pb-1 text-muted-foreground">{`(${format(new Date(book.finishedAt), "yyyy/MM/dd")})`}</span>
-            )}
-          </div>
-          <StarRating rating={book.rating} disabled={true} />
-        </CardContent>
+      <Card className="flex flex-row w-full mx-auto">
+        <div className="flex items-center pl-4 shrink-0">
+          {book.thumbnailUrl ? (
+            <Image
+              src={book.thumbnailUrl}
+              alt={book.title}
+              unoptimized
+              width={0}
+              height={0}
+              className="rounded-sm shrink-0 max-w-[128px] max-h-[160px] w-auto h-auto object-contain"
+            />
+          ) : (
+            <div className="flex flex-col items-center justify-center w-[128px] h-[160px] rounded-sm bg-muted/50 shrink-0 gap-1">
+              <span className="text-xs text-muted-foreground">
+                No Image
+              </span>
+            </div>
+          )}
+        </div>
+        <div className="w-full gap-1">
+          <CardHeader>
+            <CardTitle className="text-2xl font-bold">{book.title}</CardTitle>
+            <CardDescription className="">{book.author}</CardDescription>
+            <CardAction className="flex px-2 gap-1">
+              <DeleteButton id={id} />
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon-lg"
+                onClick={() => router.push(`/books/${id}/edit`)}
+              >
+                <SquarePen className="text-primary size-6" />
+              </Button>
+            </CardAction>
+          </CardHeader>
+          <CardContent className="space-y-2 text-base">
+            <Tag tags={book.tags ?? []} iconSize={14} textSize="text-sm" />
+            <div className="flex gap-1">
+              <span>{STATUS_LABEL[book.status] ?? book.status}</span>
+              {book.finishedAt && (
+                <span className="text-xs self-end pb-1 text-muted-foreground">{`(${format(new Date(book.finishedAt), "yyyy/MM/dd")})`}</span>
+              )}
+            </div>
+            <StarRating rating={book.rating} disabled={true} />
+          </CardContent>
+        </div>
       </Card>
       <MemoList />
     </div>
