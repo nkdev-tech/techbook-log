@@ -99,7 +99,7 @@ function BooksContent() {
                       </div>
                     )}
                   </div>
-                  <div className="w-full gap-1">
+                  <div className="flex flex-col w-full gap-1">
                     <CardHeader>
                       <CardTitle className="text-lg font-bold truncate">
                         {book.title}

@@ -68,7 +68,7 @@ export default function BookDetailPage() {
             </div>
           )}
         </div>
-        <div className="w-full gap-1">
+        <div className="flex flex-col w-full gap-2">
           <CardHeader>
             <CardTitle className="text-2xl font-bold">{book.title}</CardTitle>
             <CardDescription className="">{book.author}</CardDescription>
