@@ -18,6 +18,7 @@ export default function BookNewPage() {
     title: "",
     author: "",
     publisher: "",
+    thumbnailUrl: null,
     status: "unread",
     rating: null,
     finishedAt: null,
