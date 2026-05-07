@@ -49,6 +49,7 @@ export type BookFormValues = {
   title: string;
   author: string;
   publisher: string | null;
+  thumbnailUrl: string | null;
   status: "unread" | "reading" | "done";
   rating: number | null;
   finishedAt: string | null;
@@ -71,6 +72,7 @@ const bookSchema = z.object({
     .string()
     .max(100, "出版社名は100文字以内で入力してください")
     .nullable(),
+  thumbnailUrl: z.string().nullable(),
   status: z.enum(["unread", "reading", "done"]),
   rating: z.number().min(1).max(5).nullable(),
   finishedAt: z.date().nullable(),
@@ -86,6 +88,7 @@ export function BookForm({ defaultValues, onSubmit }: Props) {
       title: defaultValues.title ?? "",
       author: defaultValues.author ?? "",
       publisher: defaultValues.publisher ?? null,
+      thumbnailUrl: defaultValues.thumbnailUrl ?? null,
       status: defaultValues.status ?? "unread",
       rating: defaultValues.rating ?? null,
       finishedAt: defaultValues.finishedAt
@@ -127,6 +130,7 @@ export function BookForm({ defaultValues, onSubmit }: Props) {
     form.setFieldValue("title", book.title);
     form.setFieldValue("author", book.author);
     form.setFieldValue("publisher", book.publisher);
+    form.setFieldValue("thumbnailUrl", book.thumbnailUrl);
   };
 
   return (

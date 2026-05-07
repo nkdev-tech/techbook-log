@@ -57,6 +57,13 @@
       "when": 1777362163188,
       "tag": "0007_married_talkback",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "6",
+      "when": 1778122612335,
+      "tag": "0008_sticky_sally_floyd",
+      "breakpoints": true
     }
   ]
 }

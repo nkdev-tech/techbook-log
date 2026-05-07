@@ -18,9 +18,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 3. テストを自分で書く（対象は api/ の usecase と api/src/test/ のリクエストテストのみ）
 4. テストが失敗することを確認（red）— 実装前に必ず `npm test` を実行してredを確認するよう促す
 5. 実装を自分で書く
-6. レビュー依頼 — 「このテストと実装どう？」。`web/` のコンポーネントを含む場合は `tailwind-consistency-review` スキルを必ず使ってTailwindの整合性チェックも行う
-7. リファクタリング（必要なら相談しながら）
-8. PR作成 — bodyに必ず `Closes #<issue番号>` を含めてissueを紐づける。PRタイトルはissueタイトルと同じにする
+6. PR作成 — bodyに必ず `Closes #<issue番号>` を含めてissueを紐づける。PRタイトルはissueタイトルと同じにする
+7. レビュー依頼 — 別スレッドでPRを見ながら行う。`web/` のコンポーネントを含む場合は `tailwind-consistency-review` スキルを必ず使ってTailwindの整合性チェックも行う
+8. リファクタリング（必要なら相談しながら）
 
 ## 概要
 

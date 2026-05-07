@@ -80,7 +80,11 @@ export function BookSearchDialog({ onSelect }: Props) {
                     className="rounded-sm shrink-0 max-h-[100px] max-w-full w-auto h-auto object-contain"
                   />
                 ) : (
-                  <div className="w-full h-full rounded-sm bg-muted shrink-0" />
+                  <div className="flex flex-col items-center justify-center w-full h-full rounded-sm bg-muted/50 shrink-0 gap-1">
+                    <span className="text-xs text-muted-foreground">
+                      No Image
+                    </span>
+                  </div>
                 )}
               </div>
               <div className="flex flex-col gap-0.5 min-w-0">

@@ -54,6 +54,8 @@ export type GetApiBooks200Item = {
   author: string;
   /** @nullable */
   publisher: string | null;
+  /** @nullable */
+  thumbnailUrl: string | null;
   status: GetApiBooks200ItemStatus;
   /**
      * @minimum -9007199254740991
@@ -98,6 +100,8 @@ export type PostApiBooksBody = {
      * @nullable
      */
   publisher?: string | null;
+  /** @nullable */
+  thumbnailUrl?: string | null;
   status?: PostApiBooksBodyStatus;
   /**
      * @minimum 1
@@ -136,6 +140,8 @@ export type PostApiBooks201 = {
   author: string;
   /** @nullable */
   publisher: string | null;
+  /** @nullable */
+  thumbnailUrl: string | null;
   status: PostApiBooks201Status;
   /**
      * @minimum -9007199254740991
@@ -187,6 +193,8 @@ export type GetApiBooksId200 = {
   author: string;
   /** @nullable */
   publisher: string | null;
+  /** @nullable */
+  thumbnailUrl: string | null;
   status: GetApiBooksId200Status;
   /**
      * @minimum -9007199254740991
@@ -241,6 +249,8 @@ export type PatchApiBooksIdBody = {
      * @nullable
      */
   publisher?: string | null;
+  /** @nullable */
+  thumbnailUrl?: string | null;
   status?: PatchApiBooksIdBodyStatus;
   /**
      * @minimum 1
@@ -279,6 +289,8 @@ export type PatchApiBooksId200 = {
   author: string;
   /** @nullable */
   publisher: string | null;
+  /** @nullable */
+  thumbnailUrl: string | null;
   status: PatchApiBooksId200Status;
   /**
      * @minimum -9007199254740991
@@ -340,6 +352,8 @@ export type DeleteApiBooksId200 = {
   author: string;
   /** @nullable */
   publisher: string | null;
+  /** @nullable */
+  thumbnailUrl: string | null;
   status: DeleteApiBooksId200Status;
   /**
      * @minimum -9007199254740991
