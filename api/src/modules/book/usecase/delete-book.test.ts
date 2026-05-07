@@ -13,6 +13,7 @@ describe('deleteBook', () => {
       title: 'タイトル1',
       author: '著者1',
       publisher: '出版社名',
+      thumbnailUrl: 'https://books.google.com/',
       status: 'done' as const,
       rating: 5,
       finishedAt: '2026-01-01',

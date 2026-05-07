@@ -123,6 +123,7 @@ export const bookTable = sqliteTable('books', {
   title: text('title').notNull(),
   author: text('author').notNull(),
   publisher: text('publisher'),
+  thumbnailUrl: text('thumbnail_url'),
   status: text('status', { enum: ['unread', 'reading', 'done'] })
     .notNull()
     .default('unread'),
