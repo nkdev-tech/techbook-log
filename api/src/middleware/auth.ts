@@ -11,7 +11,10 @@ export type AuthVariables = {
 export const authMiddleware = createMiddleware<AuthVariables>(
   async (c, next) => {
     try {
-      const session = await auth.api.getSession({ headers: c.req.raw.headers })
+      const session = await auth.api.getSession({
+        headers: c.req.raw.headers,
+        query: { disableRefresh: true }
+      })
       if (!session) {
         return c.json({}, 401)
       }
