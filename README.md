@@ -40,7 +40,8 @@
 | フロントエンド | Next.js 16 / React 19 / Tailwind CSS v4 / shadcn/ui |
 | API | Hono + @hono/zod-openapi |
 | DB | Cloudflare D1（SQLite）/ Drizzle ORM |
-| インフラ | Cloudflare Workers（API）/ Cloudflare Pages（Web） |
+| インフラ | Cloudflare Workers（API・Web） |
+| 認証 | better-auth |
 | 状態管理・フォーム | TanStack Query / TanStack Form |
 | APIクライアント生成 | orval（OpenAPIスペックから自動生成） |
 | テスト | Vitest（API）/ Jest + Testing Library（Web） |
@@ -98,6 +99,7 @@ npm run dev
 | `npm test` | テスト実行 |
 | `npm run migrate:generate` | マイグレーションファイル生成 |
 | `npm run migrate:apply` | ローカル D1 にマイグレーション適用 |
+| `npm run deploy` | Cloudflare Workers にデプロイ |
 
 ### Web (`web/`)
 
@@ -106,4 +108,5 @@ npm run dev
 | `npm run dev` | 開発サーバー起動 |
 | `npm test` | テスト実行 |
 | `npm run generate` | orval で API クライアント再生成（API サーバー起動が必要） |
-| `npm run deploy` | Cloudflare Pages にデプロイ |
+| `npm run preview` | Cloudflare Workers のローカルプレビュー |
+| `npm run deploy` | Cloudflare Workers にデプロイ |
