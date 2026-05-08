@@ -3,27 +3,20 @@
 import { Suspense } from "react";
 import { useGetApiBooks } from "@/external/api";
 import { keepPreviousData } from "@tanstack/react-query";
-import Image from "next/image";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { STATUS_LABEL } from "@/shared/utils/book";
-import { StarRating } from "@/components/books/StarRating";
+import { BookGridView } from "@/components/books/BookGridView";
+import { BookTableView } from "@/components/books/BookTableView";
 import { SearchField } from "@/components/books/SearchField";
-import { Tag } from "@/components/books/Tag";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { Separator } from "@/components/ui/separator";
+import { useViewMode } from "@/shared/hooks/useViewMode";
 import { useRouter, useSearchParams } from "next/navigation";
-import { BookOpen, Plus, SearchX } from "lucide-react";
+import { BookOpen, LayoutGrid, LayoutList, Plus, SearchX } from "lucide-react";
 
 function BooksContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const tagsParam = searchParams.get("tags") ?? undefined;
+  const [viewMode, { changeViewMode }] = useViewMode();
   const { data, isLoading, error } = useGetApiBooks(
     tagsParam ? { tags: tagsParam } : undefined,
     { query: { placeholderData: keepPreviousData } }
@@ -43,16 +36,37 @@ function BooksContent() {
 
   return (
     <div className="w-full">
-      <div className="flex justify-between item-center mt-1 mb-3 h-[2rem]">
+      <div className="flex justify-between items-center mt-1 mb-3 h-[2rem]">
         <SearchField />
-        <Button
-          type="button"
-          className="shrink-0 ml-2"
-          onClick={() => router.push("/books/new")}
-        >
-          <Plus />
-          新規登録
-        </Button>
+        <div className="flex items-center gap-3">
+          <Button
+            type="button"
+            className="shrink-0 ml-2"
+            onClick={() => router.push("/books/new")}
+          >
+            <Plus />
+            新規登録
+          </Button>
+          <Separator orientation="vertical" />
+          <div className="flex gap-1">
+            <Button
+              type="button"
+              variant={viewMode === "table" ? "default" : "outline"}
+              size="icon-lg"
+              onClick={() => changeViewMode("table")}
+            >
+              <LayoutList />
+            </Button>
+            <Button
+              type="button"
+              variant={viewMode === "grid" ? "default" : "outline"}
+              size="icon-lg"
+              onClick={() => changeViewMode("grid")}
+            >
+              <LayoutGrid />
+            </Button>
+          </div>
+        </div>
       </div>
       {data?.data.length === 0 ? (
         <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
@@ -72,64 +86,10 @@ function BooksContent() {
             </>
           )}
         </div>
+      ) : viewMode === "grid" ? (
+        <BookGridView books={data?.data} />
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {data?.data.map((book) => {
-            return (
-              <Link
-                key={book.id}
-                href={`/books/${book.id}`}
-                className="block h-full rounded-lg"
-              >
-                <Card className="flex flex-row cursor-pointer h-full gap-0">
-                  <div className="flex items-center pl-4 shrink-0">
-                    {book.thumbnailUrl ? (
-                      <Image
-                        src={book.thumbnailUrl}
-                        alt={book.title}
-                        unoptimized
-                        width={0}
-                        height={0}
-                        className="rounded-sm shrink-0 max-w-[96px] max-h-[120px] w-auto h-auto object-contain"
-                      />
-                    ) : (
-                      <div className="flex flex-col items-center justify-center w-[96px] h-[120px] rounded-sm bg-muted/50 shrink-0 gap-1">
-                        <span className="text-xs text-muted-foreground">
-                          No Image
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                  <div className="flex flex-col w-full gap-1">
-                    <CardHeader>
-                      <CardTitle className="text-lg font-bold truncate">
-                        {book.title}
-                      </CardTitle>
-                      <CardDescription className="text-xs truncate">
-                        {book.author}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-1">
-                      <div className="overflow-hidden max-h-[2.1rem]">
-                        <Tag
-                          tags={book.tags ?? []}
-                          iconSize={12}
-                          textSize="text-xs"
-                        />
-                      </div>
-                      <div>{STATUS_LABEL[book.status] ?? book.status}</div>
-                      <StarRating
-                        rating={book.rating}
-                        size="sm"
-                        disabled={true}
-                      />
-                    </CardContent>
-                  </div>
-                </Card>
-              </Link>
-            );
-          })}
-        </div>
+        <BookTableView books={data?.data} />
       )}
     </div>
   );
