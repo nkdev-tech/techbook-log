@@ -20,7 +20,7 @@ type Props = {
 export function BookTableView({ books }: Props) {
   const router = useRouter();
   return (
-    <div className="w-full border-1 rounded-lg overflow-x-auto">
+    <div className="w-full border-1 rounded-lg overflow-hidden">
       <Table className="w-full min-w-[680px] table-fixed">
         <TableHeader className="bg-muted">
           <TableRow>
@@ -43,12 +43,14 @@ export function BookTableView({ books }: Props) {
             return (
               <TableRow
                 key={book.id}
-                onClick={() => router.push(`/books/${book.id}/`)}
-                className="cursor-pointer"
+                onClick={() => router.push(`/books/${book.id}`)}
+                className="cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 tabIndex={0}
+                role="link"
                 onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    router.push(`/books/${book.id}/`);
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    router.push(`/books/${book.id}`);
                   }
                 }}
               >
