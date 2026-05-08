@@ -2,10 +2,21 @@
 
 import { useEffect, useState } from "react";
 import { authClient } from "@/lib/auth-client";
+import { LogoMark, Wordmark } from "@/components/Logo";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Spinner } from "@/components/ui/spinner";
 import { toast } from "sonner";
+import { ChevronDown, LogOut } from "lucide-react";
 
 export default function Header() {
   const [isLoading, setIsLoading] = useState(false);
@@ -33,30 +44,52 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 px-4 bg-background">
-      <div className="flex justify-between mt-3 mb-2">
-        <h1 className="text-2xl font-bold tracking-wider text-primary">
-          Techbook Log
-        </h1>
+    <header className="sticky top-0 px-4 bg-background border-b">
+      <div className="flex justify-between items-center mt-3 mb-2">
+        <div className="flex items-center gap-2">
+          <LogoMark />
+          <Wordmark />
+        </div>
         {session && (
-          <div className="flex items-center mx-2 gap-4">
-            <div className="flex items-center gap-2">
-              <div className="text-sm">{session.user.name}</div>
-              <Avatar>
-                <AvatarImage src={session.user.image ?? ""} />
-                <AvatarFallback>{session.user.name?.charAt(0)}</AvatarFallback>
-              </Avatar>
-            </div>
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={handleLogout}
-              disabled={isLoading}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                type="button"
+                variant="outline"
+                className="px-1 rounded-full"
+              >
+                <Avatar size="sm">
+                  <AvatarImage src={session.user.image ?? ""} />
+                  <AvatarFallback>
+                    {session.user.name?.charAt(0)}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="text-xs">{session.user.name}</div>
+                <ChevronDown />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              className="w-40"
+              align="start"
+              collisionPadding={16}
             >
-              {isLoading && <Spinner data-icon="inline-start" />}
-              ログアウト
-            </Button>
-          </div>
+              <DropdownMenuGroup>
+                <DropdownMenuLabel className="truncate">
+                  {session.user.email}
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  variant="destructive"
+                  onClick={handleLogout}
+                  disabled={isLoading}
+                >
+                  <LogOut />
+                  ログアウト
+                  {isLoading && <Spinner data-icon="inline-start" />}
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
         )}
       </div>
     </header>

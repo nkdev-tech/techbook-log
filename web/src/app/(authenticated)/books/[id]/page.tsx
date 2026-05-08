@@ -29,7 +29,7 @@ export default function BookDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="w-full max-w-5xl">
+      <div className="w-full">
         <p className="text-lg">Loading...</p>
       </div>
     );
@@ -50,9 +50,9 @@ export default function BookDetailPage() {
   const book = data.data;
 
   return (
-    <div className="w-full max-w-3xl mx-auto">
-      <Card className="flex flex-row w-full mx-auto">
-        <div className="flex items-center pl-4 shrink-0">
+    <div className="w-full mx-auto">
+      <Card className="flex flex-row w-full mx-auto p-6">
+        <div className="flex items-center shrink-0">
           {book.thumbnailUrl ? (
             <Image
               src={book.thumbnailUrl}
@@ -72,11 +72,12 @@ export default function BookDetailPage() {
           <CardHeader>
             <CardTitle className="text-2xl font-bold">{book.title}</CardTitle>
             <CardDescription className="">{book.author}</CardDescription>
-            <CardAction className="flex px-2 gap-1">
+            <CardAction className="flex gap-1">
               <DeleteButton id={id} />
               <Button
                 type="button"
                 variant="ghost"
+                aria-label="本を編集"
                 size="icon-lg"
                 onClick={() => router.push(`/books/${id}/edit`)}
               >

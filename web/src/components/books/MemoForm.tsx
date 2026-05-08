@@ -124,7 +124,7 @@ export function MemoForm({ memo, onSuccess, onCancel }: Props) {
     <Card
       key="new"
       ref={ref}
-      className="bg-yellow-100 rounded-none min-h-40 pt-5 pb-1"
+      className="min-h-40 pt-5 pb-1 border-l-[6px] border-l-primary"
     >
       <form
         id="card-form"
@@ -164,7 +164,7 @@ export function MemoForm({ memo, onSuccess, onCancel }: Props) {
               )}
             </form.Field>
           </FieldGroup>
-          <div className="flex justify-between bg-yellow-100 border-none">
+          <div className="flex justify-between">
             <Button
               type="button"
               variant="ghost"
