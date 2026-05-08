@@ -14,7 +14,7 @@ export function LogoMark({ size = 22 }: Props) {
 }
 
 // memetec. ワードマーク (Newsreader)
-export function Wordmark({ size = 16 }: Props) {
+export function Wordmark({ size = 22 }: Props) {
   return (
     <span style={{
       fontFamily: "'Newsreader', serif", fontWeight: 500,

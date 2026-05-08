@@ -43,7 +43,7 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 px-4 bg-background">
+    <header className="sticky top-0 px-4 bg-background border-b">
       <div className="flex justify-between items-center mt-3 mb-2">
         <div className="flex items-center gap-2">
           <LogoMark />
@@ -63,7 +63,7 @@ export default function Header() {
                     {session.user.name?.charAt(0)}
                   </AvatarFallback>
                 </Avatar>
-                <div className="text-xs">{session.user.name}</div>
+                <div className="text-sm">{session.user.name}</div>
                 <ChevronDown />
               </Button>
             </DropdownMenuTrigger>
