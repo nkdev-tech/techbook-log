@@ -83,7 +83,7 @@ export default function Header() {
                   className="gap-2"
                 >
                   <LogOut />
-                  Log out
+                  ログアウト
                   {isLoading && <Spinner data-icon="inline-start" />}
                 </DropdownMenuItem>
               </DropdownMenuGroup>
