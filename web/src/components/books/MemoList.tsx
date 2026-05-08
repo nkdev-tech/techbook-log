@@ -48,12 +48,12 @@ export function MemoList() {
             />
           )
         )}
-        {isFormOpen &&
+        {isFormOpen && (
           <MemoForm
             onSuccess={() => setIsFormOpen(false)}
             onCancel={() => setIsFormOpen(false)}
           />
-        }
+        )}
       </div>
     </div>
   );

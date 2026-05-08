@@ -94,7 +94,13 @@ export function Memo({ bookId, memo, onEdit }: Props) {
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
-        <Button type="button" variant="ghost" size="icon-sm" onClick={onEdit} aria-label="メモを編集">
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon-sm"
+          onClick={onEdit}
+          aria-label="メモを編集"
+        >
           <SquarePen size={16} className="text-primary" />
         </Button>
       </div>
