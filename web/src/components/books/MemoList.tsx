@@ -3,6 +3,7 @@ import { useParams } from "next/navigation";
 import { useGetApiBooksIdMemos } from "@/external/api";
 import { Memo } from "@/components/books/Memo";
 import { MemoForm } from "@/components/books/MemoForm";
+import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 
 export function MemoList() {
@@ -18,38 +19,42 @@ export function MemoList() {
   const memos = data.data;
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 items-start gap-4 my-4">
-      {memos.map((memo) =>
-        editingMemoId === memo.id ? (
-          <MemoForm
-            key={memo.id}
-            memo={memo}
-            onSuccess={() => setEditingMemoId(null)}
-            onCancel={() => setEditingMemoId(null)}
-          />
-        ) : (
-          <Memo
-            key={memo.id}
-            bookId={id}
-            memo={memo}
-            onEdit={() => setEditingMemoId(memo.id)}
-          />
-        )
-      )}
-      {isFormOpen ? (
-        <MemoForm
-          onSuccess={() => setIsFormOpen(false)}
-          onCancel={() => setIsFormOpen(false)}
-        />
-      ) : (
-        <button
+    <div className="my-4 space-y-3">
+      <div className="flex justify-end">
+        <Button
           type="button"
-          className="flex items-center justify-center border-2 border-dashed rounded-none cursor-pointer h-40 w-full hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          disabled={isFormOpen}
           onClick={() => setIsFormOpen(true)}
         >
-          <Plus size={48} className="text-muted-foreground" />
-        </button>
-      )}
+          <Plus />
+          メモを追加
+        </Button>
+      </div>
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 items-start gap-4">
+        {memos.map((memo) =>
+          editingMemoId === memo.id ? (
+            <MemoForm
+              key={memo.id}
+              memo={memo}
+              onSuccess={() => setEditingMemoId(null)}
+              onCancel={() => setEditingMemoId(null)}
+            />
+          ) : (
+            <Memo
+              key={memo.id}
+              bookId={id}
+              memo={memo}
+              onEdit={() => setEditingMemoId(memo.id)}
+            />
+          )
+        )}
+        {isFormOpen &&
+          <MemoForm
+            onSuccess={() => setIsFormOpen(false)}
+            onCancel={() => setIsFormOpen(false)}
+          />
+        }
+      </div>
     </div>
   );
 }

@@ -77,6 +77,7 @@ export default function BookDetailPage() {
               <Button
                 type="button"
                 variant="ghost"
+                aria-label="本を編集"
                 size="icon-lg"
                 onClick={() => router.push(`/books/${id}/edit`)}
               >

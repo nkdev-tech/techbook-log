@@ -53,7 +53,7 @@ export function DeleteButton({ id }: Props) {
           type="button"
           variant="ghost"
           size="icon-lg"
-          aria-label="削除"
+          aria-label="本を削除"
           disabled={isPending}
         >
           {isPending ? (

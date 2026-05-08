@@ -59,11 +59,11 @@ export function Memo({ bookId, memo, onEdit }: Props) {
     );
   };
   return (
-    <Card className="relative bg-yellow-100 rounded-none min-h-40 py-5 group">
+    <Card className="relative min-h-40 py-5 group border-l-[6px] border-l-primary">
       <CardContent className="h-full px-5">
         <p className="whitespace-pre-wrap">{memo.content}</p>
       </CardContent>
-      <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity bg-yellow-100/80 backdrop-blur-xs rounded-full">
+      <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity backdrop-blur-xs rounded-full">
         <AlertDialog>
           <AlertDialogTrigger asChild>
             <Button
@@ -71,6 +71,7 @@ export function Memo({ bookId, memo, onEdit }: Props) {
               variant="ghost"
               size="icon-sm"
               disabled={isPending}
+              aria-label="メモを削除"
             >
               <Trash2 size={16} className="text-destructive" />
             </Button>
@@ -93,7 +94,7 @@ export function Memo({ bookId, memo, onEdit }: Props) {
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
-        <Button type="button" variant="ghost" size="icon-sm" onClick={onEdit}>
+        <Button type="button" variant="ghost" size="icon-sm" onClick={onEdit} aria-label="メモを編集">
           <SquarePen size={16} className="text-primary" />
         </Button>
       </div>
