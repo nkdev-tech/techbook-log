@@ -32,8 +32,8 @@
       "name": "api",
       "vars": {
         "ENV": "production",
-        "ORIGIN_URL": "https://web.techbook-log.workers.dev",
-        "BETTER_AUTH_URL": "https://api.techbook-log.workers.dev",
+        "ORIGIN_URL": "https://web.memetec.workers.dev",
+        "BETTER_AUTH_URL": "https://api.memetec.workers.dev",
       },
       "d1_databases": [
         {

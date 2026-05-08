@@ -32,7 +32,7 @@ export const auth = betterAuth({
   advanced: {
     crossSubDomainCookies: {
       enabled: env.ENV === 'production',
-      domain: 'techbook-log.workers.dev',
+      domain: 'memetec.workers.dev',
     },
   },
 })
