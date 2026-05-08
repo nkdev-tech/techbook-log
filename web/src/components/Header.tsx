@@ -44,7 +44,7 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 px-4 bg-background border-b">
+    <header className="sticky top-0 z-10 px-4 bg-background border-b">
       <div className="flex justify-between items-center mt-3 mb-2">
         <div className="flex items-center gap-2">
           <LogoMark />
