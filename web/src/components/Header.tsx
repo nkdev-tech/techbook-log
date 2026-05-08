@@ -11,6 +11,7 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Spinner } from "@/components/ui/spinner";
@@ -55,7 +56,7 @@ export default function Header() {
               <Button
                 type="button"
                 variant="outline"
-                className="pl-[4px] rounded-full"
+                className="px-1 rounded-full"
               >
                 <Avatar size="sm">
                   <AvatarImage src={session.user.image ?? ""} />
@@ -63,7 +64,7 @@ export default function Header() {
                     {session.user.name?.charAt(0)}
                   </AvatarFallback>
                 </Avatar>
-                <div className="text-sm">{session.user.name}</div>
+                <div className="text-xs">{session.user.name}</div>
                 <ChevronDown />
               </Button>
             </DropdownMenuTrigger>
@@ -76,11 +77,11 @@ export default function Header() {
                 <DropdownMenuLabel className="truncate">
                   {session.user.email}
                 </DropdownMenuLabel>
+                <DropdownMenuSeparator />
                 <DropdownMenuItem
                   variant="destructive"
                   onClick={handleLogout}
                   disabled={isLoading}
-                  className="gap-2"
                 >
                   <LogOut />
                   ログアウト

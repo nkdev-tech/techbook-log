@@ -30,16 +30,8 @@ export function LogoMark({ size = 22 }: Props) {
 export function Wordmark({ size = 22 }: Props) {
   return (
     <span
-      style={{
-        fontFamily: "'Newsreader', serif",
-        fontWeight: 500,
-        fontSize: size,
-        letterSpacing: "-0.02em",
-        color: "var(--color-foreground)",
-        display: "inline-flex",
-        alignItems: "baseline",
-        lineHeight: 1,
-      }}
+      className="font-serif font-medium tracking-[-0.02em] text-foreground inline-flex items-baseline leading-none"
+      style={{ fontSize: size }}
     >
       memetec.
     </span>
