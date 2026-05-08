@@ -18,7 +18,7 @@ import { Tag } from "@/components/books/Tag";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { BookOpen, SearchX } from "lucide-react";
+import { BookOpen, Plus, SearchX } from "lucide-react";
 
 function BooksContent() {
   const router = useRouter();
@@ -50,6 +50,7 @@ function BooksContent() {
           className="shrink-0 ml-2"
           onClick={() => router.push("/books/new")}
         >
+          <Plus />
           新規登録
         </Button>
       </div>
