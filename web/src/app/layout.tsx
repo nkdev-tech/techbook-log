@@ -20,7 +20,7 @@ const newsreader = Newsreader({
 });
 
 export const metadata: Metadata = {
-  title: "techbook log",
+  title: "memetec.",
 };
 
 export default function RootLayout({
