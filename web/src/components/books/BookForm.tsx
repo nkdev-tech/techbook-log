@@ -113,7 +113,7 @@ export function BookForm({ defaultValues, onSubmit }: Props) {
 
   if (isLoading) {
     return (
-      <div className="w-full max-w-5xl">
+      <div className="w-full">
         <p className="text-lg">Loading...</p>
       </div>
     );

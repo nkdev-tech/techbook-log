@@ -23,7 +23,7 @@ export default async function AuthenticatedLayout({
   return (
     <>
       <Header />
-      <main className="w-full max-w-5xl container mx-auto px-5">
+      <main className="w-full px-8 py-4">
         <Navigation />
         {children}
       </main>
