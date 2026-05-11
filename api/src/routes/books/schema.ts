@@ -96,6 +96,10 @@ export const ParamsSchema = z.object({
 
 export const querySchema = z.object({
   tags: z.string().optional().openapi({ example: 'React,Next.js' }),
+  status: z
+    .enum(['unread', 'reading', 'done'])
+    .optional()
+    .openapi({ example: 'unread' }),
 })
 
 export const errorResBodySchema = z.object({
