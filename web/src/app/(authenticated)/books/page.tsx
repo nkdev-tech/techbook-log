@@ -1,11 +1,12 @@
 "use client";
 
 import { Suspense } from "react";
-import { useGetApiBooks } from "@/external/api";
+import { useGetApiBooks, GetApiBooksStatus } from "@/external/api";
 import { keepPreviousData } from "@tanstack/react-query";
 import { BookGridView } from "@/components/books/BookGridView";
 import { BookTableView } from "@/components/books/BookTableView";
 import { SearchField } from "@/components/books/SearchField";
+import { StatusFilter } from "@/components/books/StatusFilter";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useViewMode } from "@/shared/hooks/useViewMode";
@@ -16,11 +17,16 @@ function BooksContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const tagsParam = searchParams.get("tags") ?? undefined;
+  const statusParam = searchParams.get("status") ?? undefined;
   const [viewMode, { changeViewMode }] = useViewMode();
-  const { data, isLoading, error } = useGetApiBooks(
-    tagsParam ? { tags: tagsParam } : undefined,
-    { query: { placeholderData: keepPreviousData } }
-  );
+  const validStatus = Object.values(GetApiBooksStatus).find((s) => s === statusParam);
+  const params = {
+    ...(tagsParam && { tags: tagsParam }),
+    ...(validStatus && { status: validStatus }),
+  };
+  const { data, isLoading, error } = useGetApiBooks(params, {
+    query: { placeholderData: keepPreviousData },
+  });
 
   if (isLoading) {
     return (
@@ -48,6 +54,8 @@ function BooksContent() {
             新規登録
           </Button>
           <Separator orientation="vertical" />
+          <StatusFilter />
+          <Separator orientation="vertical" />
           <div className="flex gap-1">
             <Button
               type="button"
@@ -70,7 +78,7 @@ function BooksContent() {
       </div>
       {data?.data.length === 0 ? (
         <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
-          {tagsParam ? (
+          {tagsParam || statusParam ? (
             <>
               <SearchX size={80} className="text-muted-foreground" />
               <p className="text-2xl font-bold text-muted-foreground">

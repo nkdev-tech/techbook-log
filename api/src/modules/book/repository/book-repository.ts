@@ -4,10 +4,17 @@ import { toBook, type Book, type InsertBook } from '../entity/book'
 import { and, eq, inArray, sql } from 'drizzle-orm'
 
 export const BookRepository = {
-  findAll: async (userId: string, query: string[]): Promise<Book[]> => {
+  findAll: async (
+    userId: string,
+    query: string[],
+    status?: Book['status'],
+  ): Promise<Book[]> => {
     if (query.length === 0) {
       const rows = await db.query.bookTable.findMany({
-        where: inArray(bookTable.userId, [userId]),
+        where: and(
+          inArray(bookTable.userId, [userId]),
+          status ? eq(bookTable.status, status) : undefined,
+        ),
         with: {
           taggings: {
             orderBy: (taggings, { asc }) => [asc(taggings.order)],
@@ -29,9 +36,12 @@ export const BookRepository = {
     if (bookIds.length === 0) return []
 
     const rows = await db.query.bookTable.findMany({
-      where: inArray(
-        bookTable.id,
-        bookIds.map((r) => r.bookId),
+      where: and(
+        inArray(
+          bookTable.id,
+          bookIds.map((r) => r.bookId),
+        ),
+        status ? eq(bookTable.status, status) : undefined,
       ),
       with: {
         taggings: {
