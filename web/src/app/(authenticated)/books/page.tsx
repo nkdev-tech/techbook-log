@@ -19,9 +19,10 @@ function BooksContent() {
   const tagsParam = searchParams.get("tags") ?? undefined;
   const statusParam = searchParams.get("status") ?? undefined;
   const [viewMode, { changeViewMode }] = useViewMode();
+  const validStatus = Object.values(GetApiBooksStatus).find((s) => s === statusParam);
   const params = {
     ...(tagsParam && { tags: tagsParam }),
-    ...(statusParam && { status: statusParam as GetApiBooksStatus }),
+    ...(validStatus && { status: validStatus }),
   };
   const { data, isLoading, error } = useGetApiBooks(params, {
     query: { placeholderData: keepPreviousData },

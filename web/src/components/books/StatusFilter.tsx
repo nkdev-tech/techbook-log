@@ -4,12 +4,12 @@ import { Button } from "@/components/ui/button";
 export function StatusFilter() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const statusParams = searchParams.get("status") ?? undefined;
+  const statusParam = searchParams.get("status") ?? undefined;
 
-  const handleSearch = (values: string) => {
+  const handleSearch = (value: string) => {
     const params = new URLSearchParams(searchParams.toString());
-    if (values.length > 0) {
-      params.set("status", values);
+    if (value.length > 0) {
+      params.set("status", value);
     } else {
       params.delete("status");
     }
@@ -20,7 +20,7 @@ export function StatusFilter() {
     <div className="flex gap-1">
       <Button
         type="button"
-        variant={statusParams === undefined ? "default" : "outline"}
+        variant={statusParam === undefined ? "default" : "outline"}
         className="rounded-full"
         onClick={() => handleSearch("")}
       >
@@ -28,7 +28,7 @@ export function StatusFilter() {
       </Button>
       <Button
         type="button"
-        variant={statusParams === "unread" ? "default" : "outline"}
+        variant={statusParam === "unread" ? "default" : "outline"}
         className="rounded-full"
         onClick={() => handleSearch("unread")}
       >
@@ -36,7 +36,7 @@ export function StatusFilter() {
       </Button>
       <Button
         type="button"
-        variant={statusParams === "reading" ? "default" : "outline"}
+        variant={statusParam === "reading" ? "default" : "outline"}
         className="rounded-full"
         onClick={() => handleSearch("reading")}
       >
@@ -44,7 +44,7 @@ export function StatusFilter() {
       </Button>
       <Button
         type="button"
-        variant={statusParams === "done" ? "default" : "outline"}
+        variant={statusParam === "done" ? "default" : "outline"}
         className="rounded-full"
         onClick={() => handleSearch("done")}
       >
