@@ -1,14 +1,13 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 type ViewMode = "grid" | "table";
 
 export function useViewMode() {
-  const [viewMode, setViewMode] = useState<ViewMode>("table");
-
-  useEffect(() => {
+  const [viewMode, setViewMode] = useState<ViewMode>(() => {
+    if (typeof window === "undefined") return "table";
     const stored = localStorage.getItem("book-view-mode");
-    if (stored === "grid" || stored === "table") setViewMode(stored);
-  }, []);
+    return stored === "grid" || stored === "table" ? stored : "table";
+  });
 
   const changeViewMode = (select: ViewMode) => {
     setViewMode(select);
