@@ -26,7 +26,17 @@ import type {
 import { customFetch } from './custom-fetch';
 export type GetApiBooksParams = {
 tags?: string;
+status?: GetApiBooksStatus;
 };
+
+export type GetApiBooksStatus = typeof GetApiBooksStatus[keyof typeof GetApiBooksStatus];
+
+
+export const GetApiBooksStatus = {
+  unread: 'unread',
+  reading: 'reading',
+  done: 'done',
+} as const;
 
 export type GetApiBooks200ItemStatus = typeof GetApiBooks200ItemStatus[keyof typeof GetApiBooks200ItemStatus];
 
