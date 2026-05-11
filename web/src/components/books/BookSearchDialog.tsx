@@ -1,3 +1,4 @@
+import { Thumbnail } from "@/components/books/Thumbnail";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -16,7 +17,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Spinner } from "@/components/ui/spinner";
 import { GetApiBookSearch200Item, useGetApiBookSearch } from "@/external/api";
 import { useState } from "react";
-import Image from "next/image";
 import { Search } from "lucide-react";
 
 type Props = {
@@ -69,24 +69,11 @@ export function BookSearchDialog({ onSelect }: Props) {
                 onSelect(book);
               }}
             >
-              <div className="flex w-[80px] h-[100px] shrink-0 justify-center items-center">
-                {book.thumbnailUrl ? (
-                  <Image
-                    src={book.thumbnailUrl}
-                    alt={book.title}
-                    unoptimized
-                    width={0}
-                    height={0}
-                    className="rounded-sm shrink-0 max-h-[100px] max-w-full w-auto h-auto object-contain"
-                  />
-                ) : (
-                  <div className="flex flex-col items-center justify-center w-full h-full rounded-sm bg-muted/50 shrink-0 gap-1">
-                    <span className="text-xs text-muted-foreground">
-                      No Image
-                    </span>
-                  </div>
-                )}
-              </div>
+              <Thumbnail
+                thumbnailUrl={book.thumbnailUrl}
+                title={book.title}
+                size="sm"
+              />
               <div className="flex flex-col gap-0.5 min-w-0">
                 <p className="text-sm font-medium leading-snug line-clamp-2">
                   {book.title}

@@ -1,7 +1,6 @@
 "use client";
 
 import { useParams, useRouter, notFound } from "next/navigation";
-import Image from "next/image";
 import { useGetApiBooksId } from "@/external/api";
 import {
   Card,
@@ -16,6 +15,7 @@ import { DeleteButton } from "@/components/books/DeleteButton";
 import { MemoList } from "@/components/books/MemoList";
 import { StarRating } from "@/components/books/StarRating";
 import { Tag } from "@/components/books/Tag";
+import { Thumbnail } from "@/components/books/Thumbnail";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { SquarePen } from "lucide-react";
@@ -52,22 +52,11 @@ export default function BookDetailPage() {
   return (
     <div className="w-full mx-auto">
       <Card className="flex flex-row w-full mx-auto p-6">
-        <div className="flex items-center shrink-0">
-          {book.thumbnailUrl ? (
-            <Image
-              src={book.thumbnailUrl}
-              alt={book.title}
-              unoptimized
-              width={0}
-              height={0}
-              className="rounded-sm shrink-0 max-w-[128px] max-h-[160px] w-auto h-auto object-contain"
-            />
-          ) : (
-            <div className="flex flex-col items-center justify-center w-[128px] h-[160px] rounded-sm bg-muted/50 shrink-0 gap-1">
-              <span className="text-xs text-muted-foreground">No Image</span>
-            </div>
-          )}
-        </div>
+        <Thumbnail
+          thumbnailUrl={book.thumbnailUrl}
+          title={book.title}
+          size="lg"
+        />
         <div className="flex flex-col w-full gap-2">
           <CardHeader>
             <CardTitle className="text-2xl font-bold">{book.title}</CardTitle>
