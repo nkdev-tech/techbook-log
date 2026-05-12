@@ -27,6 +27,8 @@ import { customFetch } from './custom-fetch';
 export type GetApiBooksParams = {
 tags?: string;
 status?: GetApiBooksStatus;
+sortBy?: GetApiBooksSortBy;
+order?: GetApiBooksOrder;
 };
 
 export type GetApiBooksStatus = typeof GetApiBooksStatus[keyof typeof GetApiBooksStatus];
@@ -36,6 +38,23 @@ export const GetApiBooksStatus = {
   unread: 'unread',
   reading: 'reading',
   done: 'done',
+} as const;
+
+export type GetApiBooksSortBy = typeof GetApiBooksSortBy[keyof typeof GetApiBooksSortBy];
+
+
+export const GetApiBooksSortBy = {
+  createdAt: 'createdAt',
+  title: 'title',
+  rating: 'rating',
+} as const;
+
+export type GetApiBooksOrder = typeof GetApiBooksOrder[keyof typeof GetApiBooksOrder];
+
+
+export const GetApiBooksOrder = {
+  asc: 'asc',
+  desc: 'desc',
 } as const;
 
 export type GetApiBooks200ItemStatus = typeof GetApiBooks200ItemStatus[keyof typeof GetApiBooks200ItemStatus];
