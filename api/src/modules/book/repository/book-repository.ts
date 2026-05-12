@@ -8,13 +8,28 @@ export const BookRepository = {
     userId: string,
     query: string[],
     status?: Book['status'],
+    sortBy?: string,
+    order?: string,
   ): Promise<Book[]> => {
+    const columnMap = {
+      createdAt: bookTable.createdAt,
+      title: bookTable.title,
+      rating: bookTable.rating,
+    }
+    const sortColumn =
+      sortBy && sortBy in columnMap
+        ? columnMap[sortBy as keyof typeof columnMap]
+        : bookTable.createdAt
     if (query.length === 0) {
       const rows = await db.query.bookTable.findMany({
         where: and(
           inArray(bookTable.userId, [userId]),
           status ? eq(bookTable.status, status) : undefined,
         ),
+        orderBy: (bookTable, { asc, desc }) => [
+          order === 'asc' ? asc(sortColumn) : desc(sortColumn),
+          asc(bookTable.id),
+        ],
         with: {
           taggings: {
             orderBy: (taggings, { asc }) => [asc(taggings.order)],
@@ -43,6 +58,10 @@ export const BookRepository = {
         ),
         status ? eq(bookTable.status, status) : undefined,
       ),
+      orderBy: (bookTable, { asc, desc }) => [
+        order === 'asc' ? asc(sortColumn) : desc(sortColumn),
+        asc(bookTable.id),
+      ],
       with: {
         taggings: {
           orderBy: (taggings, { asc }) => [asc(taggings.order)],
