@@ -13,7 +13,7 @@ export function StatusFilter() {
     } else {
       params.delete("status");
     }
-    router.push(`/books?${params.toString()}`);
+    router.replace(`/books?${params.toString()}`);
   };
 
   return (

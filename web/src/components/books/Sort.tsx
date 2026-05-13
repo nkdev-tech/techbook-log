@@ -18,31 +18,23 @@ export function Sort() {
 
   const handleChangeSortBy = (value: string) => {
     const params = new URLSearchParams(searchParams.toString());
-    if (value.length > 0) {
-      params.set("sortBy", value);
-    } else {
-      params.delete("sortBy");
-    }
-    router.push(`/books?${params.toString()}`);
+    params.set("sortBy", value);
+    router.replace(`/books?${params.toString()}`);
   };
 
   const handleChangeOrder = (value: string) => {
     const params = new URLSearchParams(searchParams.toString());
-    if (value.length > 0) {
-      params.set("order", value);
-    } else {
-      params.delete("order");
-    }
-    router.push(`/books?${params.toString()}`);
+    params.set("order", value);
+    router.replace(`/books?${params.toString()}`);
   };
 
   return (
     <div className="flex gap-1 items-center">
       <Select
         value={sortByParam ?? "createdAt"}
-        onValueChange={(value) => handleChangeSortBy(value)}
+        onValueChange={handleChangeSortBy}
       >
-        <SelectTrigger className="w-[180px]">
+        <SelectTrigger className="w-[100px]">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
@@ -58,6 +50,7 @@ export function Sort() {
           type="button"
           variant="outline"
           size="icon"
+          aria-label="降順"
           onClick={() => handleChangeOrder("asc")}
         >
           <ArrowDownWideNarrow />
@@ -67,6 +60,7 @@ export function Sort() {
           type="button"
           variant="outline"
           size="icon"
+          aria-label="昇順"
           onClick={() => handleChangeOrder("desc")}
         >
           <ArrowUpNarrowWide />

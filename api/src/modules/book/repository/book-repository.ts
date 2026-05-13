@@ -1,6 +1,12 @@
 import { bookTable, taggingTable, tagTable } from '../../../db/schema'
 import { db } from '../../../db'
-import { toBook, type Book, type InsertBook } from '../entity/book'
+import {
+  toBook,
+  type Book,
+  type InsertBook,
+  type BookSortBy,
+  type BookSortOrder,
+} from '../entity/book'
 import { and, eq, inArray, sql } from 'drizzle-orm'
 
 export const BookRepository = {
@@ -8,31 +14,28 @@ export const BookRepository = {
     userId: string,
     query: string[],
     status?: Book['status'],
-    sortBy?: string,
-    order?: string,
+    sortBy?: BookSortBy,
+    order?: BookSortOrder,
   ): Promise<Book[]> => {
     const columnMap = {
       createdAt: bookTable.createdAt,
       title: bookTable.title,
       rating: bookTable.rating,
     }
-    const sortColumn =
-      sortBy && sortBy in columnMap
-        ? columnMap[sortBy as keyof typeof columnMap]
-        : bookTable.createdAt
+    const sortColumn = sortBy ? columnMap[sortBy] : bookTable.createdAt
     if (query.length === 0) {
       const rows = await db.query.bookTable.findMany({
         where: and(
           inArray(bookTable.userId, [userId]),
           status ? eq(bookTable.status, status) : undefined,
         ),
-        orderBy: (bookTable, { asc, desc }) => [
+        orderBy: (fields, { asc, desc }) => [
           order === 'asc' ? asc(sortColumn) : desc(sortColumn),
-          asc(bookTable.id),
+          asc(fields.id),
         ],
         with: {
           taggings: {
-            orderBy: (taggings, { asc }) => [asc(taggings.order)],
+            orderBy: (fields, { asc }) => [asc(fields.order)],
             with: { tag: true },
           },
         },
@@ -58,13 +61,13 @@ export const BookRepository = {
         ),
         status ? eq(bookTable.status, status) : undefined,
       ),
-      orderBy: (bookTable, { asc, desc }) => [
+      orderBy: (fields, { asc, desc }) => [
         order === 'asc' ? asc(sortColumn) : desc(sortColumn),
-        asc(bookTable.id),
+        asc(fields.id),
       ],
       with: {
         taggings: {
-          orderBy: (taggings, { asc }) => [asc(taggings.order)],
+          orderBy: (fields, { asc }) => [asc(fields.order)],
           with: { tag: true },
         },
       },

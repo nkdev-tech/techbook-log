@@ -24,6 +24,12 @@ describe('books', () => {
 
   it('can get books', async () => {
     vi.mocked(BookRepository.findAll).mockResolvedValue([])
+    const res = await client.api.books.$get({ query: {} })
+    expect(res.status).toBe(200)
+  })
+
+  it('can get books with params', async () => {
+    vi.mocked(BookRepository.findAll).mockResolvedValue([])
     const res = await client.api.books.$get({
       query: {
         tags: 'React,Next.js',
