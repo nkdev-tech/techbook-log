@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ArrowDown, ArrowUp } from "lucide-react";
+import { ArrowDownWideNarrow, ArrowUpNarrowWide } from "lucide-react";
 
 export function Sort() {
   const router = useRouter();
@@ -60,7 +60,7 @@ export function Sort() {
           size="icon"
           onClick={() => handleChangeOrder("asc")}
         >
-          <ArrowDown />
+          <ArrowDownWideNarrow />
         </Button>
       ) : (
         <Button
@@ -69,7 +69,7 @@ export function Sort() {
           size="icon"
           onClick={() => handleChangeOrder("desc")}
         >
-          <ArrowUp />
+          <ArrowUpNarrowWide />
         </Button>
       )}
     </div>
