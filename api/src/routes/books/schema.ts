@@ -100,6 +100,11 @@ export const querySchema = z.object({
     .enum(['unread', 'reading', 'done'])
     .optional()
     .openapi({ example: 'unread' }),
+  sortBy: z
+    .enum(['createdAt', 'title', 'rating'])
+    .optional()
+    .openapi({ example: 'title' }),
+  order: z.enum(['asc', 'desc']).optional().openapi({ example: 'asc' }),
 })
 
 export const errorResBodySchema = z.object({

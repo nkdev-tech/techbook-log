@@ -1,11 +1,17 @@
 "use client";
 
 import { Suspense } from "react";
-import { useGetApiBooks, GetApiBooksStatus } from "@/external/api";
+import {
+  useGetApiBooks,
+  GetApiBooksOrder,
+  GetApiBooksSortBy,
+  GetApiBooksStatus,
+} from "@/external/api";
 import { keepPreviousData } from "@tanstack/react-query";
 import { BookGridView } from "@/components/books/BookGridView";
 import { BookTableView } from "@/components/books/BookTableView";
 import { SearchField } from "@/components/books/SearchField";
+import { Sort } from "@/components/books/Sort";
 import { StatusFilter } from "@/components/books/StatusFilter";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -18,11 +24,23 @@ function BooksContent() {
   const searchParams = useSearchParams();
   const tagsParam = searchParams.get("tags") ?? undefined;
   const statusParam = searchParams.get("status") ?? undefined;
+  const sortByParam = searchParams.get("sortBy") ?? undefined;
+  const orderParam = searchParams.get("order") ?? undefined;
   const [viewMode, { changeViewMode }] = useViewMode();
-  const validStatus = Object.values(GetApiBooksStatus).find((s) => s === statusParam);
+  const validStatus = Object.values(GetApiBooksStatus).find(
+    (s) => s === statusParam
+  );
+  const validSortBy = Object.values(GetApiBooksSortBy).find(
+    (s) => s === sortByParam
+  );
+  const validOrder = Object.values(GetApiBooksOrder).find(
+    (s) => s === orderParam
+  );
   const params = {
     ...(tagsParam && { tags: tagsParam }),
     ...(validStatus && { status: validStatus }),
+    ...(validSortBy && { sortBy: validSortBy }),
+    ...(validOrder && { order: validOrder }),
   };
   const { data, isLoading, error } = useGetApiBooks(params, {
     query: { placeholderData: keepPreviousData },
@@ -55,6 +73,8 @@ function BooksContent() {
           </Button>
           <Separator orientation="vertical" />
           <StatusFilter />
+          <Separator orientation="vertical" />
+          <Sort />
           <Separator orientation="vertical" />
           <div className="flex gap-1">
             <Button

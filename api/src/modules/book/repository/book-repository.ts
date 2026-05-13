@@ -1,6 +1,12 @@
 import { bookTable, taggingTable, tagTable } from '../../../db/schema'
 import { db } from '../../../db'
-import { toBook, type Book, type InsertBook } from '../entity/book'
+import {
+  toBook,
+  type Book,
+  type InsertBook,
+  type BookSortBy,
+  type BookSortOrder,
+} from '../entity/book'
 import { and, eq, inArray, sql } from 'drizzle-orm'
 
 export const BookRepository = {
@@ -8,16 +14,28 @@ export const BookRepository = {
     userId: string,
     query: string[],
     status?: Book['status'],
+    sortBy?: BookSortBy,
+    order?: BookSortOrder,
   ): Promise<Book[]> => {
+    const columnMap = {
+      createdAt: bookTable.createdAt,
+      title: bookTable.title,
+      rating: bookTable.rating,
+    }
+    const sortColumn = sortBy ? columnMap[sortBy] : bookTable.createdAt
     if (query.length === 0) {
       const rows = await db.query.bookTable.findMany({
         where: and(
           inArray(bookTable.userId, [userId]),
           status ? eq(bookTable.status, status) : undefined,
         ),
+        orderBy: (fields, { asc, desc }) => [
+          order === 'asc' ? asc(sortColumn) : desc(sortColumn),
+          asc(fields.id),
+        ],
         with: {
           taggings: {
-            orderBy: (taggings, { asc }) => [asc(taggings.order)],
+            orderBy: (fields, { asc }) => [asc(fields.order)],
             with: { tag: true },
           },
         },
@@ -43,9 +61,13 @@ export const BookRepository = {
         ),
         status ? eq(bookTable.status, status) : undefined,
       ),
+      orderBy: (fields, { asc, desc }) => [
+        order === 'asc' ? asc(sortColumn) : desc(sortColumn),
+        asc(fields.id),
+      ],
       with: {
         taggings: {
-          orderBy: (taggings, { asc }) => [asc(taggings.order)],
+          orderBy: (fields, { asc }) => [asc(fields.order)],
           with: { tag: true },
         },
       },

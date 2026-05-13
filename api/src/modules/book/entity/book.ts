@@ -24,3 +24,6 @@ export function toBook(raw: SelectBook): Book {
     tags: taggings?.map((t) => ({ id: t.tag.id, name: t.tag.name })) ?? [],
   }
 }
+
+export type BookSortBy = 'createdAt' | 'title' | 'rating'
+export type BookSortOrder = 'asc' | 'desc'
