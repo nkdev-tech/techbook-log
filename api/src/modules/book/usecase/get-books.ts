@@ -7,6 +7,39 @@ export const getBooks = async (
   status?: Book['status'],
   sortBy?: BookSortBy,
   order?: BookSortOrder,
-): Promise<Book[]> => {
-  return await BookRepository.findAll(userId, query, status, sortBy, order)
+  cursor?: string,
+  limit?: number,
+): Promise<{ books: Book[]; nextCursor: string | null }> => {
+  const { lastId, lastCreatedAt, lastTitle, lastRating } = cursor
+    ? JSON.parse(decodeURIComponent(atob(cursor)))
+    : {}
+  const result = await BookRepository.findAll(
+    userId,
+    query,
+    status,
+    sortBy,
+    order,
+    lastId,
+    lastCreatedAt,
+    lastTitle,
+    lastRating,
+    limit,
+  )
+  const lastBook = result[result.length - 1]
+  return {
+    books: result,
+    nextCursor:
+      result.length === limit
+        ? btoa(
+            encodeURIComponent(
+              JSON.stringify({
+                lastId: lastBook.id,
+                lastCreatedAt: lastBook.createdAt,
+                lastTitle: lastBook.title,
+                lastRating: lastBook.rating,
+              }),
+            ),
+          )
+        : null,
+  }
 }

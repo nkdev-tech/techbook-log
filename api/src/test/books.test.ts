@@ -26,6 +26,8 @@ describe('books', () => {
     vi.mocked(BookRepository.findAll).mockResolvedValue([])
     const res = await client.api.books.$get({ query: {} })
     expect(res.status).toBe(200)
+    const json = await res.json()
+    expect(json).toEqual({ books: [], nextCursor: null })
   })
 
   it('can get books with params', async () => {
@@ -36,9 +38,14 @@ describe('books', () => {
         status: 'unread',
         sortBy: 'title',
         order: 'asc',
+        cursor:
+          'JTdCJTIybGFzdElkJTIyJTNBMSUyQyUyMmxhc3RDcmVhdGVkQXQlMjIlM0ElMjIyMDI2LTAxLTAxVDAwJTNBMDAlM0EwMC4wMDBaJTIyJTJDJTIybGFzdFRpdGxlJTIyJTNBJTIyJUUzJTgyJUJGJUUzJTgyJUE0JUUzJTgzJTg4JUUzJTgzJUFCJTIyJTJDJTIybGFzdFN0YXR1cyUyMiUzQTMlN0Q=',
+        limit: 20,
       },
     })
     expect(res.status).toBe(200)
+    const json = await res.json()
+    expect(json).toEqual({ books: [], nextCursor: null })
   })
 
   it('can create book', async () => {

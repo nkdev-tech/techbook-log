@@ -67,7 +67,10 @@ const inputBookSchema = createInsertSchema(bookTable, {
     updatedAt: true,
   })
 
-export const getBooksSchema = booksSchema.array()
+export const getBooksSchema = z.object({
+  books: booksSchema.array(),
+  nextCursor: z.string().nullable(),
+})
 
 export const createBookReqSchema = inputBookSchema
 
@@ -105,6 +108,8 @@ export const querySchema = z.object({
     .optional()
     .openapi({ example: 'title' }),
   order: z.enum(['asc', 'desc']).optional().openapi({ example: 'asc' }),
+  cursor: z.string().optional().openapi({ example: 'eyJsYXN0SWQiOjF9' }),
+  limit: z.coerce.number().optional().openapi({ example: 20 }),
 })
 
 export const errorResBodySchema = z.object({
