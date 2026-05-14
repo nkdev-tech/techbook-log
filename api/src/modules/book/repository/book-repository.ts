@@ -48,7 +48,7 @@ export const BookRepository = {
               lt(sortColumn, lastSortValue),
               and(
                 eq(sortColumn, lastSortValue),
-                gt(bookTable.id, Number(lastId)),
+                lt(bookTable.id, Number(lastId)),
               ),
             )
         : undefined

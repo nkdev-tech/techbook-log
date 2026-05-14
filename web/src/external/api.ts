@@ -111,6 +111,16 @@ export type GetApiBooks200 = {
   nextCursor: string | null;
 };
 
+export type GetApiBooks400Error = {
+  name: string;
+  message: string;
+};
+
+export type GetApiBooks400 = {
+  success: boolean;
+  error: GetApiBooks400Error;
+};
+
 export type PostApiBooksBodyStatus = typeof PostApiBooksBodyStatus[keyof typeof PostApiBooksBodyStatus];
 
 
@@ -607,12 +617,19 @@ export type getApiBooksResponse200 = {
   status: 200
 }
 
+export type getApiBooksResponse400 = {
+  data: GetApiBooks400
+  status: 400
+}
+
 export type getApiBooksResponseSuccess = (getApiBooksResponse200) & {
   headers: Headers;
 };
-;
+export type getApiBooksResponseError = (getApiBooksResponse400) & {
+  headers: Headers;
+};
 
-export type getApiBooksResponse = (getApiBooksResponseSuccess)
+export type getApiBooksResponse = (getApiBooksResponseSuccess | getApiBooksResponseError)
 
 export const getGetApiBooksUrl = (params?: GetApiBooksParams,) => {
   const normalizedParams = new URLSearchParams();
@@ -651,7 +668,7 @@ export const getGetApiBooksQueryKey = (params?: GetApiBooksParams,) => {
     }
 
 
-export const getGetApiBooksQueryOptions = <TData = Awaited<ReturnType<typeof getApiBooks>>, TError = unknown>(params?: GetApiBooksParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBooks>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+export const getGetApiBooksQueryOptions = <TData = Awaited<ReturnType<typeof getApiBooks>>, TError = GetApiBooks400>(params?: GetApiBooksParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBooks>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
@@ -670,10 +687,10 @@ const {query: queryOptions, request: requestOptions} = options ?? {};
 }
 
 export type GetApiBooksQueryResult = NonNullable<Awaited<ReturnType<typeof getApiBooks>>>
-export type GetApiBooksQueryError = unknown
+export type GetApiBooksQueryError = GetApiBooks400
 
 
-export function useGetApiBooks<TData = Awaited<ReturnType<typeof getApiBooks>>, TError = unknown>(
+export function useGetApiBooks<TData = Awaited<ReturnType<typeof getApiBooks>>, TError = GetApiBooks400>(
  params: undefined |  GetApiBooksParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBooks>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getApiBooks>>,
@@ -683,7 +700,7 @@ export function useGetApiBooks<TData = Awaited<ReturnType<typeof getApiBooks>>, 
       >, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetApiBooks<TData = Awaited<ReturnType<typeof getApiBooks>>, TError = unknown>(
+export function useGetApiBooks<TData = Awaited<ReturnType<typeof getApiBooks>>, TError = GetApiBooks400>(
  params?: GetApiBooksParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBooks>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getApiBooks>>,
@@ -693,12 +710,12 @@ export function useGetApiBooks<TData = Awaited<ReturnType<typeof getApiBooks>>, 
       >, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetApiBooks<TData = Awaited<ReturnType<typeof getApiBooks>>, TError = unknown>(
+export function useGetApiBooks<TData = Awaited<ReturnType<typeof getApiBooks>>, TError = GetApiBooks400>(
  params?: GetApiBooksParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBooks>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
-export function useGetApiBooks<TData = Awaited<ReturnType<typeof getApiBooks>>, TError = unknown>(
+export function useGetApiBooks<TData = Awaited<ReturnType<typeof getApiBooks>>, TError = GetApiBooks400>(
  params?: GetApiBooksParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBooks>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {

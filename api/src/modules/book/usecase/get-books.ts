@@ -1,6 +1,14 @@
 import { BookRepository } from '../repository/book-repository'
 import { type Book, type BookSortBy, type BookSortOrder } from '../entity/book'
 
+const decode = (cursor: string) => {
+  try {
+    return JSON.parse(decodeURIComponent(atob(cursor)))
+  } catch {
+    throw { status: 400, message: 'Bad Request' }
+  }
+}
+
 export const getBooks = async (
   userId: string,
   query: string[],
@@ -11,7 +19,7 @@ export const getBooks = async (
   limit?: number,
 ): Promise<{ books: Book[]; nextCursor: string | null }> => {
   const { lastId, lastCreatedAt, lastTitle, lastRating } = cursor
-    ? JSON.parse(decodeURIComponent(atob(cursor)))
+    ? decode(cursor)
     : {}
   const result = await BookRepository.findAll(
     userId,

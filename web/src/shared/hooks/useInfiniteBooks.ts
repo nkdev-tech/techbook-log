@@ -10,7 +10,13 @@ export function useInfiniteBooks(params: GetApiBooksParams) {
     isFetchingNextPage,
     isLoading,
   } = useInfiniteQuery({
-    queryKey: [params],
+    queryKey: [
+      "books",
+      params.tags,
+      params.status,
+      params.sortBy,
+      params.order,
+    ],
     queryFn: ({ pageParam }) =>
       getApiBooks({ ...params, cursor: pageParam, limit: 20 }),
     initialPageParam: undefined as string | undefined,

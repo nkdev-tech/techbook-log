@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useCallback } from "react";
 import {
   GetApiBooksOrder,
   GetApiBooksSortBy,
@@ -53,11 +53,13 @@ function BooksContent() {
 
   const [viewMode, { changeViewMode }] = useViewMode();
 
-  const sentinelRef = useIntersectionObserver(() => {
-    if (hasNextPage && !isFetchingNextPage) {
-      fetchNextPage();
-    }
-  });
+  const sentinelRef = useIntersectionObserver(
+    useCallback(() => {
+      if (hasNextPage && !isFetchingNextPage) {
+        fetchNextPage();
+      }
+    }, [hasNextPage, isFetchingNextPage, fetchNextPage])
+  );
 
   if (isLoading) {
     return (
