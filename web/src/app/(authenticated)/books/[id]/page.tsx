@@ -59,8 +59,11 @@ export default function BookDetailPage() {
         />
         <div className="flex flex-col w-full gap-2">
           <CardHeader>
-            <CardTitle className="text-2xl font-bold">{book.title}</CardTitle>
-            <CardDescription className="">{book.author}</CardDescription>
+            <CardTitle className="text-lg font-bold">{book.title}</CardTitle>
+            <CardDescription className="flex flex-col gap-1">
+              <span className="text-base">{book.author}</span>
+              {book.publisher && <span>{book.publisher}</span>}
+            </CardDescription>
             <CardAction className="flex gap-1">
               <DeleteButton id={id} />
               <Button
