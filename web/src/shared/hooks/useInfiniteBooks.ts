@@ -20,11 +20,15 @@ export function useInfiniteBooks(params: GetApiBooksParams) {
     queryFn: ({ pageParam }) =>
       getApiBooks({ ...params, cursor: pageParam, limit: 20 }),
     initialPageParam: undefined as string | undefined,
-    getNextPageParam: (lastPage) => lastPage.data.nextCursor ?? undefined,
+    getNextPageParam: (lastPage) =>
+      lastPage.status === 200 ? lastPage.data.nextCursor : undefined,
     placeholderData: keepPreviousData,
   });
 
-  const books = data?.pages.flatMap((page) => page.data.books) ?? [];
+  const books =
+    data?.pages.flatMap((page) =>
+      page.status === 200 ? page.data.books : []
+    ) ?? [];
 
   return {
     books,
