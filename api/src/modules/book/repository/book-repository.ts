@@ -7,7 +7,7 @@ import {
   type BookSortBy,
   type BookSortOrder,
 } from '../entity/book'
-import { and, eq, inArray, sql } from 'drizzle-orm'
+import { and, eq, gt, inArray, lt, or, sql } from 'drizzle-orm'
 
 export const BookRepository = {
   findAll: async (
@@ -16,6 +16,11 @@ export const BookRepository = {
     status?: Book['status'],
     sortBy?: BookSortBy,
     order?: BookSortOrder,
+    lastId?: string,
+    lastCreatedAt?: string,
+    lastTitle?: string,
+    lastRating?: number,
+    limit?: number,
   ): Promise<Book[]> => {
     const columnMap = {
       createdAt: bookTable.createdAt,
@@ -23,16 +28,43 @@ export const BookRepository = {
       rating: bookTable.rating,
     }
     const sortColumn = sortBy ? columnMap[sortBy] : bookTable.createdAt
+    const lastSortValue =
+      sortBy === 'title'
+        ? lastTitle
+        : sortBy === 'rating'
+          ? lastRating
+          : lastCreatedAt
+    const cursorCondition =
+      lastId && lastSortValue !== undefined
+        ? order === 'asc'
+          ? or(
+              gt(sortColumn, lastSortValue),
+              and(
+                eq(sortColumn, lastSortValue),
+                gt(bookTable.id, Number(lastId)),
+              ),
+            )
+          : or(
+              lt(sortColumn, lastSortValue),
+              and(
+                eq(sortColumn, lastSortValue),
+                lt(bookTable.id, Number(lastId)),
+              ),
+            )
+        : undefined
+
     if (query.length === 0) {
       const rows = await db.query.bookTable.findMany({
         where: and(
           inArray(bookTable.userId, [userId]),
           status ? eq(bookTable.status, status) : undefined,
+          cursorCondition,
         ),
         orderBy: (fields, { asc, desc }) => [
           order === 'asc' ? asc(sortColumn) : desc(sortColumn),
           asc(fields.id),
         ],
+        limit: limit,
         with: {
           taggings: {
             orderBy: (fields, { asc }) => [asc(fields.order)],
@@ -60,11 +92,13 @@ export const BookRepository = {
           bookIds.map((r) => r.bookId),
         ),
         status ? eq(bookTable.status, status) : undefined,
+        cursorCondition,
       ),
       orderBy: (fields, { asc, desc }) => [
         order === 'asc' ? asc(sortColumn) : desc(sortColumn),
         asc(fields.id),
       ],
+      limit: limit,
       with: {
         taggings: {
           orderBy: (fields, { asc }) => [asc(fields.order)],

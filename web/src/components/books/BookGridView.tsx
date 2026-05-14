@@ -1,4 +1,4 @@
-import { GetApiBooks200Item } from "@/external/api";
+import { GetApiBooks200BooksItem } from "@/external/api";
 import {
   Card,
   CardContent,
@@ -13,7 +13,7 @@ import { Thumbnail } from "@/components/books/Thumbnail";
 import Link from "next/link";
 
 type Props = {
-  books?: GetApiBooks200Item[];
+  books?: GetApiBooks200BooksItem[];
 };
 
 export function BookGridView({ books }: Props) {

@@ -29,6 +29,11 @@ tags?: string;
 status?: GetApiBooksStatus;
 sortBy?: GetApiBooksSortBy;
 order?: GetApiBooksOrder;
+cursor?: string;
+/**
+ * @nullable
+ */
+limit?: number | null;
 };
 
 export type GetApiBooksStatus = typeof GetApiBooksStatus[keyof typeof GetApiBooksStatus];
@@ -57,21 +62,21 @@ export const GetApiBooksOrder = {
   desc: 'desc',
 } as const;
 
-export type GetApiBooks200ItemStatus = typeof GetApiBooks200ItemStatus[keyof typeof GetApiBooks200ItemStatus];
+export type GetApiBooks200BooksItemStatus = typeof GetApiBooks200BooksItemStatus[keyof typeof GetApiBooks200BooksItemStatus];
 
 
-export const GetApiBooks200ItemStatus = {
+export const GetApiBooks200BooksItemStatus = {
   unread: 'unread',
   reading: 'reading',
   done: 'done',
 } as const;
 
-export type GetApiBooks200ItemTagsItem = {
+export type GetApiBooks200BooksItemTagsItem = {
   id: number;
   name: string;
 };
 
-export type GetApiBooks200Item = {
+export type GetApiBooks200BooksItem = {
   /**
      * @minimum -9007199254740991
      * @maximum 9007199254740991
@@ -85,7 +90,7 @@ export type GetApiBooks200Item = {
   publisher: string | null;
   /** @nullable */
   thumbnailUrl: string | null;
-  status: GetApiBooks200ItemStatus;
+  status: GetApiBooks200BooksItemStatus;
   /**
      * @minimum -9007199254740991
      * @maximum 9007199254740991
@@ -97,7 +102,23 @@ export type GetApiBooks200Item = {
   userId: string;
   createdAt: string;
   updatedAt: string;
-  tags: GetApiBooks200ItemTagsItem[];
+  tags: GetApiBooks200BooksItemTagsItem[];
+};
+
+export type GetApiBooks200 = {
+  books: GetApiBooks200BooksItem[];
+  /** @nullable */
+  nextCursor: string | null;
+};
+
+export type GetApiBooks400Error = {
+  name: string;
+  message: string;
+};
+
+export type GetApiBooks400 = {
+  success: boolean;
+  error: GetApiBooks400Error;
 };
 
 export type PostApiBooksBodyStatus = typeof PostApiBooksBodyStatus[keyof typeof PostApiBooksBodyStatus];
@@ -592,16 +613,23 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 
 export type getApiBooksResponse200 = {
-  data: GetApiBooks200Item[]
+  data: GetApiBooks200
   status: 200
+}
+
+export type getApiBooksResponse400 = {
+  data: GetApiBooks400
+  status: 400
 }
 
 export type getApiBooksResponseSuccess = (getApiBooksResponse200) & {
   headers: Headers;
 };
-;
+export type getApiBooksResponseError = (getApiBooksResponse400) & {
+  headers: Headers;
+};
 
-export type getApiBooksResponse = (getApiBooksResponseSuccess)
+export type getApiBooksResponse = (getApiBooksResponseSuccess | getApiBooksResponseError)
 
 export const getGetApiBooksUrl = (params?: GetApiBooksParams,) => {
   const normalizedParams = new URLSearchParams();
@@ -640,7 +668,7 @@ export const getGetApiBooksQueryKey = (params?: GetApiBooksParams,) => {
     }
 
 
-export const getGetApiBooksQueryOptions = <TData = Awaited<ReturnType<typeof getApiBooks>>, TError = unknown>(params?: GetApiBooksParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBooks>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+export const getGetApiBooksQueryOptions = <TData = Awaited<ReturnType<typeof getApiBooks>>, TError = GetApiBooks400>(params?: GetApiBooksParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBooks>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
@@ -659,10 +687,10 @@ const {query: queryOptions, request: requestOptions} = options ?? {};
 }
 
 export type GetApiBooksQueryResult = NonNullable<Awaited<ReturnType<typeof getApiBooks>>>
-export type GetApiBooksQueryError = unknown
+export type GetApiBooksQueryError = GetApiBooks400
 
 
-export function useGetApiBooks<TData = Awaited<ReturnType<typeof getApiBooks>>, TError = unknown>(
+export function useGetApiBooks<TData = Awaited<ReturnType<typeof getApiBooks>>, TError = GetApiBooks400>(
  params: undefined |  GetApiBooksParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBooks>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getApiBooks>>,
@@ -672,7 +700,7 @@ export function useGetApiBooks<TData = Awaited<ReturnType<typeof getApiBooks>>, 
       >, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetApiBooks<TData = Awaited<ReturnType<typeof getApiBooks>>, TError = unknown>(
+export function useGetApiBooks<TData = Awaited<ReturnType<typeof getApiBooks>>, TError = GetApiBooks400>(
  params?: GetApiBooksParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBooks>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getApiBooks>>,
@@ -682,12 +710,12 @@ export function useGetApiBooks<TData = Awaited<ReturnType<typeof getApiBooks>>, 
       >, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetApiBooks<TData = Awaited<ReturnType<typeof getApiBooks>>, TError = unknown>(
+export function useGetApiBooks<TData = Awaited<ReturnType<typeof getApiBooks>>, TError = GetApiBooks400>(
  params?: GetApiBooksParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBooks>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
-export function useGetApiBooks<TData = Awaited<ReturnType<typeof getApiBooks>>, TError = unknown>(
+export function useGetApiBooks<TData = Awaited<ReturnType<typeof getApiBooks>>, TError = GetApiBooks400>(
  params?: GetApiBooksParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiBooks>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {

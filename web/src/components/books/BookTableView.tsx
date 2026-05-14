@@ -1,5 +1,5 @@
 import { useRouter } from "next/navigation";
-import { GetApiBooks200Item } from "@/external/api";
+import { GetApiBooks200BooksItem } from "@/external/api";
 import {
   Table,
   TableBody,
@@ -14,7 +14,7 @@ import { Tag } from "@/components/books/Tag";
 import { Thumbnail } from "@/components/books/Thumbnail";
 
 type Props = {
-  books?: GetApiBooks200Item[];
+  books?: GetApiBooks200BooksItem[];
 };
 
 export function BookTableView({ books }: Props) {

@@ -34,6 +34,14 @@ const getBooksRoute = createRoute({
       },
       description: 'Retrieve books',
     },
+    400: {
+      content: {
+        'application/json': {
+          schema: errorResBodySchema,
+        },
+      },
+      description: 'Bad Request',
+    },
   },
 })
 
@@ -164,17 +172,29 @@ const deleteBookRoute = createRoute({
 
 const app = new OpenAPIHono<AuthVariables>()
   .openapi(getBooksRoute, async (c) => {
-    const { tags, status, sortBy, order } = c.req.valid('query')
+    const { tags, status, sortBy, order, cursor, limit } = c.req.valid('query')
     const tagArray = tags ? tags.split(',').filter(Boolean) : []
     const userId = c.get('user').id
-    const result = await getBooks(
-      userId,
-      tagArray,
-      status,
-      sortBy ?? 'createdAt',
-      order ?? 'desc',
-    )
-    return c.json(result, 200)
+    try {
+      const result = await getBooks(
+        userId,
+        tagArray,
+        status,
+        sortBy ?? 'createdAt',
+        order ?? 'desc',
+        cursor,
+        limit,
+      )
+      return c.json(result, 200)
+    } catch {
+      return c.json(
+        {
+          success: false,
+          error: { name: 'BadRequest', message: '不正なデータです' },
+        },
+        400,
+      )
+    }
   })
   .openapi(createBookRoute, async (c) => {
     const data = c.req.valid('json')
