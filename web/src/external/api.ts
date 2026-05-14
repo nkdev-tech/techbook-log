@@ -29,6 +29,11 @@ tags?: string;
 status?: GetApiBooksStatus;
 sortBy?: GetApiBooksSortBy;
 order?: GetApiBooksOrder;
+cursor?: string;
+/**
+ * @nullable
+ */
+limit?: number | null;
 };
 
 export type GetApiBooksStatus = typeof GetApiBooksStatus[keyof typeof GetApiBooksStatus];
@@ -57,21 +62,21 @@ export const GetApiBooksOrder = {
   desc: 'desc',
 } as const;
 
-export type GetApiBooks200ItemStatus = typeof GetApiBooks200ItemStatus[keyof typeof GetApiBooks200ItemStatus];
+export type GetApiBooks200BooksItemStatus = typeof GetApiBooks200BooksItemStatus[keyof typeof GetApiBooks200BooksItemStatus];
 
 
-export const GetApiBooks200ItemStatus = {
+export const GetApiBooks200BooksItemStatus = {
   unread: 'unread',
   reading: 'reading',
   done: 'done',
 } as const;
 
-export type GetApiBooks200ItemTagsItem = {
+export type GetApiBooks200BooksItemTagsItem = {
   id: number;
   name: string;
 };
 
-export type GetApiBooks200Item = {
+export type GetApiBooks200BooksItem = {
   /**
      * @minimum -9007199254740991
      * @maximum 9007199254740991
@@ -85,7 +90,7 @@ export type GetApiBooks200Item = {
   publisher: string | null;
   /** @nullable */
   thumbnailUrl: string | null;
-  status: GetApiBooks200ItemStatus;
+  status: GetApiBooks200BooksItemStatus;
   /**
      * @minimum -9007199254740991
      * @maximum 9007199254740991
@@ -97,7 +102,13 @@ export type GetApiBooks200Item = {
   userId: string;
   createdAt: string;
   updatedAt: string;
-  tags: GetApiBooks200ItemTagsItem[];
+  tags: GetApiBooks200BooksItemTagsItem[];
+};
+
+export type GetApiBooks200 = {
+  books: GetApiBooks200BooksItem[];
+  /** @nullable */
+  nextCursor: string | null;
 };
 
 export type PostApiBooksBodyStatus = typeof PostApiBooksBodyStatus[keyof typeof PostApiBooksBodyStatus];
@@ -592,7 +603,7 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 
 export type getApiBooksResponse200 = {
-  data: GetApiBooks200Item[]
+  data: GetApiBooks200
   status: 200
 }
 

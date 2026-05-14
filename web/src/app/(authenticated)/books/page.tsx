@@ -2,12 +2,10 @@
 
 import { Suspense } from "react";
 import {
-  useGetApiBooks,
   GetApiBooksOrder,
   GetApiBooksSortBy,
   GetApiBooksStatus,
 } from "@/external/api";
-import { keepPreviousData } from "@tanstack/react-query";
 import { BookGridView } from "@/components/books/BookGridView";
 import { BookTableView } from "@/components/books/BookTableView";
 import { SearchField } from "@/components/books/SearchField";
@@ -15,6 +13,9 @@ import { Sort } from "@/components/books/Sort";
 import { StatusFilter } from "@/components/books/StatusFilter";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { Spinner } from "@/components/ui/spinner";
+import { useInfiniteBooks } from "@/shared/hooks/useInfiniteBooks";
+import { useIntersectionObserver } from "@/shared/hooks/useIntersectionObserver";
 import { useViewMode } from "@/shared/hooks/useViewMode";
 import { useRouter, useSearchParams } from "next/navigation";
 import { BookOpen, LayoutGrid, LayoutList, Plus, SearchX } from "lucide-react";
@@ -26,7 +27,6 @@ function BooksContent() {
   const statusParam = searchParams.get("status") ?? undefined;
   const sortByParam = searchParams.get("sortBy") ?? undefined;
   const orderParam = searchParams.get("order") ?? undefined;
-  const [viewMode, { changeViewMode }] = useViewMode();
   const validStatus = Object.values(GetApiBooksStatus).find(
     (s) => s === statusParam
   );
@@ -42,8 +42,21 @@ function BooksContent() {
     ...(validSortBy && { sortBy: validSortBy }),
     ...(validOrder && { order: validOrder }),
   };
-  const { data, isLoading, error } = useGetApiBooks(params, {
-    query: { placeholderData: keepPreviousData },
+  const {
+    books,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    error,
+  } = useInfiniteBooks(params);
+
+  const [viewMode, { changeViewMode }] = useViewMode();
+
+  const sentinelRef = useIntersectionObserver(() => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
   });
 
   if (isLoading) {
@@ -96,7 +109,7 @@ function BooksContent() {
           </div>
         </div>
       </div>
-      {data?.data.length === 0 ? (
+      {books.length === 0 ? (
         <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
           {tagsParam || statusParam ? (
             <>
@@ -115,10 +128,16 @@ function BooksContent() {
           )}
         </div>
       ) : viewMode === "grid" ? (
-        <BookGridView books={data?.data} />
+        <BookGridView books={books} />
       ) : (
-        <BookTableView books={data?.data} />
+        <BookTableView books={books} />
       )}
+      {hasNextPage && !isLoading ? <div ref={sentinelRef} /> : null}
+      {isFetchingNextPage ? (
+        <div className="flex justify-center my-4">
+          <Spinner className="size-12" />
+        </div>
+      ) : null}
     </div>
   );
 }
