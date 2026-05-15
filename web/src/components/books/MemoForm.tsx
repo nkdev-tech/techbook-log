@@ -180,7 +180,8 @@ export function MemoForm({ memo, onSuccess, onCancel }: Props) {
                         type="number"
                         value={field.state.value ?? ""}
                         placeholder="---"
-                        className="w-6 border-none bg-transparent shadow-none p-0 h-auto !text-xs text-primary font-medium [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none focus-visible:ring-0"
+                        min={1}
+                        className="w-7 border-none bg-transparent shadow-none p-0 h-auto !text-xs text-primary font-medium rounded-none focus:ring-0 focus-visible:ring-0 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                         onChange={(e) =>
                           field.handleChange(
                             e.target.value === ""

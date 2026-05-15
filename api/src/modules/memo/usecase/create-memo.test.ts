@@ -51,7 +51,7 @@ describe('createMemo', () => {
         bookId: 1,
         content: 'メモ1',
         pageNo: null,
-      })
+      }),
     )
   })
 
@@ -97,7 +97,7 @@ describe('createMemo', () => {
         bookId: 1,
         content: 'メモ1',
         pageNo: 111,
-      })
+      }),
     )
   })
 

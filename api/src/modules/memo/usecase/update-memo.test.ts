@@ -35,7 +35,7 @@ describe('updateMemo', () => {
       expect.objectContaining({
         content: 'メモ更新',
         pageNo: 111,
-      })
+      }),
     )
   })
 
