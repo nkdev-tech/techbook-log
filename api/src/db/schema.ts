@@ -7,7 +7,6 @@ import {
   text,
   uniqueIndex,
 } from 'drizzle-orm/sqlite-core'
-import { number } from 'zod'
 
 // Auth Schema
 
