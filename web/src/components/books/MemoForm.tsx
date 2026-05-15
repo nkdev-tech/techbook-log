@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Field, FieldError, FieldGroup } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
 import { SendHorizontal, X } from "lucide-react";
@@ -18,6 +19,7 @@ type Props = {
   memo?: {
     id: number;
     content: string;
+    pageNo: number | null;
   };
   onSuccess?: () => void;
   onCancel?: () => void;
@@ -47,7 +49,8 @@ export function MemoForm({ memo, onSuccess, onCancel }: Props) {
 
   const form = useForm({
     defaultValues: {
-      content: memo?.content || "",
+      content: memo?.content ?? "",
+      pageNo: memo?.pageNo ?? null,
     },
     onSubmit: async ({ value }) => {
       if (memo) {
@@ -124,7 +127,7 @@ export function MemoForm({ memo, onSuccess, onCancel }: Props) {
     <Card
       key="new"
       ref={ref}
-      className="min-h-40 pt-5 pb-1 border-l-[6px] border-l-primary"
+      className="min-h-40 pt-2 pb-1 border-l-[6px] border-l-primary"
     >
       <form
         id="card-form"
@@ -135,7 +138,7 @@ export function MemoForm({ memo, onSuccess, onCancel }: Props) {
         className="h-full"
       >
         <CardContent className="flex flex-col h-full px-2">
-          <FieldGroup>
+          <FieldGroup className="gap-1">
             <form.Field
               name="content"
               validators={{
@@ -153,13 +156,41 @@ export function MemoForm({ memo, onSuccess, onCancel }: Props) {
                 <Field>
                   <Textarea
                     value={field.state.value}
-                    className="form-textarea border-none resize-none p-0 focus:ring-0 focus-visible:ring-0 rounded-none min-h-26 px-3"
+                    className="form-textarea border-none resize-none p-0 min-h-22 px-2 focus:ring-0 focus-visible:ring-0 rounded-none"
                     onChange={(e) => field.handleChange(e.target.value)}
+                    onFocus={(e) => {
+                      const len = e.currentTarget.value.length;
+                      e.currentTarget.setSelectionRange(len, len);
+                    }}
                     autoFocus
                   />
                   {!field.state.meta.isValid && (
                     <FieldError>{field.state.meta.errors.join(",")}</FieldError>
                   )}
+                </Field>
+              )}
+            </form.Field>
+            <form.Field name="pageNo">
+              {(field) => (
+                <Field>
+                  <div className="px-2 my-1">
+                    <div className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-xs font-medium bg-primary/10 text-primary">
+                      p.
+                      <Input
+                        type="number"
+                        value={field.state.value ?? ""}
+                        placeholder="---"
+                        className="w-6 border-none bg-transparent shadow-none p-0 h-auto !text-xs text-primary font-medium [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none focus-visible:ring-0"
+                        onChange={(e) =>
+                          field.handleChange(
+                            e.target.value === ""
+                              ? null
+                              : Number(e.target.value)
+                          )
+                        }
+                      />
+                    </div>
+                  </div>
                 </Field>
               )}
             </form.Field>

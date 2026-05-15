@@ -25,6 +25,7 @@ type Props = {
   memo: {
     id: number;
     content: string;
+    pageNo: number | null;
   };
   onEdit: () => void;
 };
@@ -59,9 +60,14 @@ export function Memo({ bookId, memo, onEdit }: Props) {
     );
   };
   return (
-    <Card className="relative min-h-40 py-5 group border-l-[6px] border-l-primary">
-      <CardContent className="h-full px-5">
-        <p className="whitespace-pre-wrap">{memo.content}</p>
+    <Card className="relative min-h-40 py-2 group border-l-[6px] border-l-primary">
+      <CardContent className="flex flex-col flex-1 px-4 gap-2">
+        <p className="flex-1 whitespace-pre-wrap">{memo.content}</p>
+        {memo.pageNo != null && (
+          <span className="inline-flex items-center my-1 px-1.5 py-0.5 rounded text-xs font-medium bg-primary/10 text-primary self-start">
+            p.{memo.pageNo}
+          </span>
+        )}
       </CardContent>
       <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity backdrop-blur-xs rounded-full">
         <AlertDialog>
