@@ -12,6 +12,7 @@ describe('deleteMemo', () => {
       id: 1,
       bookId: 1,
       content: 'メモ1',
+      pageNo: 111,
       createdAt: '2026-01-01T00:00:00.000Z',
       updatedAt: '2026-01-01T00:00:00.000Z',
     }

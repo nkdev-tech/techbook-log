@@ -32,6 +32,7 @@ describe('memos', () => {
       id: 1,
       bookId: 1,
       content: 'メモ1',
+      pageNo: 111,
       createdAt: '2026-01-01T00:00:00.000Z',
       updatedAt: '2026-01-01T00:00:00.000Z',
     }
@@ -55,6 +56,7 @@ describe('memos', () => {
       param: { id: '1' },
       json: {
         content: 'メモ1',
+        pageNo: 111,
       },
     })
     expect(res.status).toBe(201)
@@ -80,6 +82,7 @@ describe('memos', () => {
       param: { id: '1' },
       json: {
         content: '',
+        pageNo: 111,
       },
     })
     expect(res.status).toBe(400)
@@ -91,6 +94,7 @@ describe('memos', () => {
       param: { id: '1' },
       json: {
         content: 'メモ1',
+        pageNo: 111,
       },
     })
     expect(res.status).toBe(404)
@@ -99,12 +103,14 @@ describe('memos', () => {
   it('can update memo', async () => {
     const data = {
       content: 'メモ更新',
+      pageNo: 111,
     }
 
     const mockMemo = {
       id: 1,
       bookId: 1,
       content: 'メモ1',
+      pageNo: null,
       createdAt: '2026-01-01T00:00:00.000Z',
       updatedAt: '2026-01-01T00:00:00.000Z',
     }
@@ -122,12 +128,14 @@ describe('memos', () => {
   it('cannot update memo with invalid value', async () => {
     const data = {
       content: '',
+      pageNo: 111,
     }
 
     const mockMemo = {
       id: 1,
       bookId: 1,
       content: 'メモ1',
+      pageNo: null,
       createdAt: '2026-01-01T00:00:00.000Z',
       updatedAt: '2026-01-01T00:00:00.000Z',
     }
@@ -144,6 +152,7 @@ describe('memos', () => {
   it('cannot update memo when memo does not exist', async () => {
     const data = {
       content: 'メモ更新',
+      pageNo: 111,
     }
     vi.mocked(MemoRepository.findById).mockResolvedValue(null)
 
@@ -160,6 +169,7 @@ describe('memos', () => {
       id: 1,
       bookId: 1,
       content: 'メモ1',
+      pageNo: 111,
       createdAt: '2026-01-01T00:00:00.000Z',
       updatedAt: '2026-01-01T00:00:00.000Z',
     }

@@ -10,6 +10,7 @@ const memosSchema = createSelectSchema(memoTable, {
   id: (schema) => schema.openapi({ example: 1 }),
   bookId: (schema) => schema.openapi({ example: 1 }),
   content: (schema) => schema.openapi({ example: 'This is a memo.' }),
+  pageNo: (schema) => schema.openapi({ example: 111 }),
   createdAt: (schema) =>
     schema.openapi({ example: '2026-01-01T00:00:00.000Z' }),
 })
@@ -17,6 +18,7 @@ const memosSchema = createSelectSchema(memoTable, {
 const inputMemoSchema = createInsertSchema(memoTable, {
   content: (schema) =>
     schema.min(1).max(140).openapi({ example: 'This is a memo.' }),
+  pageNo: (schema) => schema.openapi({ example: 111 }),
 }).omit({
   id: true,
   bookId: true,

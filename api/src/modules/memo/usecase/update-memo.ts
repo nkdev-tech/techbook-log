@@ -4,7 +4,7 @@ import { type SelectMemo, type InsertMemo } from '../entity/memo'
 export const updateMemo = async (
   id: number,
   userId: string,
-  data: Pick<InsertMemo, 'content'>,
+  data: Pick<InsertMemo, 'content' | 'pageNo'>,
 ): Promise<SelectMemo | null> => {
   const memo = await MemoRepository.findById(id, userId)
   if (!memo) {

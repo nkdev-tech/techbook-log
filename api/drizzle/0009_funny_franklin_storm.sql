@@ -1,0 +1,1 @@
+ALTER TABLE `memos` ADD `page_no` integer;
