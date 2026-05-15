@@ -441,6 +441,12 @@ export type GetApiBooksIdMemos200Item = {
      */
   bookId: number;
   content: string;
+  /**
+     * @minimum -9007199254740991
+     * @maximum 9007199254740991
+     * @nullable
+     */
+  pageNo: number | null;
   createdAt: string;
   updatedAt: string;
 };
@@ -451,6 +457,12 @@ export type PostApiBooksIdMemosBody = {
      * @maxLength 140
      */
   content: string;
+  /**
+     * @minimum -9007199254740991
+     * @maximum 9007199254740991
+     * @nullable
+     */
+  pageNo?: number | null;
 };
 
 export type PostApiBooksIdMemos201 = {
@@ -465,6 +477,12 @@ export type PostApiBooksIdMemos201 = {
      */
   bookId: number;
   content: string;
+  /**
+     * @minimum -9007199254740991
+     * @maximum 9007199254740991
+     * @nullable
+     */
+  pageNo: number | null;
   createdAt: string;
   updatedAt: string;
 };
@@ -495,6 +513,12 @@ export type PatchApiBooksIdMemosMemoIdBody = {
      * @maxLength 140
      */
   content: string;
+  /**
+     * @minimum -9007199254740991
+     * @maximum 9007199254740991
+     * @nullable
+     */
+  pageNo?: number | null;
 };
 
 export type PatchApiBooksIdMemosMemoId200 = {
@@ -509,6 +533,12 @@ export type PatchApiBooksIdMemosMemoId200 = {
      */
   bookId: number;
   content: string;
+  /**
+     * @minimum -9007199254740991
+     * @maximum 9007199254740991
+     * @nullable
+     */
+  pageNo: number | null;
   createdAt: string;
   updatedAt: string;
 };
@@ -545,6 +575,12 @@ export type DeleteApiBooksIdMemosMemoId200 = {
      */
   bookId: number;
   content: string;
+  /**
+     * @minimum -9007199254740991
+     * @maximum 9007199254740991
+     * @nullable
+     */
+  pageNo: number | null;
   createdAt: string;
   updatedAt: string;
 };

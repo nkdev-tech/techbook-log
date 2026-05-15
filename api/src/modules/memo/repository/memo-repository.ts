@@ -13,6 +13,7 @@ export const MemoRepository = {
         id: memoTable.id,
         content: memoTable.content,
         bookId: memoTable.bookId,
+        pageNo: memoTable.pageNo,
         createdAt: memoTable.createdAt,
         updatedAt: memoTable.updatedAt,
       })
@@ -30,6 +31,7 @@ export const MemoRepository = {
       .select({
         id: memoTable.id,
         content: memoTable.content,
+        pageNo: memoTable.pageNo,
         bookId: memoTable.bookId,
         createdAt: memoTable.createdAt,
         updatedAt: memoTable.updatedAt,

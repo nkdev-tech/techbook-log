@@ -175,6 +175,7 @@ export const memoTable = sqliteTable('memos', {
     .notNull()
     .references(() => bookTable.id, { onDelete: 'cascade' }),
   content: text('content').notNull(),
+  pageNo: integer('page_no'),
   createdAt: text('created_at')
     .notNull()
     .$defaultFn(() => new Date().toISOString()),
