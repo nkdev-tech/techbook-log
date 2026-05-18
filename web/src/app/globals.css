@@ -2,9 +2,13 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+:root {
+  --header-height: 3.5rem;
+}
+
 [data-slot="sidebar-container"] {
-  top: var(--header-height, 0px);
-  height: calc(100svh - var(--header-height, 0px));
+  top: var(--header-height);
+  height: calc(100svh - var(--header-height));
 }
 
 @custom-variant dark (&:is(.dark *));

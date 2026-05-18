@@ -45,9 +45,12 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-10 h-14 px-4 bg-background border-b">
+    <header className="sticky top-0 z-10 h-(--header-height) px-4 bg-background border-b">
       <div className="flex justify-between items-center h-full">
-        <Link className="flex items-center gap-2" href="/">
+        <Link
+          className="flex items-center gap-2 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none rounded-sm"
+          href="/"
+        >
           <LogoMark />
           <Wordmark />
         </Link>
