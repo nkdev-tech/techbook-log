@@ -23,9 +23,10 @@ export default async function AuthenticatedLayout({
   }
 
   return (
-    <>
+    <div className="flex flex-col h-svh">
       <Header />
       <SidebarProvider
+        className="flex-1 min-h-0"
         style={{ "--header-height": "3.5rem" } as React.CSSProperties}
       >
         <SidebarNav />
@@ -36,6 +37,6 @@ export default async function AuthenticatedLayout({
           </main>
         </SidebarInset>
       </SidebarProvider>
-    </>
+    </div>
   );
 }
