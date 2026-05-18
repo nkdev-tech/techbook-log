@@ -13,7 +13,7 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "@/components/ui/input-group";
-import { FileSearchCorner, Search, SearchX } from "lucide-react";
+import { Search, SearchX } from "lucide-react";
 
 export default function MemosPage() {
   const router = useRouter();
@@ -82,30 +82,21 @@ export default function MemosPage() {
             id="keyword"
             name="keyword"
             defaultValue={keyword}
+            placeholder="キーワードで検索する"
             ref={inputRef}
+            autoFocus
           />
         </InputGroup>
         <Button type="button" onClick={handleSearch} disabled={isLoading}>
           検索
         </Button>
       </div>
-      {memos.length === 0 ? (
+      {keyword.length > 0 && memos.length === 0 ? (
         <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
-          {keyword.length === 0 ? (
-            <>
-              <FileSearchCorner size={80} className="text-muted-foreground" />
-              <p className="text-2xl font-bold text-muted-foreground">
-                メモを検索しましょう！
-              </p>
-            </>
-          ) : (
-            <>
-              <SearchX size={80} className="text-muted-foreground" />
-              <p className="text-2xl font-bold text-muted-foreground">
-                一致するメモが見つかりませんでした
-              </p>
-            </>
-          )}
+          <SearchX size={80} className="text-muted-foreground" />
+          <p className="text-2xl font-bold text-muted-foreground">
+            一致するメモが見つかりませんでした
+          </p>
         </div>
       ) : (
         <div className="space-y-2">
