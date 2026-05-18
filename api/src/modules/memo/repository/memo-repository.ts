@@ -101,6 +101,7 @@ export const MemoRepository = {
         createdAt: memoTable.createdAt,
         updatedAt: memoTable.updatedAt,
         bookTitle: bookTable.title,
+        bookThumbnailUrl: bookTable.thumbnailUrl,
       })
       .from(memoTable)
       .innerJoin(bookTable, eq(memoTable.bookId, bookTable.id))

@@ -18,6 +18,10 @@ export const memoSearchSchema = createSelectSchema(memoTable, {
 })
   .extend({
     bookTitle: z.string().openapi({ example: 'タイトル' }),
+    bookThumbnailUrl: z
+      .string()
+      .nullable()
+      .openapi({ example: 'https://books.google.com/' }),
   })
   .array()
 

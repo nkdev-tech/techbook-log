@@ -4,4 +4,7 @@ export type SelectMemo = typeof memoTable.$inferSelect
 
 export type InsertMemo = typeof memoTable.$inferInsert
 
-export type MemoSearchResult = SelectMemo & { bookTitle: string }
+export type MemoSearchResult = SelectMemo & {
+  bookTitle: string
+  bookThumbnailUrl: string | null
+}

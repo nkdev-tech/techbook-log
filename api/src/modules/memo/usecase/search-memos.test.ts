@@ -15,6 +15,7 @@ describe('searchMemos', () => {
         createdAt: '2026-01-01T00:00:00.000Z',
         updatedAt: '2026-01-01T00:00:00.000Z',
         bookTitle: 'タイトル1',
+        bookThumbnailUrl: 'https://books.google.com/',
       },
       {
         id: 2,
@@ -24,6 +25,7 @@ describe('searchMemos', () => {
         createdAt: '2026-01-01T00:00:00.000Z',
         updatedAt: '2026-01-01T00:00:00.000Z',
         bookTitle: 'タイトル2',
+        bookThumbnailUrl: 'https://books.google.com/',
       },
       {
         id: 3,
@@ -33,6 +35,7 @@ describe('searchMemos', () => {
         createdAt: '2026-01-01T00:00:00.000Z',
         updatedAt: '2026-01-01T00:00:00.000Z',
         bookTitle: 'タイトル3',
+        bookThumbnailUrl: null,
       },
     ]
 
