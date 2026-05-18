@@ -1,6 +1,6 @@
 "use client";
 
-import { BookOpen } from "lucide-react";
+import { BookOpen, Search } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -15,7 +15,10 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 
-const navItems = [{ label: "書籍一覧", href: "/books", icon: BookOpen }];
+const navItems = [
+  { label: "書籍一覧", href: "/books", icon: BookOpen },
+  { label: "メモ検索", href: "/memos", icon: Search },
+];
 
 export default function SidebarNav() {
   const pathname = usePathname();

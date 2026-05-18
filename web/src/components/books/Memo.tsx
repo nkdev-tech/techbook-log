@@ -3,6 +3,7 @@ import {
   useDeleteApiBooksIdMemosMemoId,
   getGetApiBooksIdMemosQueryKey,
 } from "@/external/api";
+import { PageNo } from "@/components/books/PageNo";
 import { Card, CardContent } from "@/components/ui/card";
 import { ApiError } from "@/shared/types/api";
 import { SquarePen, Trash2 } from "lucide-react";
@@ -63,11 +64,7 @@ export function Memo({ bookId, memo, onEdit }: Props) {
     <Card className="relative min-h-40 py-2 group border-l-[6px] border-l-primary">
       <CardContent className="flex flex-col flex-1 px-4 gap-2">
         <p className="flex-1 whitespace-pre-wrap">{memo.content}</p>
-        {memo.pageNo != null && (
-          <span className="inline-flex items-center my-1 px-1.5 py-0.5 rounded text-xs font-medium bg-primary/10 text-primary self-start">
-            p.{memo.pageNo}
-          </span>
-        )}
+        <PageNo pageNo={memo.pageNo} />
       </CardContent>
       <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity backdrop-blur-xs rounded-full">
         <AlertDialog>

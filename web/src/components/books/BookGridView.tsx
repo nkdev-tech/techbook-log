@@ -34,7 +34,7 @@ export function BookGridView({ books }: Props) {
               />
               <div className="flex flex-col w-full gap-1 my-1">
                 <CardHeader>
-                  <CardTitle className="text-sm font-bold line-clamp-2 min-h-[2.6rem]">
+                  <CardTitle className="font-bold line-clamp-2 min-h-[2.6rem]">
                     {book.title}
                   </CardTitle>
                   <CardDescription className="text-xs truncate min-h-[1rem]">

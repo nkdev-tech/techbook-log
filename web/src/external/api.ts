@@ -458,7 +458,7 @@ export type PostApiBooksIdMemosBody = {
      */
   content: string;
   /**
-     * @minimum -9007199254740991
+     * @minimum 1
      * @maximum 9007199254740991
      * @nullable
      */
@@ -514,7 +514,7 @@ export type PatchApiBooksIdMemosMemoIdBody = {
      */
   content: string;
   /**
-     * @minimum -9007199254740991
+     * @minimum 1
      * @maximum 9007199254740991
      * @nullable
      */
@@ -642,6 +642,48 @@ export type GetApiBookSearch500Error = {
 export type GetApiBookSearch500 = {
   success: boolean;
   error: GetApiBookSearch500Error;
+};
+
+export type GetApiMemosParams = {
+/**
+ * @minLength 1
+ */
+q: string;
+};
+
+export type GetApiMemos200Item = {
+  /**
+     * @minimum -9007199254740991
+     * @maximum 9007199254740991
+     */
+  id: number;
+  /**
+     * @minimum -9007199254740991
+     * @maximum 9007199254740991
+     */
+  bookId: number;
+  content: string;
+  /**
+     * @minimum -9007199254740991
+     * @maximum 9007199254740991
+     * @nullable
+     */
+  pageNo: number | null;
+  createdAt: string;
+  updatedAt: string;
+  bookTitle: string;
+  /** @nullable */
+  bookThumbnailUrl: string | null;
+};
+
+export type GetApiMemos400Error = {
+  name: string;
+  message: string;
+};
+
+export type GetApiMemos400 = {
+  success: boolean;
+  error: GetApiMemos400Error;
 };
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
@@ -1727,6 +1769,125 @@ export function useGetApiBookSearch<TData = Awaited<ReturnType<typeof getApiBook
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetApiBookSearchQueryOptions(params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+export type getApiMemosResponse200 = {
+  data: GetApiMemos200Item[]
+  status: 200
+}
+
+export type getApiMemosResponse400 = {
+  data: GetApiMemos400
+  status: 400
+}
+
+export type getApiMemosResponseSuccess = (getApiMemosResponse200) & {
+  headers: Headers;
+};
+export type getApiMemosResponseError = (getApiMemosResponse400) & {
+  headers: Headers;
+};
+
+export type getApiMemosResponse = (getApiMemosResponseSuccess | getApiMemosResponseError)
+
+export const getGetApiMemosUrl = (params: GetApiMemosParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `http://localhost:8787/api/memos?${stringifiedParams}` : `http://localhost:8787/api/memos`
+}
+
+export const getApiMemos = async (params: GetApiMemosParams, options?: RequestInit): Promise<getApiMemosResponse> => {
+
+  return customFetch<getApiMemosResponse>(getGetApiMemosUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetApiMemosQueryKey = (params?: GetApiMemosParams,) => {
+    return [
+    `http://localhost:8787/api/memos`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetApiMemosQueryOptions = <TData = Awaited<ReturnType<typeof getApiMemos>>, TError = GetApiMemos400>(params: GetApiMemosParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiMemos>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetApiMemosQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiMemos>>> = ({ signal }) => getApiMemos(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiMemos>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetApiMemosQueryResult = NonNullable<Awaited<ReturnType<typeof getApiMemos>>>
+export type GetApiMemosQueryError = GetApiMemos400
+
+
+export function useGetApiMemos<TData = Awaited<ReturnType<typeof getApiMemos>>, TError = GetApiMemos400>(
+ params: GetApiMemosParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiMemos>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiMemos>>,
+          TError,
+          Awaited<ReturnType<typeof getApiMemos>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiMemos<TData = Awaited<ReturnType<typeof getApiMemos>>, TError = GetApiMemos400>(
+ params: GetApiMemosParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiMemos>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiMemos>>,
+          TError,
+          Awaited<ReturnType<typeof getApiMemos>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiMemos<TData = Awaited<ReturnType<typeof getApiMemos>>, TError = GetApiMemos400>(
+ params: GetApiMemosParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiMemos>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetApiMemos<TData = Awaited<ReturnType<typeof getApiMemos>>, TError = GetApiMemos400>(
+ params: GetApiMemosParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiMemos>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetApiMemosQueryOptions(params,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
