@@ -17,6 +17,7 @@ import {
 import { Spinner } from "@/components/ui/spinner";
 import { toast } from "sonner";
 import { ChevronDown, LogOut } from "lucide-react";
+import Link from "next/link";
 
 export default function Header() {
   const [isLoading, setIsLoading] = useState(false);
@@ -44,12 +45,12 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-10 px-4 bg-background border-b">
-      <div className="flex justify-between items-center mt-3 mb-2">
-        <div className="flex items-center gap-2">
+    <header className="sticky top-0 z-10 h-14 px-4 bg-background border-b">
+      <div className="flex justify-between items-center h-full">
+        <Link className="flex items-center gap-2" href="/">
           <LogoMark />
           <Wordmark />
-        </div>
+        </Link>
         {session && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

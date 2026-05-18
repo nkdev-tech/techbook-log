@@ -1,5 +1,7 @@
 import Header from "@/components/Header";
 import Navigation from "@/components/Navigation";
+import SidebarNav from "@/components/Sidebar";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { authClient } from "@/lib/auth-client";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
@@ -23,10 +25,17 @@ export default async function AuthenticatedLayout({
   return (
     <>
       <Header />
-      <main className="w-full px-8 py-4">
-        <Navigation />
-        {children}
-      </main>
+      <SidebarProvider
+        style={{ "--header-height": "3.5rem" } as React.CSSProperties}
+      >
+        <SidebarNav />
+        <SidebarInset className="min-w-0">
+          <main className="w-full px-8 py-4">
+            <Navigation />
+            {children}
+          </main>
+        </SidebarInset>
+      </SidebarProvider>
     </>
   );
 }
