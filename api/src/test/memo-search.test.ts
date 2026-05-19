@@ -28,4 +28,13 @@ describe('memos search', () => {
     })
     expect(res.status).toBe(200)
   })
+
+  it('cannot search memos with invalid query', async () => {
+    const res = await client.api.memos.$get({
+      query: {
+        q: '',
+      },
+    })
+    expect(res.status).toBe(400)
+  })
 })

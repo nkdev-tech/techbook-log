@@ -28,11 +28,3 @@ export const memoSearchSchema = createSelectSchema(memoTable, {
 export const querySchema = z.object({
   q: z.string().min(1).openapi({ example: 'メモ' }),
 })
-
-export const errorResBodySchema = z.object({
-  success: z.boolean(),
-  error: z.object({
-    name: z.string(),
-    message: z.string().openapi({ example: 'Bad Request' }),
-  }),
-})

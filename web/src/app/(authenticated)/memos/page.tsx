@@ -13,6 +13,7 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "@/components/ui/input-group";
+import { Spinner } from "@/components/ui/spinner";
 import { Search, SearchX } from "lucide-react";
 
 export default function MemosPage() {
@@ -28,29 +29,23 @@ export default function MemosPage() {
     }
   );
 
-  const handleSearch = () => {
+  const handleSearch = (e: React.SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault();
     const value = inputRef.current?.value;
     if (!value) return;
-    router.push(`memos?q=${value}`);
+    router.push(`memos?q=${encodeURIComponent(value)}`);
   };
-
-  if (isLoading) {
-    return (
-      <div className="w-full">
-        <p className="text-lg">Loading...</p>
-      </div>
-    );
-  }
 
   if (error) {
     throw error;
   }
 
-  const memos = data?.status === 200 ? data?.data : [];
+  const memos = data?.data ?? [];
 
   const highlightKeyword = (content: string) => {
+    const escaped = keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     const [before, target, after] = content.split(
-      new RegExp(`(${keyword})`, "i")
+      new RegExp(`(${escaped})`, "i")
     );
     return (
       <span>
@@ -74,24 +69,30 @@ export default function MemosPage() {
   return (
     <div className="w-full">
       <div className="flex items-center gap-2 mt-1 mb-3 max-w-xl">
-        <InputGroup className="flex-1">
-          <InputGroupAddon>
-            <Search className="text-muted-foreground" />
-          </InputGroupAddon>
-          <InputGroupInput
-            id="keyword"
-            name="keyword"
-            defaultValue={keyword}
-            placeholder="キーワードで検索する"
-            ref={inputRef}
-            autoFocus
-          />
-        </InputGroup>
-        <Button type="button" onClick={handleSearch} disabled={isLoading}>
+        <form id="memo-search" onSubmit={handleSearch} className="flex-1">
+          <InputGroup>
+            <InputGroupAddon>
+              <Search className="text-muted-foreground" />
+            </InputGroupAddon>
+            <InputGroupInput
+              id="keyword"
+              name="keyword"
+              defaultValue={keyword}
+              placeholder="キーワードで検索する"
+              ref={inputRef}
+              autoFocus
+            />
+          </InputGroup>
+        </form>
+        <Button type="submit" form="memo-search" disabled={isLoading}>
           検索
         </Button>
       </div>
-      {keyword.length > 0 && memos.length === 0 ? (
+      {isLoading ? (
+        <div className="flex justify-center items-center h-full min-h-[60vh]">
+          <Spinner className="size-12" />
+        </div>
+      ) : keyword.length > 0 && memos.length === 0 ? (
         <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
           <SearchX size={80} className="text-muted-foreground" />
           <p className="text-2xl font-bold text-muted-foreground">
@@ -104,7 +105,7 @@ export default function MemosPage() {
             <Link
               key={memo.id}
               href={`/books/${memo.bookId}`}
-              className="flex gap-3 p-4 border rounded-lg hover:bg-muted/50 transition-colors"
+              className="flex gap-3 p-4 border rounded-lg hover:bg-muted/50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               <Thumbnail
                 thumbnailUrl={memo.bookThumbnailUrl}

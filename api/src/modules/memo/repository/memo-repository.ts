@@ -92,6 +92,7 @@ export const MemoRepository = {
     userId: string,
     keyword: string,
   ): Promise<MemoSearchResult[]> => {
+    const escaped = keyword.replace(/%/g, '\\%').replace(/_/g, '\\_')
     return await db
       .select({
         id: memoTable.id,
@@ -108,7 +109,7 @@ export const MemoRepository = {
       .where(
         and(
           eq(bookTable.userId, userId),
-          like(memoTable.content, `%${keyword}%`),
+          like(memoTable.content, `%${escaped}%`),
         ),
       )
       .orderBy(desc(memoTable.createdAt))
