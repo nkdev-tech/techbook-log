@@ -8,11 +8,11 @@ export function middleware(request: NextRequest) {
     request.cookies.get("__Secure-better-auth.session_token")?.value ||
     request.cookies.get("better-auth.session_token")?.value;
 
-  const publicPaths = ["/login"];
+  const publicPaths = ["/login", "/signup"];
   const isPublicPath = publicPaths.some((path) => pathname.startsWith(path));
 
   if (!session) {
-    if (pathname !== "/login") {
+    if (pathname !== "/login" && pathname !== "/signup") {
       return NextResponse.redirect(new URL("/login", request.url));
     }
   } else if (pathname === "/" || isPublicPath) {
