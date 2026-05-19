@@ -4,6 +4,7 @@ import books from './routes/books'
 import memos from './routes/memos'
 import tags from './routes/tags'
 import bookSearch from './routes/book-search'
+import memoSearch from './routes/memo-search'
 import { cors } from 'hono/cors'
 import { auth } from './lib/auth'
 import { authMiddleware } from './middleware/auth'
@@ -45,6 +46,7 @@ const _route = app
   .route('/api/books', memos)
   .route('/api/tags', tags)
   .route('/api/book-search', bookSearch)
+  .route('/api/memos', memoSearch)
 
 export type AppType = typeof _route
 

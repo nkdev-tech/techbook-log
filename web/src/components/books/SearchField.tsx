@@ -72,7 +72,7 @@ export function SearchField() {
       >
         <ComboboxChips
           ref={anchor}
-          className="flex-nowrap flex-1 min-w-0 max-w-120 bg-card !pl-2.5"
+          className="flex-nowrap flex-1 min-w-0 max-w-xl bg-card !pl-2.5"
         >
           <Search size={18} className="shrink-0 text-muted-foreground" />
           <div

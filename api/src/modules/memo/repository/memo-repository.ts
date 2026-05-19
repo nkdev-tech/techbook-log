@@ -1,7 +1,11 @@
 import { bookTable, memoTable } from '../../../db/schema'
 import { db } from '../../../db'
-import { type InsertMemo, type SelectMemo } from '../entity/memo'
-import { and, asc, eq, inArray } from 'drizzle-orm'
+import {
+  type InsertMemo,
+  type SelectMemo,
+  type MemoSearchResult,
+} from '../entity/memo'
+import { and, asc, desc, eq, inArray, like } from 'drizzle-orm'
 
 export const MemoRepository = {
   findByBookId: async (
@@ -83,5 +87,31 @@ export const MemoRepository = {
       .returning()
       .get()
     return result ?? null
+  },
+  findByKeyword: async (
+    userId: string,
+    keyword: string,
+  ): Promise<MemoSearchResult[]> => {
+    const escaped = keyword.replace(/%/g, '\\%').replace(/_/g, '\\_')
+    return await db
+      .select({
+        id: memoTable.id,
+        content: memoTable.content,
+        pageNo: memoTable.pageNo,
+        bookId: memoTable.bookId,
+        createdAt: memoTable.createdAt,
+        updatedAt: memoTable.updatedAt,
+        bookTitle: bookTable.title,
+        bookThumbnailUrl: bookTable.thumbnailUrl,
+      })
+      .from(memoTable)
+      .innerJoin(bookTable, eq(memoTable.bookId, bookTable.id))
+      .where(
+        and(
+          eq(bookTable.userId, userId),
+          like(memoTable.content, `%${escaped}%`),
+        ),
+      )
+      .orderBy(desc(memoTable.createdAt))
   },
 }
