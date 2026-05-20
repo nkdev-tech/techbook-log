@@ -22,6 +22,7 @@ export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [emailError, setEmailError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [sentEmail, setSentEmail] = useState<string | null>(null);
 
   const handleEmailSignup = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -60,10 +61,11 @@ export default function SignupPage() {
         name: email.split("@")[0],
         email: email,
         password: password,
+        callbackURL: `${window.location.origin}/welcome`,
       },
       {
         onSuccess: () => {
-          window.location.href = "/books";
+          setSentEmail(email);
         },
         onError: (ctx) => {
           toast.error(ctx.error.message);
@@ -90,25 +92,49 @@ export default function SignupPage() {
     );
   };
 
+  if (sentEmail) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="max-w-120 w-full mx-auto flex flex-col gap-4 text-center px-8">
+          <p className="font-mono text-xs tracking-[0.2em] uppercase text-primary">
+            確認メールを送信しました
+          </p>
+          <h1 className="font-serif italic text-2xl font-normal tracking-[-0.02em] leading-[1.1]">
+            メールをご確認ください。
+          </h1>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            <span className="font-medium text-foreground">{sentEmail}</span>{" "}
+            に確認メールを送りました。
+            <br />
+            メール内のリンクをクリックして登録を完了してください。
+          </p>
+          <p className="text-xs text-muted-foreground">
+            メールが届かない場合は迷惑メールフォルダをご確認ください。
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex min-h-screen">
-      <aside className="hidden lg:flex w-[480px] shrink-0 bg-primary flex-col justify-between p-10">
+      <aside className="hidden lg:flex w-120 shrink-0 bg-primary flex-col justify-between p-10">
         <div className="flex items-center gap-3 text-primary-foreground">
           <LogoMark size={28} color="white" />
           <Wordmark size={24} color="currentColor" />
         </div>
         <div className="flex flex-col gap-5">
-          <p className="font-mono text-[11px] tracking-[0.2em] uppercase text-primary-foreground/70">
+          <p className="font-mono text-xs tracking-[0.2em] uppercase text-primary-foreground/70">
             A quiet place
             <br />
             for your technical reading notes
           </p>
-          <h2 className="font-serif italic text-[38px] font-normal text-primary-foreground leading-[1.15] tracking-[-0.015em]">
+          <h2 className="font-serif italic text-4xl font-normal text-primary-foreground leading-[1.15] tracking-[-0.015em]">
             Every book you read
             <br />
             builds your knowledge.
           </h2>
-          <p className="text-[13.5px] text-primary-foreground/75 leading-relaxed max-w-[360px]">
+          <p className="text-sm text-primary-foreground/75 leading-relaxed max-w-90">
             技術書を読んで、学びを蓄積しましょう。本ごとに記録したメモは横断検索できます。ここはあなただけの読書記録が残せる場所です。
           </p>
         </div>
@@ -116,7 +142,7 @@ export default function SignupPage() {
       </aside>
       <main className="flex-1 flex flex-col px-14 py-8 overflow-auto">
         <div className="flex justify-end items-center gap-3">
-          <span className="font-mono text-[10.5px] tracking-[0.05em] text-muted-foreground">
+          <span className="font-mono text-xs tracking-[0.05em] text-muted-foreground">
             アカウントをお持ちの方は
           </span>
           <Link
@@ -129,12 +155,12 @@ export default function SignupPage() {
         </div>
 
         <div className="flex-1 flex items-center">
-          <div className="w-full max-w-[380px] mx-auto flex flex-col gap-6">
+          <div className="w-full max-w-95 mx-auto flex flex-col gap-6">
             <div>
-              <p className="font-mono text-[10.5px] tracking-[0.2em] uppercase text-primary">
+              <p className="font-mono text-xs tracking-[0.2em] uppercase text-primary">
                 はじめましょう
               </p>
-              <h1 className="mt-2.5 font-serif italic text-[38px] font-normal tracking-[-0.02em] leading-[1.05]">
+              <h1 className="mt-2.5 font-serif italic text-4xl font-normal tracking-[-0.02em] leading-[1.05]">
                 Start a new reading log.
               </h1>
               <p className="mt-1.5 text-sm text-muted-foreground leading-relaxed">
@@ -213,7 +239,7 @@ export default function SignupPage() {
 
             <div className="flex items-center gap-3">
               <span className="flex-1 h-px bg-border" />
-              <span className="font-mono text-[10px] tracking-[0.15em] uppercase text-muted-foreground">
+              <span className="font-mono text-xs tracking-[0.15em] uppercase text-muted-foreground">
                 または
               </span>
               <span className="flex-1 h-px bg-border" />
@@ -232,7 +258,7 @@ export default function SignupPage() {
                 height={40}
               />
             </button>
-            <p className="text-[10px] text-muted-foreground text-center leading-relaxed">
+            <p className="text-xs text-muted-foreground text-center leading-relaxed">
               登録すると{" "}
               <Link
                 href="/terms"
@@ -251,7 +277,7 @@ export default function SignupPage() {
             </p>
           </div>
         </div>
-        <div className="flex justify-between items-center text-[11px] font-mono text-muted-foreground pt-3 border-t border-border/50">
+        <div className="flex justify-between items-center text-xs font-mono text-muted-foreground pt-3 border-t border-border/50">
           <span>© 2026 memetec.</span>
           <div className="flex gap-4">
             <Link
