@@ -2,11 +2,34 @@ import { env } from 'cloudflare:workers'
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { db } from '../db'
+import { Resend } from 'resend'
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: 'sqlite',
   }),
+  emailAndPassword: {
+    enabled: true,
+    requireEmailVerification: true,
+  },
+  emailVerification: {
+    sendVerificationEmail: async ({ user, url }) => {
+      const resend = new Resend(env.RESEND_API_KEY as string)
+      await resend.emails.send({
+        from: env.RESEND_FROM_EMAIL as string,
+        to: user.email,
+        subject: 'メールアドレスの確認',
+        html: `
+        <p>memetec へのご登録ありがとうございます。</p>
+        <p>以下のリンクをクリックして、メールアドレスの確認を完了してください。</p>
+        <p><a href="${url}">メールアドレスを確認する</a></p>
+        <p>このリンクの有効期限は1時間です。</p>
+        <p>このメールに心当たりがない場合は、このメールを無視してください。アカウントが作成されることはありません。</p>
+      `,
+      })
+    },
+    autoSignInAfterVerification: true,
+  },
   socialProviders: {
     google: {
       clientId: env.GOOGLE_CLIENT_ID as string,

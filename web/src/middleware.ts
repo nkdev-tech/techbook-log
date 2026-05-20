@@ -8,11 +8,15 @@ export function middleware(request: NextRequest) {
     request.cookies.get("__Secure-better-auth.session_token")?.value ||
     request.cookies.get("better-auth.session_token")?.value;
 
-  const publicPaths = ["/login"];
+  const publicPaths = ["/login", "/signup"];
+  const openPaths = ["/terms", "/privacy"];
   const isPublicPath = publicPaths.some((path) => pathname.startsWith(path));
+  const isOpenPath = openPaths.some((path) => pathname.startsWith(path));
+
+  if (isOpenPath) return NextResponse.next();
 
   if (!session) {
-    if (pathname !== "/login") {
+    if (!isPublicPath) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
   } else if (pathname === "/" || isPublicPath) {
@@ -22,5 +26,7 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|.*\\.png$).*)"],
+  matcher: [
+    "/((?!api|_next/static|_next/image|.*\\.(?:png|svg|ico|jpg|jpeg|gif|webp)$).*)",
+  ],
 };

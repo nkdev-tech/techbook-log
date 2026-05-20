@@ -26,14 +26,16 @@
     "ENV": "development",
     "BETTER_AUTH_URL": "http://localhost:8787",
     "ORIGIN_URL": "http://localhost:3000",
+    "RESEND_FROM_EMAIL": "noreply@memetec.dev",
   },
   "env": {
     "production": {
       "name": "api",
       "vars": {
         "ENV": "production",
-        "ORIGIN_URL": "https://web.memetec.workers.dev",
-        "BETTER_AUTH_URL": "https://api.memetec.workers.dev",
+        "ORIGIN_URL": "https://memetec.dev",
+        "BETTER_AUTH_URL": "https://api.memetec.dev",
+        "RESEND_FROM_EMAIL": "noreply@memetec.dev",
       },
       "d1_databases": [
         {
