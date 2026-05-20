@@ -19,15 +19,19 @@ import { toast } from "sonner";
 import { ChevronDown, LogOut } from "lucide-react";
 import Link from "next/link";
 
-export default function Header() {
+export default function Header({
+  requireAuth = true,
+}: {
+  requireAuth?: boolean;
+}) {
   const [isLoading, setIsLoading] = useState(false);
   const { data: session, isPending } = authClient.useSession();
 
   useEffect(() => {
-    if (!isPending && !session) {
+    if (requireAuth && !isPending && !session) {
       window.location.href = "/login";
     }
-  }, [session, isPending]);
+  }, [requireAuth, session, isPending]);
 
   const handleLogout = async () => {
     setIsLoading(true);

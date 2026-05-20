@@ -9,10 +9,14 @@ export function middleware(request: NextRequest) {
     request.cookies.get("better-auth.session_token")?.value;
 
   const publicPaths = ["/login", "/signup"];
+  const openPaths = ["/terms", "/privacy"];
   const isPublicPath = publicPaths.some((path) => pathname.startsWith(path));
+  const isOpenPath = openPaths.some((path) => pathname.startsWith(path));
+
+  if (isOpenPath) return NextResponse.next();
 
   if (!session) {
-    if (pathname !== "/login" && pathname !== "/signup") {
+    if (!isPublicPath) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
   } else if (pathname === "/" || isPublicPath) {

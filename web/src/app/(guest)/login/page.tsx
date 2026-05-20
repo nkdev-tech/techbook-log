@@ -177,6 +177,23 @@ export default function LoginPage() {
             </button>
           </div>
         </div>
+        <div className="flex justify-between items-center text-[11px] font-mono text-muted-foreground pt-3 border-t border-border/50">
+          <span>© 2026 memetec.</span>
+          <div className="flex gap-4">
+            <Link
+              href="/terms"
+              className="hover:text-foreground transition-colors"
+            >
+              利用規約
+            </Link>
+            <Link
+              href="/privacy"
+              className="hover:text-foreground transition-colors"
+            >
+              プライバシーポリシー
+            </Link>
+          </div>
+        </div>
       </main>
     </div>
   );

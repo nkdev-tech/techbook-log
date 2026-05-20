@@ -232,6 +232,40 @@ export default function SignupPage() {
                 height={40}
               />
             </button>
+            <p className="text-[10px] text-muted-foreground text-center leading-relaxed">
+              登録すると{" "}
+              <Link
+                href="/terms"
+                className="underline underline-offset-2 hover:text-foreground transition-colors"
+              >
+                利用規約
+              </Link>{" "}
+              および{" "}
+              <Link
+                href="/privacy"
+                className="underline underline-offset-2 hover:text-foreground transition-colors"
+              >
+                プライバシーポリシー
+              </Link>{" "}
+              に同意したことになります。
+            </p>
+          </div>
+        </div>
+        <div className="flex justify-between items-center text-[11px] font-mono text-muted-foreground pt-3 border-t border-border/50">
+          <span>© 2026 memetec.</span>
+          <div className="flex gap-4">
+            <Link
+              href="/terms"
+              className="hover:text-foreground transition-colors"
+            >
+              利用規約
+            </Link>
+            <Link
+              href="/privacy"
+              className="hover:text-foreground transition-colors"
+            >
+              プライバシーポリシー
+            </Link>
           </div>
         </div>
       </main>
