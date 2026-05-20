@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
+import BrandPanel from "@/components/BrandPanel";
 import { Button } from "@/components/ui/button";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
@@ -10,7 +11,6 @@ import { toast } from "sonner";
 import { Eye, EyeOff, MoveRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { LogoMark, Wordmark } from "@/components/Logo";
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -58,28 +58,7 @@ export default function LoginPage() {
 
   return (
     <div className="flex min-h-screen">
-      <aside className="hidden lg:flex w-120 shrink-0 bg-primary flex-col justify-between p-10">
-        <div className="flex items-center gap-3 text-primary-foreground">
-          <LogoMark size={28} color="white" />
-          <Wordmark size={24} color="currentColor" />
-        </div>
-        <div className="flex flex-col gap-5">
-          <p className="font-mono text-xs tracking-[0.2em] uppercase text-primary-foreground/70">
-            A quiet place
-            <br />
-            for your technical reading notes
-          </p>
-          <h2 className="font-serif italic text-4xl font-normal text-primary-foreground leading-[1.15] tracking-[-0.015em]">
-            Every book you read
-            <br />
-            builds your knowledge.
-          </h2>
-          <p className="text-sm text-primary-foreground/75 leading-relaxed max-w-90">
-            技術書を読んで、学びを蓄積しましょう。本ごとに記録したメモは横断検索できます。ここはあなただけの読書記録が残せる場所です。
-          </p>
-        </div>
-        <div />
-      </aside>
+      <BrandPanel />
       <main className="flex-1 flex flex-col px-14 py-8 overflow-auto">
         <div className="flex justify-end items-center gap-3">
           <span className="font-mono text-xs tracking-[0.05em] text-muted-foreground">
@@ -94,7 +73,7 @@ export default function LoginPage() {
           </Link>
         </div>
 
-        <div className="flex-1 flex items-center">
+        <div className="flex-1 flex items-center my-10">
           <div className="w-full max-w-95 mx-auto flex flex-col gap-6">
             <div>
               <p className="font-mono text-xs tracking-[0.2em] uppercase text-primary">

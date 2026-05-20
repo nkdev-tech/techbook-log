@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
+import BrandPanel from "@/components/BrandPanel";
 import { Button } from "@/components/ui/button";
 import {
   Field,
@@ -15,30 +16,30 @@ import { toast } from "sonner";
 import { Eye, EyeOff, MoveRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { LogoMark, Wordmark } from "@/components/Logo";
 
 export default function SignupPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [emailError, setEmailError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [nameError, setNameError] = useState<string | null>(null);
   const [sentEmail, setSentEmail] = useState<string | null>(null);
 
   const handleEmailSignup = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
     const formData = new FormData(e.currentTarget);
+    const name = formData.get("name") as string;
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
     const confirmPassword = formData.get("confirmPassword") as string;
 
     let hasError = false;
 
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setEmailError("正しいメールアドレスを入力してください");
+    if (name.length > 20) {
+      setNameError("20文字以下で入力してください");
       hasError = true;
     } else {
-      setEmailError(null);
+      setNameError(null);
     }
 
     if (password.length < 8 || password.length > 128) {
@@ -58,7 +59,7 @@ export default function SignupPage() {
 
     await authClient.signUp.email(
       {
-        name: email.split("@")[0],
+        name: name || email.split("@")[0],
         email: email,
         password: password,
         callbackURL: `${window.location.origin}/welcome`,
@@ -118,28 +119,7 @@ export default function SignupPage() {
 
   return (
     <div className="flex min-h-screen">
-      <aside className="hidden lg:flex w-120 shrink-0 bg-primary flex-col justify-between p-10">
-        <div className="flex items-center gap-3 text-primary-foreground">
-          <LogoMark size={28} color="white" />
-          <Wordmark size={24} color="currentColor" />
-        </div>
-        <div className="flex flex-col gap-5">
-          <p className="font-mono text-xs tracking-[0.2em] uppercase text-primary-foreground/70">
-            A quiet place
-            <br />
-            for your technical reading notes
-          </p>
-          <h2 className="font-serif italic text-4xl font-normal text-primary-foreground leading-[1.15] tracking-[-0.015em]">
-            Every book you read
-            <br />
-            builds your knowledge.
-          </h2>
-          <p className="text-sm text-primary-foreground/75 leading-relaxed max-w-90">
-            技術書を読んで、学びを蓄積しましょう。本ごとに記録したメモは横断検索できます。ここはあなただけの読書記録が残せる場所です。
-          </p>
-        </div>
-        <div />
-      </aside>
+      <BrandPanel />
       <main className="flex-1 flex flex-col px-14 py-8 overflow-auto">
         <div className="flex justify-end items-center gap-3">
           <span className="font-mono text-xs tracking-[0.05em] text-muted-foreground">
@@ -154,7 +134,7 @@ export default function SignupPage() {
           </Link>
         </div>
 
-        <div className="flex-1 flex items-center">
+        <div className="flex-1 flex items-center my-10">
           <div className="w-full max-w-95 mx-auto flex flex-col gap-6">
             <div>
               <p className="font-mono text-xs tracking-[0.2em] uppercase text-primary">
@@ -171,8 +151,20 @@ export default function SignupPage() {
             <form onSubmit={handleEmailSignup} className="flex flex-col gap-3">
               <FieldGroup>
                 <Field>
+                  <FieldLabel htmlFor="name" className="text-xs">
+                    ユーザー名
+                  </FieldLabel>
+                  <Input
+                    id="name"
+                    name="name"
+                    type="text"
+                    autoComplete="name"
+                  />
+                  {nameError && <FieldError>{nameError}</FieldError>}
+                </Field>
+                <Field>
                   <FieldLabel htmlFor="email" className="text-xs">
-                    メールアドレス
+                    メールアドレス<span className="text-destructive">*</span>
                   </FieldLabel>
                   <Input
                     id="email"
@@ -181,11 +173,10 @@ export default function SignupPage() {
                     placeholder="name@example.com"
                     autoComplete="email"
                   />
-                  {emailError && <FieldError>{emailError}</FieldError>}
                 </Field>
                 <Field>
                   <FieldLabel htmlFor="password" className="text-xs">
-                    パスワード
+                    パスワード<span className="text-destructive">*</span>
                   </FieldLabel>
                   <div className="relative">
                     <Input
@@ -208,6 +199,7 @@ export default function SignupPage() {
                 <Field>
                   <FieldLabel htmlFor="confirmPassword" className="text-xs">
                     パスワード（確認）
+                    <span className="text-destructive">*</span>
                   </FieldLabel>
                   <div className="relative">
                     <Input
@@ -225,6 +217,7 @@ export default function SignupPage() {
                       {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                     </button>
                   </div>
+                  {passwordError && <FieldError>{passwordError}</FieldError>}
                 </Field>
               </FieldGroup>
               <Button

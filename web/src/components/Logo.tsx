@@ -39,7 +39,7 @@ export function Wordmark({
       style={{ fontSize: size }}
     >
       <span style={{ opacity: 0.7 }}>meme</span>
-      <span style={color ? { color } : undefined}>tec.</span>
+      <span style={{ color }}>tec.</span>
     </span>
   );
 }
