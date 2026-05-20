@@ -1,6 +1,7 @@
 import { env } from 'cloudflare:workers'
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
+import { hashPassword, verifyPassword } from '@better-auth/utils/password'
 import { db } from '../db'
 import { Resend } from 'resend'
 
@@ -11,6 +12,10 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: true,
+    password: {
+      hash: hashPassword,
+      verify: ({ hash, password }) => verifyPassword(hash, password),
+    },
   },
   emailVerification: {
     sendVerificationEmail: async ({ user, url }) => {
