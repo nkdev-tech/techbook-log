@@ -12,48 +12,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { LogoMark, Wordmark } from "@/components/Logo";
 
-function BrandPanel() {
-  return (
-    <aside className="hidden lg:flex w-[480px] shrink-0 bg-primary flex-col justify-between p-10 relative overflow-hidden">
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(80% 60% at 70% 20%, rgba(255,255,255,0.08), transparent 60%)",
-        }}
-      />
-
-      <div className="relative flex items-center gap-3 text-primary-foreground">
-        <LogoMark size={28} color="white" />
-        <Wordmark size={24} color="currentColor" />
-      </div>
-
-      <div className="relative flex flex-col gap-5">
-        <p className="font-mono text-[11px] tracking-[0.2em] uppercase text-primary-foreground/70">
-          A quiet place
-          <br />
-          for your technical reading notes
-        </p>
-        <h2 className="font-serif italic text-[38px] font-normal text-primary-foreground leading-[1.15] tracking-[-0.015em]">
-          Every book you read
-          <br />
-          builds your knowledge.
-        </h2>
-        <p className="text-[13.5px] text-primary-foreground/75 leading-relaxed max-w-[360px]">
-          技術書を読んで、学びを蓄積しましょう。本ごとに記録したメモは横断検索できます。ここはあなただけの読書記録が残せる場所です。
-        </p>
-      </div>
-
-      <div />
-    </aside>
-  );
-}
-
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleEmailLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleEmailLogin = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
     const formData = new FormData(e.currentTarget);
@@ -95,8 +58,28 @@ export default function LoginPage() {
 
   return (
     <div className="flex min-h-screen">
-      <BrandPanel />
-
+      <aside className="hidden lg:flex w-[480px] shrink-0 bg-primary flex-col justify-between p-10">
+        <div className="flex items-center gap-3 text-primary-foreground">
+          <LogoMark size={28} color="white" />
+          <Wordmark size={24} color="currentColor" />
+        </div>
+        <div className="flex flex-col gap-5">
+          <p className="font-mono text-[11px] tracking-[0.2em] uppercase text-primary-foreground/70">
+            A quiet place
+            <br />
+            for your technical reading notes
+          </p>
+          <h2 className="font-serif italic text-[38px] font-normal text-primary-foreground leading-[1.15] tracking-[-0.015em]">
+            Every book you read
+            <br />
+            builds your knowledge.
+          </h2>
+          <p className="text-[13.5px] text-primary-foreground/75 leading-relaxed max-w-[360px]">
+            技術書を読んで、学びを蓄積しましょう。本ごとに記録したメモは横断検索できます。ここはあなただけの読書記録が残せる場所です。
+          </p>
+        </div>
+        <div />
+      </aside>
       <main className="flex-1 flex flex-col px-14 py-8 overflow-auto">
         <div className="flex justify-end items-center gap-3">
           <span className="font-mono text-[10.5px] tracking-[0.05em] text-muted-foreground">
