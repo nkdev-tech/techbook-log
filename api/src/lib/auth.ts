@@ -103,4 +103,9 @@ export const auth = betterAuth({
       domain: 'memetec.dev',
     },
   },
+  user: {
+    deleteUser: {
+      enabled: true,
+    },
+  },
 })
