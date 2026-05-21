@@ -162,12 +162,16 @@ export default function LoginPage() {
             <Link
               href="/terms"
               className="hover:text-foreground transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               利用規約
             </Link>
             <Link
               href="/privacy"
               className="hover:text-foreground transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               プライバシーポリシー
             </Link>
