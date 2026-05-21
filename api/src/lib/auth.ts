@@ -6,6 +6,8 @@ import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 //       https://github.com/better-auth/utils/pull/17
 import { scrypt, randomBytes, timingSafeEqual } from 'node:crypto'
 import { db } from '../db'
+import { bookTable, tagTable } from '../db/schema'
+import { eq } from 'drizzle-orm'
 import { Resend } from 'resend'
 
 const SCRYPT_PARAMS = { N: 16384, r: 8, p: 1 }
@@ -106,6 +108,10 @@ export const auth = betterAuth({
   user: {
     deleteUser: {
       enabled: true,
+      beforeDelete: async (user) => {
+        await db.delete(bookTable).where(eq(bookTable.userId, user.id))
+        await db.delete(tagTable).where(eq(tagTable.userId, user.id))
+      },
       sendDeleteAccountVerification: async ({ user, url }) => {
         const resend = new Resend(env.RESEND_API_KEY as string)
         await resend.emails.send({
