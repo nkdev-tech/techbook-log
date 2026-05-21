@@ -21,19 +21,23 @@ export default function SettingsPage() {
   const [isLoading, setIsLoading] = useState(false);
   const handleDelete = async () => {
     setIsLoading(true);
-    await authClient.deleteUser(
-      {},
-      {
-        onSuccess: () => {
-          toast.success("アカウントを削除しました");
-          window.location.href = "/login";
+    try {
+      await authClient.deleteUser(
+        {
+          callbackURL: `${window.location.origin}/login`,
         },
-        onError: (ctx) => {
-          toast.error(ctx.error.message);
-          setIsLoading(false);
-        },
-      }
-    );
+        {
+          onSuccess: () => {
+            toast.success("確認メールを送信しました");
+          },
+          onError: (ctx) => {
+            toast.error(ctx.error.message);
+          },
+        }
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -50,12 +54,14 @@ export default function SettingsPage() {
           <AlertDialogHeader>
             <AlertDialogTitle>アカウントを削除</AlertDialogTitle>
             <AlertDialogDescription>
-              本当にアカウントを削除しますか？この操作は元に戻すことができません。
+              確認メールを送信します。メール内のリンクをクリックした時点でアカウントとすべてのデータが完全に削除されます。この操作は元に戻せません。
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel autoFocus>キャンセル</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete}>削除</AlertDialogAction>
+            <AlertDialogAction onClick={handleDelete} disabled={isLoading}>
+              削除
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
