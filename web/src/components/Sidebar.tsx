@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarHeader,
@@ -50,6 +51,26 @@ export default function SidebarNav() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter>
+        <div className="flex flex-col gap-1 px-2 py-1 text-xs text-muted-foreground group-data-[collapsible=icon]:hidden">
+          <Link
+            href="/terms"
+            className="hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            利用規約
+          </Link>
+          <Link
+            href="/privacy"
+            className="hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            プライバシーポリシー
+          </Link>
+        </div>
+      </SidebarFooter>
     </Sidebar>
   );
 }

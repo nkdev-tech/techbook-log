@@ -256,6 +256,8 @@ export default function SignupPage() {
               <Link
                 href="/terms"
                 className="underline underline-offset-2 hover:text-foreground transition-colors"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 利用規約
               </Link>{" "}
@@ -263,6 +265,8 @@ export default function SignupPage() {
               <Link
                 href="/privacy"
                 className="underline underline-offset-2 hover:text-foreground transition-colors"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 プライバシーポリシー
               </Link>{" "}
@@ -276,12 +280,16 @@ export default function SignupPage() {
             <Link
               href="/terms"
               className="hover:text-foreground transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               利用規約
             </Link>
             <Link
               href="/privacy"
               className="hover:text-foreground transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               プライバシーポリシー
             </Link>
