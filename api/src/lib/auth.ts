@@ -19,8 +19,9 @@ export const auth = betterAuth({
   },
   emailVerification: {
     sendVerificationEmail: async ({ user, url }) => {
+      console.log('[sendVerificationEmail] called for:', user.email)
       const resend = new Resend(env.RESEND_API_KEY as string)
-      await resend.emails.send({
+      const result = await resend.emails.send({
         from: env.RESEND_FROM_EMAIL as string,
         to: user.email,
         subject: 'メールアドレスの確認',
@@ -32,6 +33,7 @@ export const auth = betterAuth({
         <p>このメールに心当たりがない場合は、このメールを無視してください。アカウントが作成されることはありません。</p>
       `,
       })
+      console.log('[sendVerificationEmail] result:', JSON.stringify(result))
     },
     autoSignInAfterVerification: true,
   },
