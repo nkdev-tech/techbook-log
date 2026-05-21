@@ -6,6 +6,8 @@ import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 //       https://github.com/better-auth/utils/pull/17
 import { scrypt, randomBytes, timingSafeEqual } from 'node:crypto'
 import { db } from '../db'
+import { bookTable, tagTable } from '../db/schema'
+import { eq } from 'drizzle-orm'
 import { Resend } from 'resend'
 
 const SCRYPT_PARAMS = { N: 16384, r: 8, p: 1 }
@@ -65,7 +67,7 @@ export const auth = betterAuth({
         to: user.email,
         subject: 'メールアドレスの確認',
         html: `
-        <p>memetec へのご登録ありがとうございます。</p>
+        <p>memetec. へのご登録ありがとうございます。</p>
         <p>以下のリンクをクリックして、メールアドレスの確認を完了してください。</p>
         <p><a href="${url}">メールアドレスを確認する</a></p>
         <p>このリンクの有効期限は1時間です。</p>
@@ -106,6 +108,10 @@ export const auth = betterAuth({
   user: {
     deleteUser: {
       enabled: true,
+      beforeDelete: async (user) => {
+        await db.delete(bookTable).where(eq(bookTable.userId, user.id))
+        await db.delete(tagTable).where(eq(tagTable.userId, user.id))
+      },
       sendDeleteAccountVerification: async ({ user, url }) => {
         const resend = new Resend(env.RESEND_API_KEY as string)
         await resend.emails.send({
@@ -113,11 +119,11 @@ export const auth = betterAuth({
           to: user.email,
           subject: 'アカウントの削除確認',
           html: `
-          <p>memetec のアカウント削除リクエストを受け付けました。</p>
+          <p>memetec. のアカウント削除リクエストを受け付けました。</p>
           <p>以下のリンクをクリックして、アカウントの削除を完了してください。</p>
           <p><a href="${url}">アカウントを削除する</a></p>
           <p>このリンクの有効期限は1時間です。</p>
-          <p><strong>アカウントを削除すると、すべての読書記録・メモ・タグが完全に削除されます。この操作は元に戻せません。</strong></p>
+          <p><strong>アカウントを削除すると、すべてのデータが完全に削除されます。この操作は元に戻せません。</strong></p>
           <p>このメールに心当たりがない場合は、リンクをクリックしないでください。アカウントが削除されることはありません。ただし、第三者にアカウントへのアクセスを許可してしまっている可能性があります。パスワードを変更するなど、アカウントのセキュリティを確認してください。</p>
         `,
         })
