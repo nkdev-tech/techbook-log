@@ -1,9 +1,49 @@
 import { env } from 'cloudflare:workers'
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
-import { hashPassword, verifyPassword } from '@better-auth/utils/password'
+// TODO: @better-auth/utils/password の workerd 対応が入ったら下記実装を削除して
+//       import { hashPassword, verifyPassword } from '@better-auth/utils/password' に戻す
+//       https://github.com/better-auth/utils/pull/17
+import { scrypt, randomBytes, timingSafeEqual } from 'node:crypto'
 import { db } from '../db'
 import { Resend } from 'resend'
+
+const SCRYPT_PARAMS = { N: 16384, r: 8, p: 1 }
+const KEY_LEN = 64
+
+function scryptAsync(
+  password: string,
+  salt: string,
+  keylen: number,
+): Promise<Buffer> {
+  return new Promise((resolve, reject) => {
+    scrypt(password, salt, keylen, SCRYPT_PARAMS, (err, key) => {
+      if (err) reject(err)
+      else resolve(key)
+    })
+  })
+}
+
+async function hashPassword(password: string): Promise<string> {
+  const salt = randomBytes(16).toString('hex')
+  const key = await scryptAsync(password, salt, KEY_LEN)
+  return `${salt}:${key.toString('hex')}`
+}
+
+async function verifyPassword({
+  hash,
+  password,
+}: {
+  hash: string
+  password: string
+}): Promise<boolean> {
+  const [salt, keyHex] = hash.split(':')
+  if (!salt || !keyHex) return false
+  const key = await scryptAsync(password, salt, KEY_LEN)
+  const stored = Buffer.from(keyHex, 'hex')
+  if (key.length !== stored.length) return false
+  return timingSafeEqual(key, stored)
+}
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -14,7 +54,7 @@ export const auth = betterAuth({
     requireEmailVerification: true,
     password: {
       hash: hashPassword,
-      verify: ({ hash, password }) => verifyPassword(hash, password),
+      verify: verifyPassword,
     },
   },
   emailVerification: {
