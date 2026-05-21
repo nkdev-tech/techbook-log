@@ -5,7 +5,7 @@ export default function PrivacyPage() {
     <div className="min-h-screen flex flex-col">
       <Header requireAuth={false} />
       <main className="flex-1 max-w-2xl mx-auto w-full px-8 py-12">
-        <h1 className="font-serif text-4xl font-normal tracking-[-0.02em] leading-[1.05] mb-8">
+        <h1 className="font-serif italic text-4xl font-normal tracking-[-0.02em] leading-[1.05] mb-8">
           プライバシーポリシー
         </h1>
         <div className="space-y-8 text-sm leading-relaxed">
@@ -16,7 +16,7 @@ export default function PrivacyPage() {
           <section className="space-y-2">
             <h2 className="font-medium text-base">第1条（取得する個人情報）</h2>
             <p className="text-muted-foreground">
-              当サービスは、本サービスの提供に必要な範囲で、アカウント登録に関する情報（メールアドレス等）および本サービスの利用に伴うアクセスログ等の情報を取得します。
+              当サービスは、本サービスの提供に必要な範囲で、メールアドレス等の個人情報（個人情報保護法第2条第1項に定義される個人情報に該当するもの）および本サービスの利用に伴うアクセスログ等の情報を取得します。
             </p>
           </section>
 
@@ -35,6 +35,9 @@ export default function PrivacyPage() {
             <ul className="list-disc list-inside space-y-1 text-muted-foreground pl-2">
               <li>法令に基づく場合</li>
               <li>人の生命・身体または財産の保護のために必要な場合</li>
+              <li>
+                本サービスの提供に必要な業務委託先（インフラ事業者を含む）に対して提供する場合
+              </li>
             </ul>
           </section>
 
@@ -81,6 +84,8 @@ export default function PrivacyPage() {
               当サービスは、必要に応じてプライバシーポリシーを変更することがあります。変更後のポリシーは本ページに掲示した時点から効力を生じるものとします。
             </p>
           </section>
+
+          <p className="text-muted-foreground">制定日：2026年6月1日</p>
         </div>
       </main>
     </div>

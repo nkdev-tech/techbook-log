@@ -55,7 +55,7 @@ export default function SidebarNav() {
         <div className="flex flex-col gap-1 px-2 py-1 text-xs text-muted-foreground group-data-[collapsible=icon]:hidden">
           <Link
             href="/terms"
-            className="hover:underline"
+            className="hover:text-foreground transition-colors"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -63,7 +63,7 @@ export default function SidebarNav() {
           </Link>
           <Link
             href="/privacy"
-            className="hover:underline"
+            className="hover:text-foreground transition-colors"
             target="_blank"
             rel="noopener noreferrer"
           >

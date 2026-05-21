@@ -5,7 +5,7 @@ export default function TermsPage() {
     <div className="min-h-screen flex flex-col">
       <Header requireAuth={false} />
       <main className="flex-1 max-w-2xl mx-auto w-full px-8 py-12">
-        <h1 className="font-serif text-4xl font-normal tracking-[-0.02em] leading-[1.05] mb-8">
+        <h1 className="font-serif italic text-4xl font-normal tracking-[-0.02em] leading-[1.05] mb-8">
           利用規約
         </h1>
         <div className="space-y-8 text-sm leading-relaxed">
@@ -90,6 +90,8 @@ export default function TermsPage() {
               本規約の解釈にあたっては、日本国法を準拠法とします。本サービスに関して紛争が生じた場合には、東京地方裁判所を第一審の専属的合意管轄裁判所とします。
             </p>
           </section>
+
+          <p className="text-muted-foreground">制定日：2026年6月1日</p>
         </div>
       </main>
     </div>
