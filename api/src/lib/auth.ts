@@ -103,4 +103,25 @@ export const auth = betterAuth({
       domain: 'memetec.dev',
     },
   },
+  user: {
+    deleteUser: {
+      enabled: true,
+      sendDeleteAccountVerification: async ({ user, url }) => {
+        const resend = new Resend(env.RESEND_API_KEY as string)
+        await resend.emails.send({
+          from: env.RESEND_FROM_EMAIL as string,
+          to: user.email,
+          subject: 'アカウントの削除確認',
+          html: `
+          <p>memetec のアカウント削除リクエストを受け付けました。</p>
+          <p>以下のリンクをクリックして、アカウントの削除を完了してください。</p>
+          <p><a href="${url}">アカウントを削除する</a></p>
+          <p>このリンクの有効期限は1時間です。</p>
+          <p><strong>アカウントを削除すると、すべての読書記録・メモ・タグが完全に削除されます。この操作は元に戻せません。</strong></p>
+          <p>このメールに心当たりがない場合は、リンクをクリックしないでください。アカウントが削除されることはありません。ただし、第三者にアカウントへのアクセスを許可してしまっている可能性があります。パスワードを変更するなど、アカウントのセキュリティを確認してください。</p>
+        `,
+        })
+      },
+    },
+  },
 })
