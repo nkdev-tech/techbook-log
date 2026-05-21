@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Spinner } from "@/components/ui/spinner";
 import { toast } from "sonner";
-import { ChevronDown, LogOut } from "lucide-react";
+import { ChevronDown, LogOut, Settings } from "lucide-react";
 import Link from "next/link";
 
 export default function Header({
@@ -85,7 +85,15 @@ export default function Header({
                 <DropdownMenuLabel className="truncate">
                   {session.user.email}
                 </DropdownMenuLabel>
-                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link href="/settings">
+                    <Settings />
+                    設定
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup>
                 <DropdownMenuItem
                   variant="destructive"
                   onClick={handleLogout}
