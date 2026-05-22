@@ -50,7 +50,7 @@ export default function BookDetailPage() {
 
   return (
     <div className="w-full mx-auto">
-      <div className="flex justify-between border-b px-8 pt-4 pb-4 mb-6">
+      <div className="flex justify-between border-b px-8 py-4 mb-6">
         <div>
           <Navigation />
           <h1 className="font-serif italic font-normal text-3xl tracking-[-0.02em]">

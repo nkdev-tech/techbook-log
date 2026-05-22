@@ -41,7 +41,7 @@ export default function Navigation() {
   const breadcrumbPaths = generateBreadcrumbs(segments);
 
   return (
-    <div className="flex item-center mb-2 h-[1.5rem]">
+    <div className="flex items-center mb-2 h-6">
       <Breadcrumb className="h-full">
         <BreadcrumbList className="h-full">
           {breadcrumbPaths.map(({ path, label }, index) => (

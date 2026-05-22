@@ -45,7 +45,7 @@ export default function BookNewPage() {
 
   return (
     <div className="w-full">
-      <div className="border-b px-8 pt-4 pb-4 mb-6">
+      <div className="border-b px-8 py-4 mb-6">
         <Navigation />
         <h1 className="font-serif italic font-normal text-3xl tracking-[-0.02em]">
           Log a new book.
