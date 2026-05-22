@@ -4,7 +4,6 @@ import { useGetApiBooksIdMemos } from "@/external/api";
 import { Memo } from "@/components/books/Memo";
 import { MemoForm } from "@/components/books/MemoForm";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
 
 export function MemoList() {
   const { id } = useParams<{ id: string }>();
@@ -23,11 +22,11 @@ export function MemoList() {
       <div className="flex justify-end">
         <Button
           type="button"
+          variant="link"
           disabled={isFormOpen}
           onClick={() => setIsFormOpen(true)}
         >
-          <Plus />
-          メモを追加
+          ＋ メモを追加
         </Button>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 items-start gap-4">

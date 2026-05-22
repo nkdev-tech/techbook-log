@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import { Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { ApiError } from "@/shared/types/api";
 
@@ -49,18 +48,9 @@ export function DeleteButton({ id }: Props) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon-lg"
-          aria-label="本を削除"
-          disabled={isPending}
-        >
-          {isPending ? (
-            <Spinner data-icon="inline-start" />
-          ) : (
-            <Trash2 color="red" className="size-6" />
-          )}
+        <Button type="button" variant="outline" disabled={isPending}>
+          {isPending && <Spinner data-icon="inline-start" />}
+          削除
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
