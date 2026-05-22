@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useSelectedLayoutSegments } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { Fragment } from "react";
 import {
   Breadcrumb,
@@ -13,15 +13,15 @@ import {
 } from "@/components/ui/breadcrumb";
 
 export const PageRoute = {
-  HOME: { pattern: /^\/books$/, label: "ホーム" },
+  HOME: { pattern: /^\/books$/, label: "書籍一覧" },
   BOOKS_NEW: { pattern: /^\/books\/new$/, label: "新規登録" },
   BOOKS_DETAIL: { pattern: /^\/books\/\d+$/, label: "詳細" },
   BOOKS_EDIT: { pattern: /^\/books\/\d+\/edit$/, label: "編集" },
+  MEMOS: { pattern: /^\/memos$/, label: "メモ検索" },
+  SETTINGS: { pattern: /^\/settings$/, label: "設定" },
 } as const;
 
 function generateBreadcrumbs(segments: string[]) {
-  if (segments.length < 2) return null;
-
   let currentPath = "";
   return segments.map((item) => {
     currentPath += `/${item}`;
@@ -36,13 +36,12 @@ function generateBreadcrumbs(segments: string[]) {
 }
 
 export default function Navigation() {
-  const segments = useSelectedLayoutSegments();
+  const pathname = usePathname();
+  const segments = pathname.split("/").filter(Boolean);
   const breadcrumbPaths = generateBreadcrumbs(segments);
 
-  if (breadcrumbPaths === null) return null;
-
   return (
-    <div className="flex item-center mt-1 mb-3 h-[2rem]">
+    <div className="flex item-center mb-2 h-[1.5rem]">
       <Breadcrumb className="h-full">
         <BreadcrumbList className="h-full">
           {breadcrumbPaths.map(({ path, label }, index) => (
@@ -55,9 +54,7 @@ export default function Navigation() {
                   </BreadcrumbLink>
                 )}
                 {index === breadcrumbPaths.length - 1 && (
-                  <BreadcrumbPage className="font-medium">
-                    {label}
-                  </BreadcrumbPage>
+                  <BreadcrumbPage>{label}</BreadcrumbPage>
                 )}
               </BreadcrumbItem>
             </Fragment>

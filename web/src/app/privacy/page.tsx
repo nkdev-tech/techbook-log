@@ -5,9 +5,9 @@ export default function PrivacyPage() {
     <div className="min-h-screen flex flex-col">
       <Header requireAuth={false} />
       <main className="flex-1 max-w-2xl mx-auto w-full px-8 py-12">
-        <h1 className="font-serif italic text-4xl font-normal tracking-[-0.02em] leading-[1.05] mb-8">
-          プライバシーポリシー
-        </h1>
+        <div className="border-b pb-4 mb-6">
+          <h1 className="text-2xl font-bold">プライバシーポリシー</h1>
+        </div>
         <div className="space-y-8 text-sm leading-relaxed">
           <p className="text-muted-foreground">
             memetec.（以下「当サービス」といいます）は、ユーザーの個人情報の保護を重要事項と考え、以下のとおりプライバシーポリシーを定めます。

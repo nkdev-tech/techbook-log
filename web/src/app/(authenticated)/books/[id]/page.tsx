@@ -4,7 +4,6 @@ import { useParams, useRouter, notFound } from "next/navigation";
 import { useGetApiBooksId } from "@/external/api";
 import {
   Card,
-  CardAction,
   CardContent,
   CardDescription,
   CardHeader,
@@ -18,8 +17,8 @@ import { Tag } from "@/components/books/Tag";
 import { Thumbnail } from "@/components/books/Thumbnail";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
-import { SquarePen } from "lucide-react";
 import { ApiError } from "@/shared/types/api";
+import Navigation from "@/components/Navigation";
 
 export default function BookDetailPage() {
   const router = useRouter();
@@ -51,45 +50,53 @@ export default function BookDetailPage() {
 
   return (
     <div className="w-full mx-auto">
-      <Card className="flex flex-row w-full mx-auto p-6">
-        <Thumbnail
-          thumbnailUrl={book.thumbnailUrl}
-          title={book.title}
-          size="lg"
-        />
-        <div className="flex flex-col w-full gap-2">
-          <CardHeader>
-            <CardTitle className="text-lg font-bold">{book.title}</CardTitle>
-            <CardDescription className="flex flex-col gap-1">
-              <span className="text-base">{book.author}</span>
-              {book.publisher && <span>{book.publisher}</span>}
-            </CardDescription>
-            <CardAction className="flex gap-1">
-              <DeleteButton id={id} />
-              <Button
-                type="button"
-                variant="ghost"
-                aria-label="本を編集"
-                size="icon-lg"
-                onClick={() => router.push(`/books/${id}/edit`)}
-              >
-                <SquarePen className="text-primary size-6" />
-              </Button>
-            </CardAction>
-          </CardHeader>
-          <CardContent className="space-y-2 text-base">
-            <Tag tags={book.tags ?? []} iconSize={14} textSize="text-sm" />
-            <div className="flex gap-1">
-              <span>{STATUS_LABEL[book.status] ?? book.status}</span>
-              {book.finishedAt && (
-                <span className="text-xs self-end pb-1 text-muted-foreground">{`(${format(new Date(book.finishedAt), "yyyy/MM/dd")})`}</span>
-              )}
-            </div>
-            <StarRating rating={book.rating} disabled={true} />
-          </CardContent>
+      <div className="flex justify-between border-b px-8 pt-4 pb-4 mb-6">
+        <div>
+          <Navigation />
+          <h1 className="font-serif italic font-normal text-3xl tracking-[-0.02em]">
+            In detail.
+          </h1>
         </div>
-      </Card>
-      <MemoList />
+        <div className="flex items-center gap-1">
+          <DeleteButton id={id} />
+          <Button
+            type="button"
+            variant="default"
+            onClick={() => router.push(`/books/${id}/edit`)}
+          >
+            編集
+          </Button>
+        </div>
+      </div>
+      <div className="px-8 pb-8">
+        <Card className="flex flex-row w-full mx-auto p-6">
+          <Thumbnail
+            thumbnailUrl={book.thumbnailUrl}
+            title={book.title}
+            size="lg"
+          />
+          <div className="flex flex-col w-full gap-2">
+            <CardHeader>
+              <CardTitle className="text-lg font-bold">{book.title}</CardTitle>
+              <CardDescription className="flex flex-col gap-1">
+                <span className="text-base">{book.author}</span>
+                {book.publisher && <span>{book.publisher}</span>}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2 text-base">
+              <Tag tags={book.tags ?? []} iconSize={14} textSize="text-sm" />
+              <div className="flex gap-1">
+                <span>{STATUS_LABEL[book.status] ?? book.status}</span>
+                {book.finishedAt && (
+                  <span className="text-xs self-end pb-1 text-muted-foreground">{`(${format(new Date(book.finishedAt), "yyyy/MM/dd")})`}</span>
+                )}
+              </div>
+              <StarRating rating={book.rating} disabled={true} />
+            </CardContent>
+          </div>
+        </Card>
+        <MemoList />
+      </div>
     </div>
   );
 }

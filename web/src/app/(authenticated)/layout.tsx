@@ -1,5 +1,4 @@
 import Header from "@/components/Header";
-import Navigation from "@/components/Navigation";
 import SidebarNav from "@/components/Sidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { authClient } from "@/lib/auth-client";
@@ -30,12 +29,7 @@ export default async function AuthenticatedLayout({
       <Header />
       <SidebarProvider className="flex-1 min-h-0" defaultOpen={defaultOpen}>
         <SidebarNav />
-        <SidebarInset className="min-w-0">
-          <div className="w-full px-8 py-4">
-            <Navigation />
-            {children}
-          </div>
-        </SidebarInset>
+        <SidebarInset className="min-w-0">{children}</SidebarInset>
       </SidebarProvider>
     </div>
   );

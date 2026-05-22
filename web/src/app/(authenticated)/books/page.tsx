@@ -19,6 +19,7 @@ import { useIntersectionObserver } from "@/shared/hooks/useIntersectionObserver"
 import { useViewMode } from "@/shared/hooks/useViewMode";
 import { useRouter, useSearchParams } from "next/navigation";
 import { BookOpen, LayoutGrid, LayoutList, Plus, SearchX } from "lucide-react";
+import Navigation from "@/components/Navigation";
 
 function BooksContent() {
   const router = useRouter();
@@ -75,9 +76,14 @@ function BooksContent() {
 
   return (
     <div className="w-full">
-      <div className="flex justify-between items-center mt-1 mb-3 h-[2rem]">
-        <SearchField />
-        <div className="flex items-center gap-3">
+      <div className="flex justify-between border-b px-8 pt-4 pb-4 mb-6">
+        <div>
+          <Navigation />
+          <h1 className="font-serif italic font-normal text-3xl tracking-[-0.02em]">
+            All your reads.
+          </h1>
+        </div>
+        <div className="flex items-center">
           <Button
             type="button"
             className="shrink-0 ml-2"
@@ -86,60 +92,66 @@ function BooksContent() {
             <Plus />
             新規登録
           </Button>
-          <Separator orientation="vertical" />
-          <StatusFilter />
-          <Separator orientation="vertical" />
-          <Sort />
-          <Separator orientation="vertical" />
-          <div className="flex gap-1">
-            <Button
-              type="button"
-              variant={viewMode === "table" ? "default" : "outline"}
-              size="icon-lg"
-              onClick={() => changeViewMode("table")}
-            >
-              <LayoutList />
-            </Button>
-            <Button
-              type="button"
-              variant={viewMode === "grid" ? "default" : "outline"}
-              size="icon-lg"
-              onClick={() => changeViewMode("grid")}
-            >
-              <LayoutGrid />
-            </Button>
-          </div>
         </div>
       </div>
-      {books.length === 0 ? (
-        <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
-          {tagsParam || statusParam ? (
-            <>
-              <SearchX size={80} className="text-muted-foreground" />
-              <p className="text-2xl font-bold text-muted-foreground">
-                一致する本が見つかりませんでした
-              </p>
-            </>
-          ) : (
-            <>
-              <BookOpen size={80} className="text-muted-foreground" />
-              <p className="text-2xl font-bold text-muted-foreground">
-                本が登録されていません
-              </p>
-            </>
-          )}
+      <div className="px-8 pb-8">
+        <div className="flex justify-between items-center mt-1 mb-3 h-[2rem]">
+          <SearchField />
+          <div className="flex items-center gap-3 ml-3">
+            <StatusFilter />
+            <Separator orientation="vertical" />
+            <Sort />
+            <Separator orientation="vertical" />
+            <div className="flex gap-1">
+              <Button
+                type="button"
+                variant={viewMode === "table" ? "default" : "outline"}
+                size="icon-lg"
+                onClick={() => changeViewMode("table")}
+              >
+                <LayoutList />
+              </Button>
+              <Button
+                type="button"
+                variant={viewMode === "grid" ? "default" : "outline"}
+                size="icon-lg"
+                onClick={() => changeViewMode("grid")}
+              >
+                <LayoutGrid />
+              </Button>
+            </div>
+          </div>
         </div>
-      ) : viewMode === "grid" ? (
-        <BookGridView books={books} />
-      ) : (
-        <BookTableView books={books} />
-      )}
-      {hasNextPage && !isLoading ? <div ref={sentinelRef} /> : null}
-      {isFetchingNextPage ? (
-        <div className="flex justify-center my-4">
-          <Spinner className="size-12" />
-        </div>
-      ) : null}
+        {books.length === 0 ? (
+          <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
+            {tagsParam || statusParam ? (
+              <>
+                <SearchX size={80} className="text-muted-foreground" />
+                <p className="text-2xl font-bold text-muted-foreground">
+                  一致する本が見つかりませんでした
+                </p>
+              </>
+            ) : (
+              <>
+                <BookOpen size={80} className="text-muted-foreground" />
+                <p className="text-2xl font-bold text-muted-foreground">
+                  本が登録されていません
+                </p>
+              </>
+            )}
+          </div>
+        ) : viewMode === "grid" ? (
+          <BookGridView books={books} />
+        ) : (
+          <BookTableView books={books} />
+        )}
+        {hasNextPage && !isLoading ? <div ref={sentinelRef} /> : null}
+        {isFetchingNextPage ? (
+          <div className="flex justify-center my-4">
+            <Spinner className="size-12" />
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 }
