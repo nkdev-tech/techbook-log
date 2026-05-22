@@ -5,9 +5,9 @@ export default function TermsPage() {
     <div className="min-h-screen flex flex-col">
       <Header requireAuth={false} />
       <main className="flex-1 max-w-2xl mx-auto w-full px-8 py-12">
-        <h1 className="font-serif italic text-4xl font-normal tracking-[-0.02em] leading-[1.05] mb-8">
-          利用規約
-        </h1>
+        <div className="border-b pb-4 mb-6">
+          <h1 className="text-2xl font-bold">利用規約</h1>
+        </div>
         <div className="space-y-8 text-sm leading-relaxed">
           <section className="space-y-2">
             <h2 className="font-medium text-base">第1条（総則）</h2>
