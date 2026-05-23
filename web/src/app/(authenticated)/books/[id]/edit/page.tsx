@@ -10,6 +10,17 @@ import { toast } from "sonner";
 import { ApiError } from "@/shared/types/api";
 import Navigation from "@/components/Navigation";
 
+function BookEditHeader() {
+  return (
+    <div className="border-b px-8 py-4 mb-6">
+      <Navigation />
+      <h1 className="font-serif italic font-normal text-3xl tracking-[-0.02em]">
+        Update the record.
+      </h1>
+    </div>
+  );
+}
+
 export default function BookEditPage() {
   const router = useRouter();
   const params = useParams<{ id: string }>();
@@ -20,7 +31,10 @@ export default function BookEditPage() {
   if (isLoading) {
     return (
       <div className="w-full">
-        <p className="text-lg">Loading...</p>
+        <BookEditHeader />
+        <div className="flex justify-center items-center min-h-[60vh]">
+          <Spinner className="size-12" />
+        </div>
       </div>
     );
   }
@@ -59,12 +73,7 @@ export default function BookEditPage() {
 
   return (
     <div className="w-full">
-      <div className="border-b px-8 py-4 mb-6">
-        <Navigation />
-        <h1 className="font-serif italic font-normal text-3xl tracking-[-0.02em]">
-          Update the record.
-        </h1>
-      </div>
+      <BookEditHeader />
       <div className="px-8 pb-8">
         <Card className="w-full max-w-2xl mx-auto">
           <CardContent className="space-y-1">

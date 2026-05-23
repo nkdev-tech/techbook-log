@@ -21,6 +21,25 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { BookOpen, LayoutGrid, LayoutList, Plus, SearchX } from "lucide-react";
 import Navigation from "@/components/Navigation";
 
+function BooksPageHeader({ onNewBook }: { onNewBook: () => void }) {
+  return (
+    <div className="flex justify-between border-b px-8 py-4 mb-6">
+      <div>
+        <Navigation />
+        <h1 className="font-serif italic font-normal text-3xl tracking-[-0.02em]">
+          All your reads.
+        </h1>
+      </div>
+      <div className="flex items-center">
+        <Button type="button" className="shrink-0 ml-2" onClick={onNewBook}>
+          <Plus />
+          新規登録
+        </Button>
+      </div>
+    </div>
+  );
+}
+
 function BooksContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -65,7 +84,10 @@ function BooksContent() {
   if (isLoading) {
     return (
       <div className="w-full">
-        <p className="text-lg">Loading...</p>
+        <BooksPageHeader onNewBook={() => router.push("/books/new")} />
+        <div className="flex justify-center items-center min-h-[60vh]">
+          <Spinner className="size-12" />
+        </div>
       </div>
     );
   }
@@ -76,24 +98,7 @@ function BooksContent() {
 
   return (
     <div className="w-full">
-      <div className="flex justify-between border-b px-8 py-4 mb-6">
-        <div>
-          <Navigation />
-          <h1 className="font-serif italic font-normal text-3xl tracking-[-0.02em]">
-            All your reads.
-          </h1>
-        </div>
-        <div className="flex items-center">
-          <Button
-            type="button"
-            className="shrink-0 ml-2"
-            onClick={() => router.push("/books/new")}
-          >
-            <Plus />
-            新規登録
-          </Button>
-        </div>
-      </div>
+      <BooksPageHeader onNewBook={() => router.push("/books/new")} />
       <div className="px-8 pb-8">
         <div className="flex justify-between items-center mt-1 mb-3 h-[2rem]">
           <SearchField />

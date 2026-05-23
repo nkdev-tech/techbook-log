@@ -39,6 +39,7 @@ import {
 } from "@/components/ui/select";
 import { BookSearchDialog } from "@/components/books/BookSearchDialog";
 import { StarRating } from "@/components/books/StarRating";
+import { Spinner } from "@/components/ui/spinner";
 import { STATUS_LABEL } from "@/shared/utils/book";
 import { GetApiBookSearch200Item, useGetApiTags } from "@/external/api";
 import { getTagColor } from "./Tag";
@@ -113,8 +114,8 @@ export function BookForm({ defaultValues, onSubmit }: Props) {
 
   if (isLoading) {
     return (
-      <div className="w-full">
-        <p className="text-lg">Loading...</p>
+      <div className="flex justify-center items-center min-h-[200px]">
+        <Spinner className="size-8" />
       </div>
     );
   }
