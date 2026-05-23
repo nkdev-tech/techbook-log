@@ -14,7 +14,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **開発フロー（TDD）:**
 1. 設計相談 — 何を作るか・どんなテストが必要か整理。IssueごとにAC（完了条件）を定義する。ACはUI/フロントエンドの振る舞いのみ記載し、APIやrepositoryの実装詳細は含めない。定義したACは必ずGitHub Issueのbodyに書き込む。曖昧な点・不明点は必ずユーザーに質問する
-2. issueに紐づくブランチを作成する
+2. issueに紐づくブランチを作成する — アシスタントが作成する。ブランチ名はユーザーに確認してから作る
 3. テストを自分で書く（対象は api/ の usecase と api/src/test/ のリクエストテストのみ）
 4. テストが失敗することを確認（red）— 実装前に必ず `npm test` を実行してredを確認するよう促す
 5. 実装を自分で書く
