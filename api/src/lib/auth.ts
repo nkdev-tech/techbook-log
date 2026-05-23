@@ -106,6 +106,25 @@ export const auth = betterAuth({
     },
   },
   user: {
+    changeEmail: {
+      enabled: true,
+      sendChangeEmailConfirmation: async ({ user, newEmail, url }) => {
+        const resend = new Resend(env.RESEND_API_KEY as string)
+        await resend.emails.send({
+          from: env.RESEND_FROM_EMAIL as string,
+          to: user.email,
+          subject: 'メールアドレスの変更確認',
+          html: `
+          <p>memetec. のメールアドレス変更リクエストを受け付けました。</p>
+          <p>新しいメールアドレス: ${newEmail}</p>
+          <p>以下のリンクをクリックして、メールアドレスの変更を完了してください。</p>
+          <p><a href="${url}">メールアドレスを変更する</a></p>
+          <p>このリンクの有効期限は1時間です。</p>
+          <p>このメールに心当たりがない場合は、このメールを無視してください。メールアドレスが変更されることはありません。</p>
+        `,
+        })
+      },
+    },
     deleteUser: {
       enabled: true,
       beforeDelete: async (user) => {
