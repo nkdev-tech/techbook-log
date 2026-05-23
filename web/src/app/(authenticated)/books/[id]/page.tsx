@@ -17,8 +17,28 @@ import { Tag } from "@/components/books/Tag";
 import { Thumbnail } from "@/components/books/Thumbnail";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
 import { ApiError } from "@/shared/types/api";
 import Navigation from "@/components/Navigation";
+
+function BookDetailHeader({ id, onEdit }: { id: string; onEdit: () => void }) {
+  return (
+    <div className="flex justify-between border-b px-8 py-4 mb-6">
+      <div>
+        <Navigation />
+        <h1 className="font-serif italic font-normal text-3xl tracking-[-0.02em]">
+          In detail.
+        </h1>
+      </div>
+      <div className="flex items-center gap-1">
+        <DeleteButton id={id} />
+        <Button type="button" variant="default" onClick={onEdit}>
+          編集
+        </Button>
+      </div>
+    </div>
+  );
+}
 
 export default function BookDetailPage() {
   const router = useRouter();
@@ -28,8 +48,14 @@ export default function BookDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="w-full">
-        <p className="text-lg">Loading...</p>
+      <div className="w-full mx-auto">
+        <BookDetailHeader
+          id={id}
+          onEdit={() => router.push(`/books/${id}/edit`)}
+        />
+        <div className="flex justify-center items-center min-h-[60vh]">
+          <Spinner className="size-12" />
+        </div>
       </div>
     );
   }
@@ -50,24 +76,10 @@ export default function BookDetailPage() {
 
   return (
     <div className="w-full mx-auto">
-      <div className="flex justify-between border-b px-8 py-4 mb-6">
-        <div>
-          <Navigation />
-          <h1 className="font-serif italic font-normal text-3xl tracking-[-0.02em]">
-            In detail.
-          </h1>
-        </div>
-        <div className="flex items-center gap-1">
-          <DeleteButton id={id} />
-          <Button
-            type="button"
-            variant="default"
-            onClick={() => router.push(`/books/${id}/edit`)}
-          >
-            編集
-          </Button>
-        </div>
-      </div>
+      <BookDetailHeader
+        id={id}
+        onEdit={() => router.push(`/books/${id}/edit`)}
+      />
       <div className="px-8 pb-8">
         <Card className="flex flex-row w-full mx-auto p-6">
           <Thumbnail
