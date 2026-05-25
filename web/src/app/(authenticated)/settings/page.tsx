@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { authClient } from "@/lib/auth-client";
 import {
   AlertDialog,
@@ -39,21 +40,24 @@ export default function SettingsPage() {
     null
   );
   const [passwordDialogOpen, setPasswordDialogOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [hasPassword, setHasPassword] = useState(false);
+  const [loadingOperation, setLoadingOperation] = useState<
+    "name" | "email" | "password" | "delete" | null
+  >(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
 
-  useEffect(() => {
-    authClient.listAccounts().then(({ data }) => {
-      if (data) setHasPassword(data.some((a) => a.providerId === "credential"));
-    });
-  }, []);
+  const { data: accounts } = useQuery({
+    queryKey: ["accounts"],
+    queryFn: () => authClient.listAccounts(),
+  });
+  const hasPassword = accounts?.data
+    ? accounts.data.some((a) => a.providerId === "credential")
+    : false;
 
   const handleNameChange = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(true);
+    setLoadingOperation("name");
     const formData = new FormData(e.currentTarget);
     const name = formData.get("name") as string;
 
@@ -65,11 +69,11 @@ export default function SettingsPage() {
         onSuccess: () => {
           setEditingField(null);
           toast.success("ユーザー名を変更しました");
-          setIsLoading(false);
+          setLoadingOperation(null);
         },
         onError: (ctx) => {
           toast.error(ctx.error.message);
-          setIsLoading(false);
+          setLoadingOperation(null);
         },
       }
     );
@@ -77,14 +81,14 @@ export default function SettingsPage() {
 
   const handleEmailChange = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(true);
+    setLoadingOperation("email");
     const formData = new FormData(e.currentTarget);
     const newEmail = formData.get("newEmail") as string;
 
     await authClient.changeEmail(
       {
         newEmail,
-        callbackURL: `${window.location.origin}/login`,
+        callbackURL: `${window.location.origin}/settings`,
       },
       {
         onSuccess: () => {
@@ -92,7 +96,7 @@ export default function SettingsPage() {
         },
         onError: (ctx) => {
           toast.error(ctx.error.message);
-          setIsLoading(false);
+          setLoadingOperation(null);
         },
       }
     );
@@ -102,7 +106,7 @@ export default function SettingsPage() {
     e: React.SubmitEvent<HTMLFormElement>
   ) => {
     e.preventDefault();
-    setIsLoading(true);
+    setLoadingOperation("password");
     const formData = new FormData(e.currentTarget);
     const currentPassword = formData.get("currentPassword") as string;
     const newPassword = formData.get("newPassword") as string;
@@ -110,7 +114,7 @@ export default function SettingsPage() {
 
     if (newPassword !== confirmPassword) {
       setPasswordError("新しいパスワードが一致していません");
-      setIsLoading(false);
+      setLoadingOperation(null);
       return;
     }
     setPasswordError(null);
@@ -125,18 +129,18 @@ export default function SettingsPage() {
         onSuccess: () => {
           setPasswordDialogOpen(false);
           toast.success("パスワードを変更しました");
-          setIsLoading(false);
+          setLoadingOperation(null);
         },
         onError: (ctx) => {
           toast.error(ctx.error.message);
-          setIsLoading(false);
+          setLoadingOperation(null);
         },
       }
     );
   };
 
   const handleDelete = async () => {
-    setIsLoading(true);
+    setLoadingOperation("delete");
     try {
       await authClient.deleteUser(
         {
@@ -152,7 +156,7 @@ export default function SettingsPage() {
         }
       );
     } finally {
-      setIsLoading(false);
+      setLoadingOperation(null);
     }
   };
 
@@ -191,7 +195,11 @@ export default function SettingsPage() {
                     >
                       キャンセル
                     </Button>
-                    <Button type="submit" size="sm" disabled={isLoading}>
+                    <Button
+                      type="submit"
+                      size="sm"
+                      disabled={loadingOperation !== null}
+                    >
                       保存
                     </Button>
                   </div>
@@ -234,7 +242,11 @@ export default function SettingsPage() {
                         >
                           キャンセル
                         </Button>
-                        <Button type="submit" size="sm" disabled={isLoading}>
+                        <Button
+                          type="submit"
+                          size="sm"
+                          disabled={loadingOperation !== null}
+                        >
                           保存
                         </Button>
                       </div>
@@ -381,7 +393,7 @@ export default function SettingsPage() {
                             <Button
                               type="submit"
                               size="sm"
-                              disabled={isLoading}
+                              disabled={loadingOperation !== null}
                             >
                               保存
                             </Button>
@@ -403,9 +415,11 @@ export default function SettingsPage() {
                 type="button"
                 variant="destructive"
                 className="w-fit mt-1"
-                disabled={isLoading}
+                disabled={loadingOperation !== null}
               >
-                {isLoading && <Spinner data-icon="inline-start" />}
+                {loadingOperation === "delete" && (
+                  <Spinner data-icon="inline-start" />
+                )}
                 アカウントを削除
               </Button>
             </AlertDialogTrigger>
@@ -418,7 +432,10 @@ export default function SettingsPage() {
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel autoFocus>キャンセル</AlertDialogCancel>
-                <AlertDialogAction onClick={handleDelete} disabled={isLoading}>
+                <AlertDialogAction
+                  onClick={handleDelete}
+                  disabled={loadingOperation !== null}
+                >
                   削除
                 </AlertDialogAction>
               </AlertDialogFooter>
