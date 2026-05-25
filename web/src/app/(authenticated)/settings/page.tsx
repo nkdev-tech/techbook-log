@@ -200,6 +200,9 @@ export default function SettingsPage() {
                       size="sm"
                       disabled={loadingOperation !== null}
                     >
+                      {loadingOperation === "name" && (
+                        <Spinner data-icon="inline-start" />
+                      )}
                       保存
                     </Button>
                   </div>
@@ -247,6 +250,9 @@ export default function SettingsPage() {
                           size="sm"
                           disabled={loadingOperation !== null}
                         >
+                          {loadingOperation === "email" && (
+                            <Spinner data-icon="inline-start" />
+                          )}
                           保存
                         </Button>
                       </div>
@@ -395,6 +401,9 @@ export default function SettingsPage() {
                               size="sm"
                               disabled={loadingOperation !== null}
                             >
+                              {loadingOperation === "password" && (
+                                <Spinner data-icon="inline-start" />
+                              )}
                               保存
                             </Button>
                           </div>
