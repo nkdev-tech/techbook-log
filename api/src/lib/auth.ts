@@ -67,11 +67,10 @@ export const auth = betterAuth({
         to: user.email,
         subject: 'メールアドレスの確認',
         html: `
-        <p>memetec. へのご登録ありがとうございます。</p>
         <p>以下のリンクをクリックして、メールアドレスの確認を完了してください。</p>
         <p><a href="${url}">メールアドレスを確認する</a></p>
         <p>このリンクの有効期限は1時間です。</p>
-        <p>このメールに心当たりがない場合は、このメールを無視してください。アカウントが作成されることはありません。</p>
+        <p>このメールに心当たりがない場合は、このメールを無視してください。</p>
       `,
       })
     },
@@ -106,6 +105,9 @@ export const auth = betterAuth({
     },
   },
   user: {
+    changeEmail: {
+      enabled: true,
+    },
     deleteUser: {
       enabled: true,
       beforeDelete: async (user) => {
