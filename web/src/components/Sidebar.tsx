@@ -1,6 +1,6 @@
 "use client";
 
-import { BookOpen, Search } from "lucide-react";
+import { BookOpen, Search, Info } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/sidebar";
 
 const navItems = [
+  { label: "memetec.について", href: "/about", icon: Info },
   { label: "書籍一覧", href: "/books", icon: BookOpen },
   { label: "メモ検索", href: "/memos", icon: Search },
 ];
