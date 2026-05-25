@@ -38,8 +38,15 @@ export default function AboutPage() {
               <br />
               for your technical reading notes.
             </h1>
-            <p className="text-sm text-primary-foreground/75 leading-relaxed">
-              技術書の読書記録をシンプルに管理できるサービスです。本ごとにメモを残し、読んだ技術書の知識を蓄積していきましょう。
+            <p className="text-primary-foreground/75 text-sm/8">
+              技術書を読んでも、時間が経つと内容を忘れてしまう。自分でノートにまとめるのは面倒くさい。
+              <br />
+              memetec.
+              はそういう悩みを解決するための、技術書に特化した読書記録アプリです。
+              <br />
+              読んだ本はタグでジャンルやテーマごとに分類できます。本を読みながら気づいたことや学んだことはメモに残しておきましょう。メモは横断検索できるので、必要なときにすぐ知識を引き出せます。
+              <br />
+              このアプリは学びを蓄積してあなたの成長を助けます。
             </p>
           </div>
           <Button variant="link" className="text-white" asChild>
@@ -74,12 +81,12 @@ export default function AboutPage() {
                   value: "Cloudflare D1 · Drizzle ORM",
                 },
                 { label: "インフラ", value: "Cloudflare Workers" },
-                { label: "認証", value: "better-auth" },
+                { label: "認証", value: "Better Auth" },
                 {
                   label: "状態管理・フォーム",
                   value: "TanStack Query · TanStack Form",
                 },
-                { label: "外部サービス", value: "Resend" },
+                { label: "外部サービス", value: "Resend · Google Books API" },
               ].map(({ label, value }) => (
                 <tr
                   key={label}
