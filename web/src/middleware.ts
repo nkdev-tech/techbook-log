@@ -9,7 +9,7 @@ export function middleware(request: NextRequest) {
     request.cookies.get("better-auth.session_token")?.value;
 
   const publicPaths = ["/login", "/signup"];
-  const openPaths = ["/terms", "/privacy", "/verify-email"];
+  const openPaths = ["/about", "/terms", "/privacy", "/verify-email"];
   const isPublicPath = publicPaths.some((path) => pathname.startsWith(path));
   const isOpenPath = openPaths.some((path) => pathname.startsWith(path));
 

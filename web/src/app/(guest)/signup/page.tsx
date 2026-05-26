@@ -253,6 +253,12 @@ export default function SignupPage() {
           <span>© 2026 memetec.</span>
           <div className="flex gap-4">
             <Link
+              href="/about"
+              className="hover:text-foreground transition-colors"
+            >
+              memetec.について
+            </Link>
+            <Link
               href="/terms"
               className="hover:text-foreground transition-colors"
               target="_blank"
