@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import BrandPanel from "@/components/BrandPanel";
+import SocialLogin from "@/components/SocialLogin";
 import { Button } from "@/components/ui/button";
 import {
   Field,
@@ -14,7 +15,6 @@ import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { toast } from "sonner";
 import { Eye, EyeOff, MoveRight } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
 export default function SignupPage() {
@@ -67,23 +67,6 @@ export default function SignupPage() {
         onSuccess: () => {
           window.location.href = "/verify-email";
         },
-        onError: (ctx) => {
-          toast.error(ctx.error.message);
-          setIsLoading(false);
-        },
-      }
-    );
-  };
-
-  const handleSocialLogin = async () => {
-    setIsLoading(true);
-    await authClient.signIn.social(
-      {
-        provider: "google",
-        callbackURL: `${window.location.origin}/books`,
-        errorCallbackURL: `${window.location.origin}/login`,
-      },
-      {
         onError: (ctx) => {
           toast.error(ctx.error.message);
           setIsLoading(false);
@@ -213,19 +196,8 @@ export default function SignupPage() {
               <span className="flex-1 h-px bg-border" />
             </div>
 
-            <button
-              type="button"
-              onClick={handleSocialLogin}
-              disabled={isLoading}
-              className="disabled:opacity-50 mx-auto block"
-            >
-              <Image
-                src="/google-signup.svg"
-                alt="Sign up with Google"
-                width={175}
-                height={40}
-              />
-            </button>
+            <SocialLogin mode="signUp" />
+
             <p className="text-xs text-muted-foreground text-center leading-relaxed">
               登録すると{" "}
               <Link
