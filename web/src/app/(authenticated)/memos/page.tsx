@@ -1,10 +1,8 @@
 "use client";
 
-import { useRef } from "react";
-import { keepPreviousData } from "@tanstack/react-query";
+import { useCallback, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { useGetApiMemos } from "@/external/api";
 import { PageNo } from "@/components/books/PageNo";
 import { Thumbnail } from "@/components/books/Thumbnail";
 import { Button } from "@/components/ui/button";
@@ -16,6 +14,8 @@ import {
 import { Spinner } from "@/components/ui/spinner";
 import { Search, SearchX } from "lucide-react";
 import Navigation from "@/components/Navigation";
+import { useInfiniteMemoSearch } from "@/shared/hooks/useInfiniteMemoSearch";
+import { useIntersectionObserver } from "@/shared/hooks/useIntersectionObserver";
 
 export default function MemosPage() {
   const router = useRouter();
@@ -23,11 +23,21 @@ export default function MemosPage() {
   const keyword = searchParams.get("q") ?? "";
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const { data, isLoading, error } = useGetApiMemos(
-    { q: keyword },
-    {
-      query: { enabled: keyword.length > 0, placeholderData: keepPreviousData },
-    }
+  const {
+    memos,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    error,
+  } = useInfiniteMemoSearch({ q: keyword });
+
+  const sentinelRef = useIntersectionObserver(
+    useCallback(() => {
+      if (hasNextPage && !isFetchingNextPage) {
+        fetchNextPage();
+      }
+    }, [hasNextPage, isFetchingNextPage, fetchNextPage])
   );
 
   const handleSearch = (e: React.SubmitEvent<HTMLFormElement>) => {
@@ -40,8 +50,6 @@ export default function MemosPage() {
   if (error) {
     throw error;
   }
-
-  const memos = data?.data ?? [];
 
   const highlightKeyword = (content: string) => {
     const escaped = keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -108,27 +116,35 @@ export default function MemosPage() {
             </p>
           </div>
         ) : (
-          <div className="space-y-2">
-            {memos.map((memo) => (
-              <Link
-                key={memo.id}
-                href={`/books/${memo.bookId}`}
-                className="flex gap-3 p-4 border rounded-lg hover:bg-muted/50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              >
-                <Thumbnail
-                  thumbnailUrl={memo.bookThumbnailUrl}
-                  title={memo.bookTitle}
-                  size="sm"
-                />
-                <div className="flex flex-col gap-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm truncate">{memo.bookTitle}</span>
-                    <PageNo pageNo={memo.pageNo} />
+          <div>
+            <div className="space-y-2">
+              {memos.map((memo) => (
+                <Link
+                  key={memo.id}
+                  href={`/books/${memo.bookId}`}
+                  className="flex gap-3 p-4 border rounded-lg hover:bg-muted/50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                >
+                  <Thumbnail
+                    thumbnailUrl={memo.bookThumbnailUrl}
+                    title={memo.bookTitle}
+                    size="sm"
+                  />
+                  <div className="flex flex-col gap-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm truncate">{memo.bookTitle}</span>
+                      <PageNo pageNo={memo.pageNo} />
+                    </div>
+                    <p>{highlightKeyword(memo.content)}</p>
                   </div>
-                  <p>{highlightKeyword(memo.content)}</p>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              ))}
+            </div>
+            {hasNextPage && !isLoading ? <div ref={sentinelRef} /> : null}
+            {isFetchingNextPage ? (
+              <div className="flex justify-center my-4">
+                <Spinner className="size-12" />
+              </div>
+            ) : null}
           </div>
         )}
       </div>

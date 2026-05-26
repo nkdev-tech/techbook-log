@@ -649,9 +649,14 @@ export type GetApiMemosParams = {
  * @minLength 1
  */
 q: string;
+cursor?: string;
+/**
+ * @nullable
+ */
+limit?: number | null;
 };
 
-export type GetApiMemos200Item = {
+export type GetApiMemos200MemosItem = {
   /**
      * @minimum -9007199254740991
      * @maximum 9007199254740991
@@ -674,6 +679,22 @@ export type GetApiMemos200Item = {
   bookTitle: string;
   /** @nullable */
   bookThumbnailUrl: string | null;
+};
+
+export type GetApiMemos200 = {
+  memos: GetApiMemos200MemosItem[];
+  /** @nullable */
+  nextCursor: string | null;
+};
+
+export type GetApiMemos400Error = {
+  name: string;
+  message: string;
+};
+
+export type GetApiMemos400 = {
+  success: boolean;
+  error: GetApiMemos400Error;
 };
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
@@ -1770,16 +1791,23 @@ export function useGetApiBookSearch<TData = Awaited<ReturnType<typeof getApiBook
 
 
 export type getApiMemosResponse200 = {
-  data: GetApiMemos200Item[]
+  data: GetApiMemos200
   status: 200
+}
+
+export type getApiMemosResponse400 = {
+  data: GetApiMemos400
+  status: 400
 }
 
 export type getApiMemosResponseSuccess = (getApiMemosResponse200) & {
   headers: Headers;
 };
-;
+export type getApiMemosResponseError = (getApiMemosResponse400) & {
+  headers: Headers;
+};
 
-export type getApiMemosResponse = (getApiMemosResponseSuccess)
+export type getApiMemosResponse = (getApiMemosResponseSuccess | getApiMemosResponseError)
 
 export const getGetApiMemosUrl = (params: GetApiMemosParams,) => {
   const normalizedParams = new URLSearchParams();
@@ -1818,7 +1846,7 @@ export const getGetApiMemosQueryKey = (params?: GetApiMemosParams,) => {
     }
 
 
-export const getGetApiMemosQueryOptions = <TData = Awaited<ReturnType<typeof getApiMemos>>, TError = unknown>(params: GetApiMemosParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiMemos>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+export const getGetApiMemosQueryOptions = <TData = Awaited<ReturnType<typeof getApiMemos>>, TError = GetApiMemos400>(params: GetApiMemosParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiMemos>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
@@ -1837,10 +1865,10 @@ const {query: queryOptions, request: requestOptions} = options ?? {};
 }
 
 export type GetApiMemosQueryResult = NonNullable<Awaited<ReturnType<typeof getApiMemos>>>
-export type GetApiMemosQueryError = unknown
+export type GetApiMemosQueryError = GetApiMemos400
 
 
-export function useGetApiMemos<TData = Awaited<ReturnType<typeof getApiMemos>>, TError = unknown>(
+export function useGetApiMemos<TData = Awaited<ReturnType<typeof getApiMemos>>, TError = GetApiMemos400>(
  params: GetApiMemosParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiMemos>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getApiMemos>>,
@@ -1850,7 +1878,7 @@ export function useGetApiMemos<TData = Awaited<ReturnType<typeof getApiMemos>>, 
       >, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetApiMemos<TData = Awaited<ReturnType<typeof getApiMemos>>, TError = unknown>(
+export function useGetApiMemos<TData = Awaited<ReturnType<typeof getApiMemos>>, TError = GetApiMemos400>(
  params: GetApiMemosParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiMemos>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getApiMemos>>,
@@ -1860,12 +1888,12 @@ export function useGetApiMemos<TData = Awaited<ReturnType<typeof getApiMemos>>, 
       >, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetApiMemos<TData = Awaited<ReturnType<typeof getApiMemos>>, TError = unknown>(
+export function useGetApiMemos<TData = Awaited<ReturnType<typeof getApiMemos>>, TError = GetApiMemos400>(
  params: GetApiMemosParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiMemos>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
-export function useGetApiMemos<TData = Awaited<ReturnType<typeof getApiMemos>>, TError = unknown>(
+export function useGetApiMemos<TData = Awaited<ReturnType<typeof getApiMemos>>, TError = GetApiMemos400>(
  params: GetApiMemosParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiMemos>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
