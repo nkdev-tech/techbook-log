@@ -81,6 +81,10 @@ export const auth = betterAuth({
       clientId: env.GOOGLE_CLIENT_ID as string,
       clientSecret: env.GOOGLE_CLIENT_SECRET as string,
     },
+    github: {
+      clientId: env.GITHUB_CLIENT_ID as string,
+      clientSecret: env.GITHUB_CLIENT_SECRET as string,
+    },
   },
   secret: env.BETTER_AUTH_SECRET as string,
   trustedOrigins: [env.ORIGIN_URL as string],
