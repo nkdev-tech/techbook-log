@@ -5,7 +5,7 @@ import {
   type SelectMemo,
   type MemoSearchResult,
 } from '../entity/memo'
-import { and, asc, desc, eq, inArray, like } from 'drizzle-orm'
+import { and, asc, desc, eq, gt, inArray, like, lt, or } from 'drizzle-orm'
 
 export const MemoRepository = {
   findByBookId: async (
@@ -91,8 +91,21 @@ export const MemoRepository = {
   findByKeyword: async (
     userId: string,
     keyword: string,
+    lastId?: string,
+    lastCreatedAt?: string,
+    limit?: number,
   ): Promise<MemoSearchResult[]> => {
     const escaped = keyword.replace(/%/g, '\\%').replace(/_/g, '\\_')
+    const cursorCondition =
+      lastId && lastCreatedAt
+        ? or(
+            lt(memoTable.createdAt, lastCreatedAt),
+            and(
+              eq(memoTable.createdAt, lastCreatedAt),
+              gt(memoTable.id, Number(lastId)),
+            ),
+          )
+        : undefined
     return await db
       .select({
         id: memoTable.id,
@@ -110,8 +123,10 @@ export const MemoRepository = {
         and(
           eq(bookTable.userId, userId),
           like(memoTable.content, `%${escaped}%`),
+          cursorCondition,
         ),
       )
-      .orderBy(desc(memoTable.createdAt))
+      .orderBy(desc(memoTable.createdAt), asc(memoTable.id))
+      .limit(limit ?? 20)
   },
 }
