@@ -17,9 +17,9 @@ import {
 } from "@/components/ui/sidebar";
 
 const navItems = [
-  { label: "memetec.について", href: "/about", icon: Info },
   { label: "書籍一覧", href: "/books", icon: BookOpen },
   { label: "メモ検索", href: "/memos", icon: Search },
+  { label: "memetec.について", href: "/about", icon: Info },
 ];
 
 export default function SidebarNav() {

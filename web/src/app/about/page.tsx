@@ -23,22 +23,22 @@ export default function AboutPage() {
       <section className="h-screen bg-primary flex flex-col justify-center px-10 py-20 text-primary-foreground">
         <div
           ref={section1ref}
-          className="max-w-2xl mx-auto w-full flex flex-col gap-10 opacity-0 transition-all duration-700"
+          className="max-w-2xl mx-auto w-full flex flex-col gap-10 opacity-0 transition-opacity duration-700"
         >
           <div className="flex items-center gap-3">
             <LogoMark size={28} color="white" />
             <Wordmark size={24} color="currentColor" />
           </div>
           <div className="flex flex-col gap-5">
-            <p className="font-mono text-xs tracking-[0.2em] uppercase text-primary-foreground/70">
+            <p className="font-mono text-xs tracking-widest uppercase text-primary-foreground/70">
               About memetec.
             </p>
-            <h1 className="font-serif italic text-5xl font-normal leading-[1.15] tracking-[-0.015em]">
+            <h1 className="font-serif italic text-5xl font-normal leading-[1.15] tracking-tight">
               A quiet place
               <br />
               for your technical reading notes.
             </h1>
-            <p className="text-primary-foreground/75 text-sm/8">
+            <p className="text-primary-foreground/70 text-sm/8">
               技術書を読んでも、時間が経つと内容を忘れてしまう。自分でノートにまとめるのは面倒くさい。
               <br />
               memetec.
@@ -58,13 +58,13 @@ export default function AboutPage() {
       <section className="min-h-screen bg-background flex flex-col justify-center px-10 py-20">
         <div
           ref={section2ref}
-          className="max-w-2xl mx-auto w-full flex flex-col gap-10 opacity-0 transition-all duration-700"
+          className="max-w-2xl mx-auto w-full flex flex-col gap-10 opacity-0 transition-opacity duration-700"
         >
           <div>
-            <p className="font-mono text-xs tracking-[0.2em] uppercase text-muted-foreground">
+            <p className="font-mono text-xs tracking-widest uppercase text-muted-foreground">
               Tech Stack
             </p>
-            <h2 className="mt-3 font-serif italic text-4xl font-normal tracking-[-0.015em]">
+            <h2 className="mt-3 font-serif italic text-4xl font-normal tracking-tight">
               Built with.
             </h2>
           </div>
