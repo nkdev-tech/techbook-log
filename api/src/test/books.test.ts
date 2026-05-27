@@ -41,6 +41,7 @@ describe('books', () => {
         cursor:
           'JTdCJTIybGFzdElkJTIyJTNBMSUyQyUyMmxhc3RDcmVhdGVkQXQlMjIlM0ElMjIyMDI2LTAxLTAxVDAwJTNBMDAlM0EwMC4wMDBaJTIyJTJDJTIybGFzdFRpdGxlJTIyJTNBJTIyJUUzJTgyJUJGJUUzJTgyJUE0JUUzJTgzJTg4JUUzJTgzJUFCJTIyJTJDJTIybGFzdFJhdGluZyUyMiUzQTMlN0Q=',
         limit: 20,
+        q: 'event',
       },
     })
     expect(res.status).toBe(200)

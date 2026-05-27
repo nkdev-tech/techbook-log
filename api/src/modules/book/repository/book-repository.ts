@@ -7,7 +7,7 @@ import {
   type BookSortBy,
   type BookSortOrder,
 } from '../entity/book'
-import { and, eq, gt, inArray, lt, or, sql } from 'drizzle-orm'
+import { and, eq, gt, inArray, like, lt, or, sql } from 'drizzle-orm'
 
 export const BookRepository = {
   findAll: async (
@@ -21,6 +21,7 @@ export const BookRepository = {
     lastTitle?: string,
     lastRating?: number | null,
     limit?: number,
+    keyword?: string,
   ): Promise<Book[]> => {
     const columnMap = {
       createdAt: bookTable.createdAt,
@@ -46,6 +47,15 @@ export const BookRepository = {
               and(eq(sortColumn, lastSortValue), lt(bookTable.id, lastId)),
             )
         : undefined
+    const escaped = keyword
+      ? keyword.replace(/%/g, '\\%').replace(/_/g, '\\_')
+      : ''
+    const keywordCondition = keyword
+      ? or(
+          like(bookTable.title, `%${escaped}%`),
+          like(bookTable.author, `%${escaped}%`),
+        )
+      : undefined
 
     if (query.length === 0) {
       const rows = await db.query.bookTable.findMany({
@@ -53,6 +63,7 @@ export const BookRepository = {
           inArray(bookTable.userId, [userId]),
           status ? eq(bookTable.status, status) : undefined,
           cursorCondition,
+          keywordCondition,
         ),
         orderBy: (fields, { asc, desc }) => [
           order === 'asc' ? asc(sortColumn) : desc(sortColumn),
@@ -87,6 +98,7 @@ export const BookRepository = {
         ),
         status ? eq(bookTable.status, status) : undefined,
         cursorCondition,
+        keywordCondition,
       ),
       orderBy: (fields, { asc, desc }) => [
         order === 'asc' ? asc(sortColumn) : desc(sortColumn),

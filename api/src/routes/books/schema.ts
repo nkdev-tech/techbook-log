@@ -110,6 +110,7 @@ export const querySchema = z.object({
   order: z.enum(['asc', 'desc']).optional().openapi({ example: 'asc' }),
   cursor: z.string().optional().openapi({ example: 'eyJsYXN0SWQiOjF9' }),
   limit: z.coerce.number().optional().openapi({ example: 20 }),
+  q: z.string().optional().openapi({ example: 'event' }),
 })
 
 export const errorResBodySchema = z.object({

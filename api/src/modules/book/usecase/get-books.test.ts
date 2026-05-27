@@ -65,6 +65,7 @@ describe('getBooks', () => {
     const order = undefined
     const cursor = undefined
     const limit = undefined
+    const keyword = undefined
     const result = await getBooks(
       userId,
       tags,
@@ -73,6 +74,7 @@ describe('getBooks', () => {
       order,
       cursor,
       limit,
+      keyword,
     )
 
     expect(result).toEqual({ books: mockBooks, nextCursor: null })
@@ -87,6 +89,7 @@ describe('getBooks', () => {
       undefined,
       undefined,
       20,
+      keyword,
     )
   })
 
@@ -118,6 +121,7 @@ describe('getBooks', () => {
     const order = undefined
     const cursor = undefined
     const limit = undefined
+    const keyword = undefined
     const result = await getBooks(
       userId,
       tags,
@@ -126,6 +130,7 @@ describe('getBooks', () => {
       order,
       cursor,
       limit,
+      keyword,
     )
 
     expect(result).toEqual({ books: mockBooks, nextCursor: null })
@@ -140,6 +145,7 @@ describe('getBooks', () => {
       undefined,
       undefined,
       20,
+      keyword,
     )
   })
 
@@ -171,6 +177,7 @@ describe('getBooks', () => {
     const order = undefined
     const cursor = undefined
     const limit = undefined
+    const keyword = undefined
     const result = await getBooks(
       userId,
       tags,
@@ -179,6 +186,7 @@ describe('getBooks', () => {
       order,
       cursor,
       limit,
+      keyword,
     )
 
     expect(result).toEqual({ books: mockBooks, nextCursor: null })
@@ -193,6 +201,7 @@ describe('getBooks', () => {
       undefined,
       undefined,
       20,
+      keyword,
     )
   })
 
@@ -254,6 +263,7 @@ describe('getBooks', () => {
     const order = 'asc'
     const cursor = undefined
     const limit = undefined
+    const keyword = undefined
     const result = await getBooks(
       userId,
       tags,
@@ -262,6 +272,7 @@ describe('getBooks', () => {
       order,
       cursor,
       limit,
+      keyword,
     )
 
     expect(result).toEqual({ books: mockBooks, nextCursor: null })
@@ -276,6 +287,7 @@ describe('getBooks', () => {
       undefined,
       undefined,
       20,
+      keyword,
     )
   })
 
@@ -350,6 +362,7 @@ describe('getBooks', () => {
       ),
     )
     const limit = 3
+    const keyword = undefined
     const result = await getBooks(
       userId,
       tags,
@@ -358,6 +371,7 @@ describe('getBooks', () => {
       order,
       cursor,
       limit,
+      keyword,
     )
 
     expect(result.books).toEqual(mockBooks)
@@ -373,6 +387,93 @@ describe('getBooks', () => {
       lastTitle,
       lastRating,
       limit,
+      keyword,
+    )
+  })
+
+  it('can get books filtered by keyword', async () => {
+    const mockBooks = [
+      {
+        id: 1,
+        isbn: '1234567890123',
+        title: 'タイトル1',
+        author: '著者1',
+        publisher: '出版社名',
+        thumbnailUrl: 'https://books.google.com/',
+        status: 'unread' as const,
+        rating: 3,
+        finishedAt: '2026-01-01',
+        userId: '1',
+        createdAt: '2026-01-01T00:00:00.000Z',
+        updatedAt: '2026-01-01T00:00:00.000Z',
+        tags: [{ id: 1, name: 'React' }],
+      },
+      {
+        id: 2,
+        isbn: '2345678901234',
+        title: 'タイトル2',
+        author: '著者2',
+        publisher: '出版社名',
+        thumbnailUrl: 'https://books.google.com/',
+        status: 'reading' as const,
+        rating: 4,
+        finishedAt: '2026-01-02',
+        userId: '1',
+        createdAt: '2026-01-01T00:00:00.000Z',
+        updatedAt: '2026-01-01T00:00:00.000Z',
+        tags: [],
+      },
+      {
+        id: 3,
+        isbn: '3456789012345',
+        title: 'タイトル3',
+        author: '著者3',
+        publisher: '出版社名',
+        thumbnailUrl: 'https://books.google.com/',
+        status: 'done' as const,
+        rating: 5,
+        finishedAt: '2026-01-03',
+        userId: '1',
+        createdAt: '2026-01-01T00:00:00.000Z',
+        updatedAt: '2026-01-01T00:00:00.000Z',
+        tags: [],
+      },
+    ]
+
+    vi.mocked(BookRepository.findAll).mockResolvedValue(mockBooks)
+
+    const userId = '1'
+    const tags = [] as string[]
+    const status = undefined
+    const sortBy = undefined
+    const order = undefined
+    const cursor = undefined
+    const limit = undefined
+    const keyword = 'event'
+    const result = await getBooks(
+      userId,
+      tags,
+      status,
+      sortBy,
+      order,
+      cursor,
+      limit,
+      keyword,
+    )
+
+    expect(result).toEqual({ books: mockBooks, nextCursor: null })
+    expect(BookRepository.findAll).toHaveBeenCalledWith(
+      userId,
+      tags,
+      status,
+      sortBy,
+      order,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      20,
+      keyword,
     )
   })
 })

@@ -172,7 +172,8 @@ const deleteBookRoute = createRoute({
 
 const app = new OpenAPIHono<AuthVariables>()
   .openapi(getBooksRoute, async (c) => {
-    const { tags, status, sortBy, order, cursor, limit } = c.req.valid('query')
+    const { tags, status, sortBy, order, cursor, limit, q } =
+      c.req.valid('query')
     const tagArray = tags ? tags.split(',').filter(Boolean) : []
     const userId = c.get('user').id
     try {
@@ -184,6 +185,7 @@ const app = new OpenAPIHono<AuthVariables>()
         order ?? 'desc',
         cursor,
         limit,
+        q,
       )
       return c.json(result, 200)
     } catch (err) {
