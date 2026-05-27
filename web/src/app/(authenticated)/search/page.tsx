@@ -138,7 +138,7 @@ function SearchContent() {
             <TabsTrigger value="books">本</TabsTrigger>
             <TabsTrigger value="memos">メモ</TabsTrigger>
           </TabsList>
-          <TabsContent value="books" className="pb-8">
+          <TabsContent value="books">
             {booksIsLoading ? (
               <div className="flex justify-center items-center h-full min-h-[60vh]">
                 <Spinner className="size-12" />
@@ -190,7 +190,7 @@ function SearchContent() {
               </div>
             )}
           </TabsContent>
-          <TabsContent value="memos" className="px-8 pb-8">
+          <TabsContent value="memos">
             {memosIsLoading ? (
               <div className="flex justify-center items-center h-full min-h-[60vh]">
                 <Spinner className="size-12" />
