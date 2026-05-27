@@ -46,10 +46,21 @@ describe('memos search', () => {
     expect(json).toEqual({ memos: [], nextCursor: null })
   })
 
-  it('cannot search memos with invalid query', async () => {
+  it('cannot search memos with invalid keyword', async () => {
     const res = await client.api.memos.$get({
       query: {
         q: '',
+      },
+    })
+    expect(res.status).toBe(400)
+  })
+
+  it('cannot search memos with invalid cursor', async () => {
+    const res = await client.api.memos.$get({
+      query: {
+        q: 'メモ',
+        cursor: 'invalid-cursor',
+        limit: 20,
       },
     })
     expect(res.status).toBe(400)

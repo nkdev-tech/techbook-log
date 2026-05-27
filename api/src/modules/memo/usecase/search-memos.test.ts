@@ -53,7 +53,7 @@ describe('searchMemos', () => {
       keyword,
       undefined,
       undefined,
-      undefined,
+      20,
     )
   })
 
@@ -95,7 +95,7 @@ describe('searchMemos', () => {
 
     const userId = '1'
     const keyword = 'メモ'
-    const lastId = '3'
+    const lastId = 3
     const lastCreatedAt = '2026-01-01T00:00:00.000Z'
     const cursor = btoa(
       encodeURIComponent(

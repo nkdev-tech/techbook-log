@@ -1,6 +1,6 @@
 import { OpenAPIHono } from '@hono/zod-openapi'
 import { getBook } from '../../modules/book/usecase/get-book'
-import { getBooks } from '../../modules/book/usecase/get-books'
+import { getBooks, BadRequestError } from '../../modules/book/usecase/get-books'
 import { createBook } from '../../modules/book/usecase/create-book'
 import { updateBook } from '../../modules/book/usecase/update-book'
 import { deleteBook } from '../../modules/book/usecase/delete-book'
@@ -186,14 +186,17 @@ const app = new OpenAPIHono<AuthVariables>()
         limit,
       )
       return c.json(result, 200)
-    } catch {
-      return c.json(
-        {
-          success: false,
-          error: { name: 'BadRequest', message: '不正なデータです' },
-        },
-        400,
-      )
+    } catch (err) {
+      if (err instanceof BadRequestError) {
+        return c.json(
+          {
+            success: false,
+            error: { name: 'BadRequest', message: '不正なデータです' },
+          },
+          400,
+        )
+      }
+      throw err
     }
   })
   .openapi(createBookRoute, async (c) => {

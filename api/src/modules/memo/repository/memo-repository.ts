@@ -91,7 +91,7 @@ export const MemoRepository = {
   findByKeyword: async (
     userId: string,
     keyword: string,
-    lastId?: string,
+    lastId?: number,
     lastCreatedAt?: string,
     limit?: number,
   ): Promise<MemoSearchResult[]> => {
@@ -102,7 +102,7 @@ export const MemoRepository = {
             lt(memoTable.createdAt, lastCreatedAt),
             and(
               eq(memoTable.createdAt, lastCreatedAt),
-              gt(memoTable.id, Number(lastId)),
+              gt(memoTable.id, lastId),
             ),
           )
         : undefined
