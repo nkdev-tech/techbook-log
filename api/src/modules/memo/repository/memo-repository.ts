@@ -95,7 +95,15 @@ export const MemoRepository = {
     lastCreatedAt?: string,
     limit?: number,
   ): Promise<MemoSearchResult[]> => {
-    const escaped = keyword.replace(/%/g, '\\%').replace(/_/g, '\\_')
+    const escaped = keyword
+      ? keyword
+          .split(/\s+/)
+          .filter(Boolean)
+          .map((s) => s.replace(/%/g, '\\%').replace(/_/g, '\\_'))
+      : []
+    const keywordCondition = keyword
+      ? and(...escaped.map((s) => like(memoTable.content, `%${s}%`)))
+      : undefined
     const cursorCondition =
       lastId && lastCreatedAt
         ? or(
@@ -120,11 +128,7 @@ export const MemoRepository = {
       .from(memoTable)
       .innerJoin(bookTable, eq(memoTable.bookId, bookTable.id))
       .where(
-        and(
-          eq(bookTable.userId, userId),
-          like(memoTable.content, `%${escaped}%`),
-          cursorCondition,
-        ),
+        and(eq(bookTable.userId, userId), cursorCondition, keywordCondition),
       )
       .orderBy(desc(memoTable.createdAt), asc(memoTable.id))
       .limit(limit ?? 20)

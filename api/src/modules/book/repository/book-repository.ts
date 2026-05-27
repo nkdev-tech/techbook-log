@@ -48,12 +48,19 @@ export const BookRepository = {
             )
         : undefined
     const escaped = keyword
-      ? keyword.replace(/%/g, '\\%').replace(/_/g, '\\_')
-      : ''
+      ? keyword
+          .split(/\s+/)
+          .filter(Boolean)
+          .map((s) => s.replace(/%/g, '\\%').replace(/_/g, '\\_'))
+      : []
     const keywordCondition = keyword
-      ? or(
-          like(bookTable.title, `%${escaped}%`),
-          like(bookTable.author, `%${escaped}%`),
+      ? and(
+          ...escaped.map((s) =>
+            or(
+              like(bookTable.title, `%${s}%`),
+              like(bookTable.author, `%${s}%`),
+            ),
+          ),
         )
       : undefined
 
