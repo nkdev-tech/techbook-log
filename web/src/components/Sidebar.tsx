@@ -18,7 +18,7 @@ import {
 
 const navItems = [
   { label: "書籍一覧", href: "/books", icon: BookOpen },
-  { label: "メモ検索", href: "/memos", icon: Search },
+  { label: "検索", href: "/search", icon: Search },
   { label: "memetec.について", href: "/about", icon: Info },
 ];
 

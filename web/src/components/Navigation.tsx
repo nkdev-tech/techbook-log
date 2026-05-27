@@ -17,7 +17,7 @@ export const PageRoute = {
   BOOKS_NEW: { pattern: /^\/books\/new$/, label: "新規登録" },
   BOOKS_DETAIL: { pattern: /^\/books\/\d+$/, label: "詳細" },
   BOOKS_EDIT: { pattern: /^\/books\/\d+\/edit$/, label: "編集" },
-  MEMOS: { pattern: /^\/memos$/, label: "メモ検索" },
+  SEARCH: { pattern: /^\/search$/, label: "検索" },
   SETTINGS: { pattern: /^\/settings$/, label: "設定" },
 } as const;
 
