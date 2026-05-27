@@ -64,6 +64,9 @@ export default function Header({
       return;
     }
     router.push(`/search?q=${encodeURIComponent(value)}`);
+    if (inputRef.current !== null) {
+      inputRef.current.value = "";
+    }
   };
 
   return (
@@ -82,7 +85,12 @@ export default function Header({
               <InputGroupAddon>
                 <Search className="text-muted-foreground" />
               </InputGroupAddon>
-              <InputGroupInput id="keyword" name="keyword" ref={inputRef} />
+              <InputGroupInput
+                id="keyword"
+                name="keyword"
+                ref={inputRef}
+                className="pb-px"
+              />
             </InputGroup>
           </form>
           {session && (
