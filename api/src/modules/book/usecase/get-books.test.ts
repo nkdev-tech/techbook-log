@@ -86,7 +86,7 @@ describe('getBooks', () => {
       undefined,
       undefined,
       undefined,
-      limit,
+      20,
     )
   })
 
@@ -139,7 +139,7 @@ describe('getBooks', () => {
       undefined,
       undefined,
       undefined,
-      limit,
+      20,
     )
   })
 
@@ -192,7 +192,7 @@ describe('getBooks', () => {
       undefined,
       undefined,
       undefined,
-      limit,
+      20,
     )
   })
 
@@ -275,7 +275,7 @@ describe('getBooks', () => {
       undefined,
       undefined,
       undefined,
-      limit,
+      20,
     )
   })
 
@@ -335,7 +335,7 @@ describe('getBooks', () => {
     const status = undefined
     const sortBy = undefined
     const order = undefined
-    const lastId = '3'
+    const lastId = 3
     const lastCreatedAt = '2026-01-01T00:00:00.000Z'
     const lastTitle = 'タイトル3'
     const lastRating = 3

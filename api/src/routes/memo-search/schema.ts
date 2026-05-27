@@ -6,7 +6,7 @@ const { createSelectSchema } = createSchemaFactory({
   zodInstance: z,
 })
 
-export const memoSearchSchema = createSelectSchema(memoTable, {
+const memoSearchSchema = createSelectSchema(memoTable, {
   id: (schema) => schema.openapi({ example: 1 }),
   bookId: (schema) => schema.openapi({ example: 1 }),
   content: (schema) => schema.openapi({ example: 'This is a memo.' }),
@@ -15,16 +15,29 @@ export const memoSearchSchema = createSelectSchema(memoTable, {
     schema.openapi({ example: '2026-01-01T00:00:00.000Z' }),
   updatedAt: (schema) =>
     schema.openapi({ example: '2026-01-01T00:00:00.000Z' }),
+}).extend({
+  bookTitle: z.string().openapi({ example: 'タイトル' }),
+  bookThumbnailUrl: z
+    .string()
+    .nullable()
+    .openapi({ example: 'https://books.google.com/' }),
 })
-  .extend({
-    bookTitle: z.string().openapi({ example: 'タイトル' }),
-    bookThumbnailUrl: z
-      .string()
-      .nullable()
-      .openapi({ example: 'https://books.google.com/' }),
-  })
-  .array()
+
+export const searchMemosSchema = z.object({
+  memos: memoSearchSchema.array(),
+  nextCursor: z.string().nullable(),
+})
 
 export const querySchema = z.object({
   q: z.string().min(1).openapi({ example: 'メモ' }),
+  cursor: z.string().optional().openapi({ example: 'eyJsYXN0SWQiOjF9' }),
+  limit: z.coerce.number().optional().openapi({ example: 20 }),
+})
+
+export const errorResBodySchema = z.object({
+  success: z.boolean(),
+  error: z.object({
+    name: z.string(),
+    message: z.string().openapi({ example: 'Bad Request' }),
+  }),
 })

@@ -16,10 +16,10 @@ export const BookRepository = {
     status?: Book['status'],
     sortBy?: BookSortBy,
     order?: BookSortOrder,
-    lastId?: string,
+    lastId?: number,
     lastCreatedAt?: string,
     lastTitle?: string,
-    lastRating?: number,
+    lastRating?: number | null,
     limit?: number,
   ): Promise<Book[]> => {
     const columnMap = {
@@ -35,21 +35,15 @@ export const BookRepository = {
           ? lastRating
           : lastCreatedAt
     const cursorCondition =
-      lastId && lastSortValue !== undefined
+      lastId && lastSortValue !== undefined && lastSortValue !== null
         ? order === 'asc'
           ? or(
               gt(sortColumn, lastSortValue),
-              and(
-                eq(sortColumn, lastSortValue),
-                gt(bookTable.id, Number(lastId)),
-              ),
+              and(eq(sortColumn, lastSortValue), gt(bookTable.id, lastId)),
             )
           : or(
               lt(sortColumn, lastSortValue),
-              and(
-                eq(sortColumn, lastSortValue),
-                lt(bookTable.id, Number(lastId)),
-              ),
+              and(eq(sortColumn, lastSortValue), lt(bookTable.id, lastId)),
             )
         : undefined
 

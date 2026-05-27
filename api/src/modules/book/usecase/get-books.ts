@@ -1,11 +1,22 @@
 import { BookRepository } from '../repository/book-repository'
 import { type Book, type BookSortBy, type BookSortOrder } from '../entity/book'
+import { z } from 'zod'
+
+export class BadRequestError extends Error {}
+
+const cursorSchema = z.object({
+  lastId: z.number(),
+  lastCreatedAt: z.string(),
+  lastTitle: z.string(),
+  lastRating: z.number().nullable(),
+})
 
 const decode = (cursor: string) => {
   try {
-    return JSON.parse(decodeURIComponent(atob(cursor)))
+    const parsed = JSON.parse(decodeURIComponent(atob(cursor)))
+    return cursorSchema.parse(parsed)
   } catch {
-    throw { status: 400, message: 'Bad Request' }
+    throw new BadRequestError('invalid cursor')
   }
 }
 
@@ -21,6 +32,7 @@ export const getBooks = async (
   const { lastId, lastCreatedAt, lastTitle, lastRating } = cursor
     ? decode(cursor)
     : {}
+  const effectiveLimit = limit ?? 20
   const result = await BookRepository.findAll(
     userId,
     query,
@@ -31,13 +43,13 @@ export const getBooks = async (
     lastCreatedAt,
     lastTitle,
     lastRating,
-    limit,
+    effectiveLimit,
   )
   const lastBook = result[result.length - 1]
   return {
     books: result,
     nextCursor:
-      result.length === limit
+      result.length === effectiveLimit
         ? btoa(
             encodeURIComponent(
               JSON.stringify({
