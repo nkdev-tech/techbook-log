@@ -134,7 +134,6 @@ describe('createBook', () => {
       tags: [{ id: 1, name: 'React', createdAt: '2026-01-01T00:00:00.000Z' }],
     }
 
-    vi.mocked(BookRepository.findByIsbn).mockResolvedValue(null)
     vi.mocked(BookRepository.create).mockResolvedValue(mockBook)
     vi.mocked(BookRepository.findById).mockResolvedValue(mockBook)
     vi.mocked(TagRepository.findOrCreate).mockResolvedValue({

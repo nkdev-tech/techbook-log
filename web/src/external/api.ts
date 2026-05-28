@@ -218,6 +218,16 @@ export type PostApiBooks400 = {
   error: PostApiBooks400Error;
 };
 
+export type PostApiBooks409Error = {
+  name: string;
+  message: string;
+};
+
+export type PostApiBooks409 = {
+  success: boolean;
+  error: PostApiBooks409Error;
+};
+
 export type GetApiBooksId200Status = typeof GetApiBooksId200Status[keyof typeof GetApiBooksId200Status];
 
 
@@ -831,10 +841,15 @@ export type postApiBooksResponse400 = {
   status: 400
 }
 
+export type postApiBooksResponse409 = {
+  data: PostApiBooks409
+  status: 409
+}
+
 export type postApiBooksResponseSuccess = (postApiBooksResponse201) & {
   headers: Headers;
 };
-export type postApiBooksResponseError = (postApiBooksResponse400) & {
+export type postApiBooksResponseError = (postApiBooksResponse400 | postApiBooksResponse409) & {
   headers: Headers;
 };
 
@@ -863,7 +878,7 @@ export const postApiBooks = async (postApiBooksBody: PostApiBooksBody, options?:
 
 
 
-export const getPostApiBooksMutationOptions = <TError = PostApiBooks400,
+export const getPostApiBooksMutationOptions = <TError = PostApiBooks400 | PostApiBooks409,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiBooks>>, TError,{data: PostApiBooksBody}, TContext>, request?: SecondParameter<typeof customFetch>}
 ): UseMutationOptions<Awaited<ReturnType<typeof postApiBooks>>, TError,{data: PostApiBooksBody}, TContext> => {
 
@@ -892,9 +907,9 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
     export type PostApiBooksMutationResult = NonNullable<Awaited<ReturnType<typeof postApiBooks>>>
     export type PostApiBooksMutationBody = PostApiBooksBody
-    export type PostApiBooksMutationError = PostApiBooks400
+    export type PostApiBooksMutationError = PostApiBooks400 | PostApiBooks409
 
-    export const usePostApiBooks = <TError = PostApiBooks400,
+    export const usePostApiBooks = <TError = PostApiBooks400 | PostApiBooks409,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiBooks>>, TError,{data: PostApiBooksBody}, TContext>, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiBooks>>,
