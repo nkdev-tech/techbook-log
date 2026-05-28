@@ -156,4 +156,18 @@ export const BookRepository = {
       .get()
     return result ? toBook(result) : null
   },
+  findByIsbn: async (isbn: string, userId: string): Promise<Book | null> => {
+    const result = await db.query.bookTable.findFirst({
+      where: and(eq(bookTable.isbn, isbn), eq(bookTable.userId, userId)),
+      with: {
+        taggings: {
+          orderBy: (taggings, { asc }) => [asc(taggings.order)],
+          with: {
+            tag: true,
+          },
+        },
+      },
+    })
+    return result ? toBook(result) : null
+  },
 }

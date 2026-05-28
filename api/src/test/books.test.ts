@@ -65,6 +65,7 @@ describe('books', () => {
       updatedAt: '2026-01-01T00:00:00.000Z',
       tags: [{ id: 1, name: 'React' }],
     }
+    vi.mocked(BookRepository.findByIsbn).mockResolvedValue(null)
     vi.mocked(BookRepository.create).mockResolvedValue(mockBook)
     vi.mocked(BookRepository.findById).mockResolvedValue(mockBook)
     vi.mocked(TagRepository.findOrCreate).mockResolvedValue({
@@ -106,7 +107,41 @@ describe('books', () => {
     expect(res.status).toBe(400)
   })
 
+  it('cannot create book with same isbn', async () => {
+    const mockBook = {
+      id: 1,
+      isbn: '1234567890123',
+      title: 'タイトル',
+      author: '著者名',
+      publisher: '出版社名',
+      thumbnailUrl: 'https://books.google.com/',
+      status: 'unread' as const,
+      rating: null,
+      finishedAt: null,
+      userId: '1',
+      createdAt: '2026-01-01T00:00:00.000Z',
+      updatedAt: '2026-01-01T00:00:00.000Z',
+      tags: [{ id: 1, name: 'React' }],
+    }
+    vi.mocked(BookRepository.findByIsbn).mockResolvedValue(mockBook)
+    const res = await client.api.books.$post({
+      json: {
+        isbn: '1234567890123',
+        title: 'タイトル',
+        author: '著者名',
+        publisher: '出版社名',
+        thumbnailUrl: 'https://books.google.com/',
+        status: 'unread' as const,
+        rating: null,
+        finishedAt: null,
+        tags: [{ name: 'React' }],
+      },
+    })
+    expect(res.status).toBe(409)
+  })
+
   it('cannot create book with DB error', async () => {
+    vi.mocked(BookRepository.findByIsbn).mockResolvedValue(null)
     vi.mocked(BookRepository.create).mockRejectedValue(new Error('DB error'))
     const res = await client.api.books.$post({
       json: {

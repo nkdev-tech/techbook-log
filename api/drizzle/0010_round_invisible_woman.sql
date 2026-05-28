@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX `book_isbn_userId_idx` ON `books` (`isbn`,`user_id`);
