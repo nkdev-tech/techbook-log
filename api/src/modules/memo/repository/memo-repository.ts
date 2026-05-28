@@ -5,7 +5,7 @@ import {
   type SelectMemo,
   type MemoSearchResult,
 } from '../entity/memo'
-import { and, asc, desc, eq, gt, inArray, like, lt, or } from 'drizzle-orm'
+import { and, asc, desc, eq, gt, inArray, lt, or, sql } from 'drizzle-orm'
 
 export const MemoRepository = {
   findByBookId: async (
@@ -102,7 +102,11 @@ export const MemoRepository = {
           .map((s) => s.replace(/%/g, '\\%').replace(/_/g, '\\_'))
       : []
     const keywordCondition = keyword
-      ? and(...escaped.map((s) => like(memoTable.content, `%${s}%`)))
+      ? and(
+          ...escaped.map(
+            (s) => sql`${memoTable.content} LIKE ${'%' + s + '%'} ESCAPE '\\'`,
+          ),
+        )
       : undefined
     const cursorCondition =
       lastId && lastCreatedAt

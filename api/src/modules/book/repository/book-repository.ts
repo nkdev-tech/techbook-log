@@ -7,7 +7,7 @@ import {
   type BookSortBy,
   type BookSortOrder,
 } from '../entity/book'
-import { and, eq, gt, inArray, like, lt, or, sql } from 'drizzle-orm'
+import { and, eq, gt, inArray, lt, or, sql } from 'drizzle-orm'
 
 export const BookRepository = {
   findAll: async (
@@ -57,8 +57,8 @@ export const BookRepository = {
       ? and(
           ...escaped.map((s) =>
             or(
-              like(bookTable.title, `%${s}%`),
-              like(bookTable.author, `%${s}%`),
+              sql`${bookTable.title} LIKE ${'%' + s + '%'} ESCAPE '\\'`,
+              sql`${bookTable.author} LIKE ${'%' + s + '%'} ESCAPE '\\'`,
             ),
           ),
         )
