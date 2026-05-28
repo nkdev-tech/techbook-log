@@ -225,7 +225,7 @@ const app = new OpenAPIHono<AuthVariables>()
             success: false,
             error: {
               name: 'Conflict',
-              message: 'このISBNの本は既に登録されています',
+              message: 'この本はすでに登録されています',
             },
           },
           409,
