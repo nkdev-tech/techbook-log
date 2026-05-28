@@ -34,6 +34,7 @@ cursor?: string;
  * @nullable
  */
 limit?: number | null;
+q?: string;
 };
 
 export type GetApiBooksStatus = typeof GetApiBooksStatus[keyof typeof GetApiBooksStatus];

@@ -28,6 +28,7 @@ export const getBooks = async (
   order?: BookSortOrder,
   cursor?: string,
   limit?: number,
+  keyword?: string,
 ): Promise<{ books: Book[]; nextCursor: string | null }> => {
   const { lastId, lastCreatedAt, lastTitle, lastRating } = cursor
     ? decode(cursor)
@@ -44,6 +45,7 @@ export const getBooks = async (
     lastTitle,
     lastRating,
     effectiveLimit,
+    keyword,
   )
   const lastBook = result[result.length - 1]
   return {

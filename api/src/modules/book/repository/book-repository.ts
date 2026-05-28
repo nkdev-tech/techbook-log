@@ -21,6 +21,7 @@ export const BookRepository = {
     lastTitle?: string,
     lastRating?: number | null,
     limit?: number,
+    keyword?: string,
   ): Promise<Book[]> => {
     const columnMap = {
       createdAt: bookTable.createdAt,
@@ -46,6 +47,22 @@ export const BookRepository = {
               and(eq(sortColumn, lastSortValue), lt(bookTable.id, lastId)),
             )
         : undefined
+    const escaped = keyword
+      ? keyword
+          .split(/\s+/)
+          .filter(Boolean)
+          .map((s) => s.replace(/%/g, '\\%').replace(/_/g, '\\_'))
+      : []
+    const keywordCondition = keyword
+      ? and(
+          ...escaped.map((s) =>
+            or(
+              sql`${bookTable.title} LIKE ${'%' + s + '%'} ESCAPE '\\'`,
+              sql`${bookTable.author} LIKE ${'%' + s + '%'} ESCAPE '\\'`,
+            ),
+          ),
+        )
+      : undefined
 
     if (query.length === 0) {
       const rows = await db.query.bookTable.findMany({
@@ -53,6 +70,7 @@ export const BookRepository = {
           inArray(bookTable.userId, [userId]),
           status ? eq(bookTable.status, status) : undefined,
           cursorCondition,
+          keywordCondition,
         ),
         orderBy: (fields, { asc, desc }) => [
           order === 'asc' ? asc(sortColumn) : desc(sortColumn),
@@ -87,6 +105,7 @@ export const BookRepository = {
         ),
         status ? eq(bookTable.status, status) : undefined,
         cursorCondition,
+        keywordCondition,
       ),
       orderBy: (fields, { asc, desc }) => [
         order === 'asc' ? asc(sortColumn) : desc(sortColumn),

@@ -16,12 +16,14 @@ export function useInfiniteBooks(params: GetApiBooksParams) {
       params.status,
       params.sortBy,
       params.order,
+      params.q,
     ],
     queryFn: ({ pageParam }) =>
       getApiBooks({ ...params, cursor: pageParam, limit: 20 }),
     initialPageParam: undefined as string | undefined,
     getNextPageParam: (lastPage) =>
       lastPage.status === 200 ? lastPage.data.nextCursor : undefined,
+    enabled: params.q === undefined || params.q.length > 0,
     placeholderData: keepPreviousData,
   });
 
