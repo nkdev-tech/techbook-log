@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { createBook } from './create-book'
+import { createBook, DuplicateIsbnError } from './create-book'
 import { BookRepository } from '../repository/book-repository'
 import { TagRepository } from '../../tag/repository/tag-repository'
 
@@ -40,6 +40,7 @@ describe('createBook', () => {
       tags: [{ id: 1, name: 'React', createdAt: '2026-01-01T00:00:00.000Z' }],
     }
 
+    vi.mocked(BookRepository.findByIsbn).mockResolvedValue(null)
     vi.mocked(BookRepository.create).mockResolvedValue(mockBook)
     vi.mocked(BookRepository.findById).mockResolvedValue(mockBook)
     vi.mocked(TagRepository.findOrCreate).mockResolvedValue({
@@ -87,6 +88,7 @@ describe('createBook', () => {
       tags: [{ id: 1, name: 'React', createdAt: '2026-01-01T00:00:00.000Z' }],
     }
 
+    vi.mocked(BookRepository.findByIsbn).mockResolvedValue(null)
     vi.mocked(BookRepository.create).mockResolvedValue(mockBook)
     vi.mocked(BookRepository.findById).mockResolvedValue(mockBook)
     vi.mocked(TagRepository.findOrCreate).mockResolvedValue({
@@ -103,6 +105,50 @@ describe('createBook', () => {
     )
   })
 
+  it('can create book with isbn null', async () => {
+    const userId = '1'
+    const data = {
+      isbn: null,
+      title: 'タイトル1',
+      author: '著者1',
+      publisher: '出版社名',
+      thumbnailUrl: 'https://books.google.com/',
+      status: 'unread' as const,
+      rating: 3,
+      finishedAt: '2026-01-01',
+      tags: [{ name: 'React' }],
+    }
+    const mockBook = {
+      id: 1,
+      isbn: null,
+      title: 'タイトル1',
+      author: '著者1',
+      publisher: '出版社名',
+      thumbnailUrl: 'https://books.google.com/',
+      status: 'unread' as const,
+      rating: 3,
+      finishedAt: null,
+      userId: '1',
+      createdAt: '2026-01-01T00:00:00.000Z',
+      updatedAt: '2026-01-01T00:00:00.000Z',
+      tags: [{ id: 1, name: 'React', createdAt: '2026-01-01T00:00:00.000Z' }],
+    }
+
+    vi.mocked(BookRepository.create).mockResolvedValue(mockBook)
+    vi.mocked(BookRepository.findById).mockResolvedValue(mockBook)
+    vi.mocked(TagRepository.findOrCreate).mockResolvedValue({
+      id: 1,
+      name: 'React',
+      userId: '1',
+      createdAt: '2026-01-01T00:00:00.000Z',
+    })
+
+    const result = await createBook(userId, data)
+
+    expect(result).toEqual(mockBook)
+    expect(BookRepository.create).toHaveBeenCalledTimes(1)
+  })
+
   it('cannot create book with DB error', async () => {
     const userId = '1'
     const data = {
@@ -116,9 +162,45 @@ describe('createBook', () => {
       finishedAt: '2026-01-01',
       tags: [{ name: 'React' }],
     }
+    vi.mocked(BookRepository.findByIsbn).mockResolvedValue(null)
     vi.mocked(BookRepository.create).mockRejectedValue(new Error('DB error'))
 
     await expect(createBook(userId, data)).rejects.toThrow('DB error')
     expect(BookRepository.create).toHaveBeenCalledTimes(1)
+  })
+
+  it('cannot create book with same isbn', async () => {
+    const userId = '1'
+    const data = {
+      isbn: '1234567890123',
+      title: 'タイトル1',
+      author: '著者1',
+      publisher: '出版社名',
+      thumbnailUrl: 'https://books.google.com/',
+      status: 'unread' as const,
+      rating: 3,
+      finishedAt: '2026-01-01',
+      tags: [{ name: 'React' }],
+    }
+    const mockBook = {
+      id: 1,
+      isbn: '1234567890123',
+      title: 'タイトル1',
+      author: '著者1',
+      publisher: '出版社名',
+      thumbnailUrl: 'https://books.google.com/',
+      status: 'unread' as const,
+      rating: 3,
+      finishedAt: null,
+      userId: '1',
+      createdAt: '2026-01-01T00:00:00.000Z',
+      updatedAt: '2026-01-01T00:00:00.000Z',
+      tags: [{ id: 1, name: 'React', createdAt: '2026-01-01T00:00:00.000Z' }],
+    }
+
+    vi.mocked(BookRepository.findByIsbn).mockResolvedValue(mockBook)
+
+    await expect(createBook(userId, data)).rejects.toThrow(DuplicateIsbnError)
+    expect(BookRepository.create).toHaveBeenCalledTimes(0)
   })
 })

@@ -1,7 +1,10 @@
 import { OpenAPIHono } from '@hono/zod-openapi'
 import { getBook } from '../../modules/book/usecase/get-book'
 import { getBooks, BadRequestError } from '../../modules/book/usecase/get-books'
-import { createBook } from '../../modules/book/usecase/create-book'
+import {
+  createBook,
+  DuplicateIsbnError,
+} from '../../modules/book/usecase/create-book'
 import { updateBook } from '../../modules/book/usecase/update-book'
 import { deleteBook } from '../../modules/book/usecase/delete-book'
 import { createRoute } from '@hono/zod-openapi'
@@ -73,6 +76,14 @@ const createBookRoute = createRoute({
         },
       },
       description: 'Bad Request',
+    },
+    409: {
+      content: {
+        'application/json': {
+          schema: errorResBodySchema,
+        },
+      },
+      description: 'Conflict',
     },
   },
 })
@@ -204,8 +215,24 @@ const app = new OpenAPIHono<AuthVariables>()
   .openapi(createBookRoute, async (c) => {
     const data = c.req.valid('json')
     const userId = c.get('user').id
-    const result = await createBook(userId, data)
-    return c.json(result, 201)
+    try {
+      const result = await createBook(userId, data)
+      return c.json(result, 201)
+    } catch (err) {
+      if (err instanceof DuplicateIsbnError) {
+        return c.json(
+          {
+            success: false,
+            error: {
+              name: 'Conflict',
+              message: 'この本はすでに登録されています',
+            },
+          },
+          409,
+        )
+      }
+      throw err
+    }
   })
   .openapi(getBookRoute, async (c) => {
     const { id } = c.req.valid('param')

@@ -117,28 +117,32 @@ export const accountRelations = relations(account, ({ one }) => ({
 
 // App Schema
 
-export const bookTable = sqliteTable('books', {
-  id: integer('id').primaryKey(),
-  isbn: text('isbn'),
-  title: text('title').notNull(),
-  author: text('author').notNull(),
-  publisher: text('publisher'),
-  thumbnailUrl: text('thumbnail_url'),
-  status: text('status', { enum: ['unread', 'reading', 'done'] })
-    .notNull()
-    .default('unread'),
-  rating: integer('rating'),
-  finishedAt: text('finished_at'),
-  userId: text('user_id')
-    .notNull()
-    .references(() => user.id, { onDelete: 'cascade' }),
-  createdAt: text('created_at')
-    .notNull()
-    .$defaultFn(() => new Date().toISOString()),
-  updatedAt: text('updated_at')
-    .notNull()
-    .$defaultFn(() => new Date().toISOString()),
-})
+export const bookTable = sqliteTable(
+  'books',
+  {
+    id: integer('id').primaryKey(),
+    isbn: text('isbn'),
+    title: text('title').notNull(),
+    author: text('author').notNull(),
+    publisher: text('publisher'),
+    thumbnailUrl: text('thumbnail_url'),
+    status: text('status', { enum: ['unread', 'reading', 'done'] })
+      .notNull()
+      .default('unread'),
+    rating: integer('rating'),
+    finishedAt: text('finished_at'),
+    userId: text('user_id')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }),
+    createdAt: text('created_at')
+      .notNull()
+      .$defaultFn(() => new Date().toISOString()),
+    updatedAt: text('updated_at')
+      .notNull()
+      .$defaultFn(() => new Date().toISOString()),
+  },
+  (table) => [uniqueIndex('book_isbn_userId_idx').on(table.isbn, table.userId)],
+)
 
 export const tagTable = sqliteTable(
   'tags',
