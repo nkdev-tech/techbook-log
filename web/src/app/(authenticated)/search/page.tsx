@@ -19,6 +19,7 @@ import Navigation from "@/components/Navigation";
 import { useInfiniteBooks } from "@/shared/hooks/useInfiniteBooks";
 import { useInfiniteMemoSearch } from "@/shared/hooks/useInfiniteMemoSearch";
 import { useIntersectionObserver } from "@/shared/hooks/useIntersectionObserver";
+import Highlighter from "react-highlight-words";
 
 function SearchContent() {
   const router = useRouter();
@@ -68,30 +69,6 @@ function SearchContent() {
   if (booksError || memosError) {
     throw booksError || memosError;
   }
-
-  const highlightKeyword = (content: string) => {
-    const escaped = keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    const [before, target, after] = content.split(
-      new RegExp(`(${escaped})`, "i")
-    );
-    return (
-      <span>
-        {before && (
-          <>
-            {before.length > 20 && <span>...</span>}
-            {before.slice(-20)}
-          </>
-        )}
-        <span className="font-medium bg-yellow-200 px-0.5">{target}</span>
-        {after && (
-          <>
-            {after.slice(0, 20)}
-            {after.length > 20 && <span>...</span>}
-          </>
-        )}
-      </span>
-    );
-  };
 
   return (
     <div className="w-full">
@@ -143,8 +120,7 @@ function SearchContent() {
               <div className="flex justify-center items-center h-full min-h-[60vh]">
                 <Spinner className="size-12" />
               </div>
-            ) : keyword.length === 0 ? null : keyword.length > 0 &&
-              books.length === 0 ? (
+            ) : keyword.length === 0 ? null : books.length === 0 ? (
               <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
                 <SearchX size={80} className="text-muted-foreground" />
                 <p className="text-2xl font-bold text-muted-foreground">
@@ -195,8 +171,7 @@ function SearchContent() {
               <div className="flex justify-center items-center h-full min-h-[60vh]">
                 <Spinner className="size-12" />
               </div>
-            ) : keyword.length === 0 ? null : keyword.length > 0 &&
-              memos.length === 0 ? (
+            ) : keyword.length === 0 ? null : memos.length === 0 ? (
               <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
                 <SearchX size={80} className="text-muted-foreground" />
                 <p className="text-2xl font-bold text-muted-foreground">
@@ -224,7 +199,12 @@ function SearchContent() {
                           </span>
                           <PageNo pageNo={memo.pageNo} />
                         </div>
-                        <p>{highlightKeyword(memo.content)}</p>
+                        <Highlighter
+                          searchWords={keyword.split(/\s+/).filter(Boolean)}
+                          textToHighlight={memo.content}
+                          highlightClassName="font-medium bg-yellow-200 px-0.5"
+                          autoEscape
+                        />
                       </div>
                     </Link>
                   ))}

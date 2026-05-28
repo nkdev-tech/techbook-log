@@ -89,7 +89,7 @@ export default function Header({
                 id="keyword"
                 name="keyword"
                 ref={inputRef}
-                className="pb-px"
+                placeholder="検索..."
               />
             </InputGroup>
           </form>
