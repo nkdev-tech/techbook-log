@@ -191,4 +191,49 @@ describe('memos', () => {
 
     expect(result.status).toBe(404)
   })
+
+  it('validates content length boundary at 20000 chars', async () => {
+    const mockMemo = {
+      id: 1,
+      bookId: 1,
+      content: 'a'.repeat(20000),
+      pageNo: 111,
+      createdAt: '2026-01-01T00:00:00.000Z',
+      updatedAt: '2026-01-01T00:00:00.000Z',
+    }
+    vi.mocked(BookRepository.findById).mockResolvedValue({
+      id: 1,
+      isbn: '1234567890123',
+      title: 'タイトル',
+      author: '著者名',
+      publisher: '出版社名',
+      thumbnailUrl: 'https://books.google.com/',
+      status: 'unread' as const,
+      rating: null,
+      finishedAt: null,
+      userId: '1',
+      createdAt: '2026-01-01T00:00:00.000Z',
+      updatedAt: '2026-01-01T00:00:00.000Z',
+      tags: [{ id: 1, name: 'React' }],
+    })
+    vi.mocked(MemoRepository.create).mockResolvedValue(mockMemo)
+
+    const resInvalid = await client.api.books[':id'].memos.$post({
+      param: { id: '1' },
+      json: {
+        content: 'a'.repeat(20001),
+        pageNo: 111,
+      },
+    })
+    expect(resInvalid.status).toBe(400)
+
+    const resValid = await client.api.books[':id'].memos.$post({
+      param: { id: '1' },
+      json: {
+        content: 'a'.repeat(20000),
+        pageNo: 111,
+      },
+    })
+    expect(resValid.status).toBe(201)
+  })
 })
