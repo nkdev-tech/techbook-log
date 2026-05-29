@@ -35,7 +35,7 @@ type Props = {
     id: number;
     content: string;
     pageNo: number | null;
-    createdAt: string;
+    updatedAt: string;
   };
   onEdit: () => void;
 };
@@ -79,13 +79,13 @@ export function Memo({ bookId, memo, onEdit }: Props) {
           {memo.pageNo && <PageNo pageNo={memo.pageNo} />}
           <Tooltip>
             <TooltipTrigger>
-              {formatDistanceToNow(new Date(memo.createdAt), {
+              {formatDistanceToNow(new Date(memo.updatedAt), {
                 addSuffix: true,
                 locale: ja,
               })}
             </TooltipTrigger>
             <TooltipContent side="bottom">
-              {format(new Date(memo.createdAt), "yyyy-MM-dd HH:mm:ss")}
+              {format(new Date(memo.updatedAt), "yyyy-MM-dd HH:mm:ss")}
             </TooltipContent>
           </Tooltip>
         </div>
