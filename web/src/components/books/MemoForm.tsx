@@ -9,7 +9,13 @@ import {
 } from "@/external/api";
 import { MarkdownContent } from "@/components/books/MarkdownContent";
 import { Button } from "@/components/ui/button";
-import { Card, CardAction, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
 import { Field, FieldError, FieldGroup } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
@@ -125,11 +131,7 @@ export function MemoForm({ memo, onSuccess, onCancel }: Props) {
   }
 
   return (
-    <Card
-      key="new"
-      ref={ref}
-      className="py-3"
-    >
+    <Card key="new" ref={ref} className="py-3">
       <form
         id="card-form"
         onSubmit={(e) => {
@@ -139,28 +141,23 @@ export function MemoForm({ memo, onSuccess, onCancel }: Props) {
         className="h-full"
       >
         <Tabs defaultValue="edit">
-          <CardHeader className="flex items-center">
+          <CardHeader className="flex items-center !pb-3 border-b bg-muted/20">
             <form.Field name="pageNo">
               {(field) => (
                 <Field>
-                  <div className="px-2">
-                    <div className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-xs font-medium bg-primary/10 text-primary">
-                      p.
-                      <Input
-                        type="number"
-                        value={field.state.value ?? ""}
-                        placeholder="---"
-                        min={1}
-                        className="w-7 border-none bg-transparent shadow-none p-0 h-auto !text-xs text-primary font-medium rounded-none focus:ring-0 focus-visible:ring-0 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-                        onChange={(e) =>
-                          field.handleChange(
-                            e.target.value === ""
-                              ? null
-                              : Number(e.target.value)
-                          )
-                        }
-                      />
-                    </div>
+                  <div className="flex items-center gap-1 px-1">
+                    p.
+                    <Input
+                      type="number"
+                      value={field.state.value ?? ""}
+                      min={1}
+                      className="w-14 bg-white [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                      onChange={(e) =>
+                        field.handleChange(
+                          e.target.value === "" ? null : Number(e.target.value)
+                        )
+                      }
+                    />
                   </div>
                 </Field>
               )}
@@ -220,12 +217,8 @@ export function MemoForm({ memo, onSuccess, onCancel }: Props) {
               </form.Subscribe>
             </TabsContent>
           </CardContent>
-          <CardFooter className="justify-end py-3 gap-2 border-none bg-card">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={onCancel}
-            >
+          <CardFooter className="justify-end py-3 gap-2">
+            <Button type="button" variant="outline" onClick={onCancel}>
               キャンセル
             </Button>
             <Button
