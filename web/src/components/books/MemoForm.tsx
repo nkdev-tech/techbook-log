@@ -151,7 +151,7 @@ export function MemoForm({ memo, onSuccess, onCancel }: Props) {
                       type="number"
                       value={field.state.value ?? ""}
                       min={1}
-                      className="w-14 bg-white [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                      className="w-14 bg-background [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                       onChange={(e) =>
                         field.handleChange(
                           e.target.value === "" ? null : Number(e.target.value)

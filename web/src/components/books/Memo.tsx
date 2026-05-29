@@ -75,8 +75,8 @@ export function Memo({ bookId, memo, onEdit }: Props) {
     );
   };
   return (
-    <Card className="py-2 group border-l-[6px] border-l-primary">
-      <CardHeader className="px-6 pt-2">
+    <Card className="py-2 gap-1 group border-l-[6px] border-l-primary">
+      <CardHeader className="px-8 pt-2">
         <div className="flex items-center text-xs text-muted-foreground gap-3">
           {memo.pageNo && <PageNo pageNo={memo.pageNo} />}
           <Tooltip>
