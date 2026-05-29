@@ -465,7 +465,7 @@ export type GetApiBooksIdMemos200Item = {
 export type PostApiBooksIdMemosBody = {
   /**
      * @minLength 1
-     * @maxLength 140
+     * @maxLength 20000
      */
   content: string;
   /**
@@ -521,7 +521,7 @@ export type PostApiBooksIdMemos404 = {
 export type PatchApiBooksIdMemosMemoIdBody = {
   /**
      * @minLength 1
-     * @maxLength 140
+     * @maxLength 20000
      */
   content: string;
   /**

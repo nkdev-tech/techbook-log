@@ -29,7 +29,7 @@ export function MemoList() {
           ＋ メモを追加
         </Button>
       </div>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 items-start gap-4">
+      <div className="flex flex-col gap-4">
         {memos.map((memo) =>
           editingMemoId === memo.id ? (
             <MemoForm
