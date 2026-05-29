@@ -9,7 +9,7 @@ type Props = {
 
 export function MarkdownContent({ content }: Props) {
   return (
-    <div className="prose text-sm">
+    <div className="prose max-w-none break-words text-sm">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{

@@ -5,7 +5,7 @@ import {
 } from "@/external/api";
 import { MarkdownContent } from "@/components/books/MarkdownContent";
 import { PageNo } from "@/components/books/PageNo";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { ApiError } from "@/shared/types/api";
 import { SquarePen, Trash2 } from "lucide-react";
 import {
@@ -20,7 +20,14 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "../ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { toast } from "sonner";
+import { format, formatDistanceToNow } from "date-fns";
+import { ja } from "date-fns/locale";
 
 type Props = {
   bookId: string;
@@ -28,6 +35,7 @@ type Props = {
     id: number;
     content: string;
     pageNo: number | null;
+    createdAt: string;
   };
   onEdit: () => void;
 };
@@ -62,24 +70,42 @@ export function Memo({ bookId, memo, onEdit }: Props) {
     );
   };
   return (
-    <Card className="relative min-h-40 py-2 group border-l-[6px] border-l-primary">
-      <CardContent className="flex flex-col flex-1 px-4 gap-2">
+    <Card className="relative min-h-40 py-2 group rounded-lg">
+      <div className="absolute top-0 right-0 w-12 h-12">
+        <div className="absolute inset-0 bg-primary [clip-path:polygon(100%_0,0_0,100%_100%)]" />
+      </div>
+      <CardHeader>
+        <div className="flex items-center px-2 pt-2 text-xs text-muted-foreground gap-3">
+          {memo.pageNo && <PageNo pageNo={memo.pageNo} />}
+          <Tooltip>
+            <TooltipTrigger>
+              {formatDistanceToNow(new Date(memo.createdAt), {
+                addSuffix: true,
+                locale: ja,
+              })}
+            </TooltipTrigger>
+            <TooltipContent side="bottom">
+              {format(new Date(memo.createdAt), "yyyy-MM-dd HH:mm:ss")}
+            </TooltipContent>
+          </Tooltip>
+        </div>
+      </CardHeader>
+      <CardContent className="flex flex-col flex-1 px-5 gap-2">
         <div className="flex-1">
           <MarkdownContent content={memo.content} />
         </div>
-        <PageNo pageNo={memo.pageNo} />
       </CardContent>
-      <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity backdrop-blur-xs rounded-full">
+      <div className="absolute top-3 right-14 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity rounded-full">
         <AlertDialog>
           <AlertDialogTrigger asChild>
             <Button
               type="button"
               variant="ghost"
-              size="icon-sm"
+              size="icon"
               disabled={isPending}
               aria-label="メモを削除"
             >
-              <Trash2 size={16} className="text-destructive" />
+              <Trash2 className="text-destructive" />
             </Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
@@ -103,11 +129,11 @@ export function Memo({ bookId, memo, onEdit }: Props) {
         <Button
           type="button"
           variant="ghost"
-          size="icon-sm"
+          size="icon"
           onClick={onEdit}
           aria-label="メモを編集"
         >
-          <SquarePen size={16} className="text-primary" />
+          <SquarePen className="text-primary" />
         </Button>
       </div>
     </Card>
