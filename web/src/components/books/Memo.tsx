@@ -3,6 +3,7 @@ import {
   useDeleteApiBooksIdMemosMemoId,
   getGetApiBooksIdMemosQueryKey,
 } from "@/external/api";
+import { MarkdownContent } from "@/components/books/MarkdownContent";
 import { PageNo } from "@/components/books/PageNo";
 import { Card, CardContent } from "@/components/ui/card";
 import { ApiError } from "@/shared/types/api";
@@ -63,7 +64,9 @@ export function Memo({ bookId, memo, onEdit }: Props) {
   return (
     <Card className="relative min-h-40 py-2 group border-l-[6px] border-l-primary">
       <CardContent className="flex flex-col flex-1 px-4 gap-2">
-        <p className="flex-1 whitespace-pre-wrap">{memo.content}</p>
+        <div className="flex-1">
+          <MarkdownContent content={memo.content} />
+        </div>
         <PageNo pageNo={memo.pageNo} />
       </CardContent>
       <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity backdrop-blur-xs rounded-full">
