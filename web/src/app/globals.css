@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@plugin "@tailwindcss/typography";
 
 :root {
   --header-height: 3.5rem;
@@ -9,6 +10,11 @@
 [data-slot="sidebar-container"] {
   top: var(--header-height);
   height: calc(100svh - var(--header-height));
+}
+
+.prose ul li:has(input[type="checkbox"]) {
+  list-style-type: none;
+  padding-left: 0;
 }
 
 @custom-variant dark (&:is(.dark *));
