@@ -4,7 +4,6 @@
   "main": "src/index.ts",
   "compatibility_date": "2026-04-02",
   "compatibility_flags": ["nodejs_compat"],
-  "account_id": "b45afa0ef662c5bd6dd507ea65c81b71",
   "d1_databases": [
     {
       "binding": "DB",
