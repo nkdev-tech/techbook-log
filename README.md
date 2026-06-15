@@ -1,6 +1,6 @@
-# techbook-log
+# memetec.
 
-**memetec.** — 技術書の読書記録を管理するWebアプリ。
+技術書の読書記録を管理するWebアプリ。
 
 ---
 
@@ -54,7 +54,7 @@
 モノレポ構成。`api/` と `web/` の2パッケージ。
 
 ```
-techbook-log/
+memetec/
 ├── api/   # Hono on Cloudflare Workers
 └── web/   # Next.js（OpenNext）on Cloudflare Workers
 ```

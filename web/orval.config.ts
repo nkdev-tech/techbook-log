@@ -2,7 +2,7 @@ import { defineConfig } from "orval";
 import "dotenv/config";
 
 export default defineConfig({
-  techbookLog: {
+  memetec: {
     output: {
       mode: "single",
       target: "./src/external/api.ts",
