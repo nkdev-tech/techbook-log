@@ -53,11 +53,12 @@ npm run generate # orval で API クライアント再生成（APIサーバー�
 
 Hono + `@hono/zod-openapi` でOpenAPI定義とルートハンドラを共存させている。DBはCloudflare D1（SQLite）、ORMはDrizzle。
 
-レイヤー構成（`api/src/modules/<domain>/`）:
+ビジネスロジックは `api/src/modules/<domain>/` 配下の3レイヤーで構成する:
 - `entity/` — DBスキーマから派生した型定義と変換関数
 - `repository/` — Drizzle を使ったDB操作
 - `usecase/` — ビジネスロジック（repositoryを組み合わせる）
-- `routes/<domain>/` — Honoルート定義とzodスキーマ（OpenAPI仕様を兼ねる）
+
+ルート定義は modules とは別で、`api/src/routes/<domain>/` に置く（Honoルート定義とzodスキーマ。OpenAPI仕様を兼ねる）。
 
 新しいドメインを追加するときは `modules/` と `routes/` の両方に追加し、`api/src/index.ts` でルートをマウントする。
 
